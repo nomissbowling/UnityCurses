@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Scripts.Engine.FileSystem;
 using UnityEngine;
 
 namespace Assets.Scripts.ProjectCommon.Binds
@@ -479,6 +480,7 @@ namespace Assets.Scripts.ProjectCommon.Binds
                 ResetKeyMouseSettings();
                 return;
             }
+
             foreach (var item in Items)
             {
                 var currentKeyBlock = controlBloc.FindChild(item.ControlKey.ToString());

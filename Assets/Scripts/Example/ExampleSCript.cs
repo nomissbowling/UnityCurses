@@ -39,6 +39,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void Update()
         {
             if (Input.GetKeyDown("space"))
@@ -75,6 +76,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     OnPreRender is called before a camera starts rendering the scene.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnPreRender()
         {
             //Debug.Log("ExampleScript::OnPreRender()");
@@ -83,6 +85,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     OnPostRender is called after a camera finished rendering the scene.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnPostRender()
         {
             //Debug.Log("ExampleScript::OnPostRender()");
@@ -91,6 +94,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     Reset to default values.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void Reset()
         {
             Debug.Log("ExampleScript::Reset()");
@@ -100,6 +104,7 @@ namespace Assets.Scripts.Example
         ///     Start is called on the frame when a script is enabled just before any of the Update methods is called the first
         ///     time.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void Start()
         {
             // Creates instance of the engine application.
@@ -119,6 +124,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     Awake is called when the script instance is being loaded.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void Awake()
         {
             Debug.Log("ExampleScript::Awake()");
@@ -127,6 +133,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     OnGUI is called for rendering and handling GUI events.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnGUI()
         {
             Debug.Log("ExampleScript::OnGUI()");
@@ -135,6 +142,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     This function is called when the object becomes enabled and active.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnEnable()
         {
             Debug.Log("ExampleScript::OnEnable()");
@@ -143,6 +151,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnDestroy()
         {
             Debug.Log("ExampleScript::OnDestroy()");
@@ -151,6 +160,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     Sent to all game objects before the application is quit.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnApplicationQuit()
         {
             Debug.Log("OnApplicationQuit::OnApplicationQuit()");
@@ -160,6 +170,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     Sent to all GameObjects when the application pauses.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnApplicationPause()
         {
             Debug.Log("ExampleScript::OnApplicationPause()");
@@ -168,6 +179,7 @@ namespace Assets.Scripts.Example
         /// <summary>
         ///     Sent to all GameObjects when the player gets or loses focus.
         /// </summary>
+        // ReSharper disable once UnusedMember.Local
         private void OnApplicationFocus()
         {
             Debug.Log("ExampleScript::OnApplicationFocus()");

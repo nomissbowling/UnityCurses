@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Assets.Scripts.Engine.Core;
+using Assets.Scripts.Engine.FileSystem;
 using Assets.Scripts.Engine.Window.Control;
 using Assets.Scripts.ProjectCommon;
 using Assets.Scripts.ProjectCommon.Binds;
@@ -66,6 +67,16 @@ namespace Assets.Scripts.Engine
             TickPhase = _spinningPixel.Step();
 
             // ---------------------------------------------------
+            // SINGLETONS THAT LIVE OUTSIDE MODULES
+            // ---------------------------------------------------
+
+            // Wrapper for working with files in a cross-platform way that works on all major operating systems.
+            VirtualFileSystem.Init();
+
+            // Wrapper for Unity input system to allow for key re-mapping while the game is running.
+            GameControlsManager.Init();
+
+            // ---------------------------------------------------
             // INTERNAL MODULES FOR STATE TRACKING AND TICKS
             // ---------------------------------------------------
 
@@ -76,13 +87,6 @@ namespace Assets.Scripts.Engine
 
             // Input manager needs event hook for knowing when buffer is sent.
             InputManager = new InputManager(this);
-
-            // ---------------------------------------------------
-            // SINGLETONS THAT LIVE OUTSIDE MODULES
-            // ---------------------------------------------------
-
-            VirtualFileSystem.Init();
-            GameControlsManager.Init();
         }
 
         /// <summary>

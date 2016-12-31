@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using UnityEngine;
 
-namespace Assets.Scripts.ProjectCommon
+namespace Assets.Scripts.Engine.FileSystem
 {
     /// <summary>
     ///     Keeps track of file locations on users disk across whatever platforms Unity supports using the persistent data
