@@ -2,11 +2,11 @@
 // Timestamp 01/16/2016@5:33 PM
 
 using System;
-using WolfCurses.Window;
-using WolfCurses.Window.Form;
-using WolfCurses.Window.Form.Input;
+using Assets.Scripts.Engine.Window;
+using Assets.Scripts.Engine.Window.Form;
+using Assets.Scripts.Engine.Window.Form.Input;
 
-namespace WolfCurses.Example.Question
+namespace Assets.Scripts.Example.Question
 {
     [ParentWindow(typeof (ExampleWindow))]
     public sealed class NoWolves : InputForm<ExampleWindowInfo>
@@ -28,7 +28,7 @@ namespace WolfCurses.Example.Question
         /// </returns>
         protected override string OnDialogPrompt()
         {
-            return $"{Environment.NewLine}You don't like wolves, whyyyyyy!{Environment.NewLine}";
+            return string.Format("{0}You don't like wolves, whyyyyyy!{1}", Environment.NewLine, Environment.NewLine);
         }
 
         /// <summary>

@@ -1,9 +1,9 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/07/2016@7:28 PM
 
-using WolfCurses.Utility;
+using Assets.Scripts.Engine.Utility;
 
-namespace WolfCurses.Example
+namespace Assets.Scripts.Example
 {
     /// <summary>
     ///     Commands that will be loaded into the example window.

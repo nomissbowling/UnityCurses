@@ -3,12 +3,12 @@
 
 using System;
 using System.Text;
-using WolfCurses.Core;
-using WolfCurses.Window;
-using WolfCurses.Window.Form;
-using WolfCurses.Window.Form.Input;
+using Assets.Scripts.Engine.Core;
+using Assets.Scripts.Engine.Window;
+using Assets.Scripts.Engine.Window.Form;
+using Assets.Scripts.Engine.Window.Form.Input;
 
-namespace WolfCurses.Example.Question
+namespace Assets.Scripts.Example.Question
 {
     /// <summary>
     ///     Asks the user a yes/no based question, they can only reply with those predetermined answers.
@@ -49,9 +49,10 @@ namespace WolfCurses.Example.Question
         {
             ParentWindow.PromptText = SceneGraph.PROMPT_TEXT_DEFAULT;
 
-            dialogYesNo.Clear();
+            dialogYesNo = new StringBuilder();
 
-            dialogYesNo.AppendLine($"{Environment.NewLine}Question Dialog Example{Environment.NewLine}");
+            dialogYesNo.AppendLine(string.Format("{0}Question Dialog Example{1}", Environment.NewLine,
+                Environment.NewLine));
             dialogYesNo.Append("Do you like wolves? Y/N");
 
             return dialogYesNo.ToString();
@@ -74,7 +75,7 @@ namespace WolfCurses.Example.Question
                     SetForm(typeof (YesWolves));
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(reponse), reponse, null);
+                    throw new ArgumentOutOfRangeException("reponse", reponse, null);
             }
         }
     }

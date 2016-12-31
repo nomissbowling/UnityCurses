@@ -3,12 +3,13 @@
 
 using System;
 using System.Text;
-using WolfCurses.Example.CustomInput;
-using WolfCurses.Example.Prompt;
-using WolfCurses.Example.Question;
-using WolfCurses.Window;
+using Assets.Scripts.Engine;
+using Assets.Scripts.Engine.Window;
+using Assets.Scripts.Example.CustomInput;
+using Assets.Scripts.Example.Prompt;
+using Assets.Scripts.Example.Question;
 
-namespace WolfCurses.Example
+namespace Assets.Scripts.Example
 {
     /// <summary>
     ///     Example window implementation that is attached to wolf curses list of active windows during runtime.
@@ -19,7 +20,7 @@ namespace WolfCurses.Example
         ///     Initializes a new instance of the <see cref="Window{TCommands,TData}" /> class.
         /// </summary>
         /// <param name="simUnit">Core simulation which is controlling the form factory.</param>
-        public ExampleWindow(SimulationApp simUnit) : base(simUnit)
+        public ExampleWindow(EngineApp simUnit) : base(simUnit)
         {
         }
 
@@ -32,7 +33,8 @@ namespace WolfCurses.Example
 
             var headerText = new StringBuilder();
             headerText.Append(
-                $"{Environment.NewLine}Example Console Application{Environment.NewLine}{Environment.NewLine}");
+                string.Format("{0}Example Console Application{1}{2}", Environment.NewLine, Environment.NewLine,
+                    Environment.NewLine));
             headerText.AppendLine("Example UserData: " + UserData.ExampleUserData);
             headerText.Append("You may:");
             MenuHeader = headerText.ToString();
@@ -45,7 +47,7 @@ namespace WolfCurses.Example
 
         private void CloseSimulation()
         {
-            Program.Destroy();
+            ExampleScript.Destroy();
         }
 
         private void CustomPrompt()

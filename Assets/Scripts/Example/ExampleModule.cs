@@ -1,14 +1,16 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/07/2016@8:00 PM
 
-namespace WolfCurses.Example
+using Assets.Scripts.Engine.Module;
+
+namespace Assets.Scripts.Example
 {
     /// <summary>
     ///     Modules are added to the simulation during startup and have the ability to constantly tick with the underlying
     ///     simulation. They will always get ticks unlike windows and forms whom only tick when they are currently active in
     ///     the window manager.
     /// </summary>
-    public sealed class ExampleModule : Module.Module
+    public sealed class ExampleModule : Module
     {
         /// <summary>
         ///     Provides example of random data being populated by constant tick of the underlying simulation.
@@ -20,7 +22,7 @@ namespace WolfCurses.Example
         /// </summary>
         public string ExampleModuleData
         {
-            get { return $"Random: {_randomData.ToString("N0")}"; }
+            get { return string.Format("Random: {0:N0}", _randomData); }
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace WolfCurses.Example
                 return;
 
             // Pick a random number between 1 and 1000 every tick.
-            _randomData = ConsoleSimulationApp.Instance.Random.Next(1, 1000);
+            _randomData = ExampleApp.Instance.Random.Next(1, 1000);
         }
 
         /// <summary>

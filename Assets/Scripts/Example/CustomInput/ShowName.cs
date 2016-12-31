@@ -2,11 +2,11 @@
 // Timestamp 01/16/2016@5:55 PM
 
 using System;
-using WolfCurses.Window;
-using WolfCurses.Window.Form;
-using WolfCurses.Window.Form.Input;
+using Assets.Scripts.Engine.Window;
+using Assets.Scripts.Engine.Window.Form;
+using Assets.Scripts.Engine.Window.Form.Input;
 
-namespace WolfCurses.Example.CustomInput
+namespace Assets.Scripts.Example.CustomInput
 {
     [ParentWindow(typeof (ExampleWindow))]
     public sealed class ShowName : InputForm<ExampleWindowInfo>
@@ -28,7 +28,8 @@ namespace WolfCurses.Example.CustomInput
         /// </returns>
         protected override string OnDialogPrompt()
         {
-            return $"{Environment.NewLine}You typed in the name: {UserData.PlayerName}.{Environment.NewLine}";
+            return string.Format("{0}You typed in the name: {1}.{2}", Environment.NewLine, UserData.PlayerName,
+                Environment.NewLine);
         }
 
         /// <summary>

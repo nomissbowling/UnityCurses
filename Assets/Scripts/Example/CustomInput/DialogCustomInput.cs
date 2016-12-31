@@ -3,10 +3,10 @@
 
 using System;
 using System.Text;
-using WolfCurses.Window;
-using WolfCurses.Window.Form;
+using Assets.Scripts.Engine.Window;
+using Assets.Scripts.Engine.Window.Form;
 
-namespace WolfCurses.Example.CustomInput
+namespace Assets.Scripts.Example.CustomInput
 {
     /// <summary>
     ///     Asks for user name and then accepts the input from the input buffer.
@@ -40,9 +40,10 @@ namespace WolfCurses.Example.CustomInput
         {
             ParentWindow.PromptText = string.Empty;
 
-            _inputNamesHelp.Clear();
+            _inputNamesHelp = new StringBuilder();
 
-            _inputNamesHelp.AppendLine($"{Environment.NewLine}Dialog Custom Input{Environment.NewLine}");
+            _inputNamesHelp.AppendLine(string.Format("{0}Dialog Custom Input{1}", Environment.NewLine,
+                Environment.NewLine));
             _inputNamesHelp.Append("What is your name?");
 
             return _inputNamesHelp.ToString();
@@ -53,7 +54,7 @@ namespace WolfCurses.Example.CustomInput
         public override void OnInputBufferReturned(string input)
         {
             // Do not allow empty names.
-            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrEmpty(input))
                 return;
 
             // Copy name into user name and show form.

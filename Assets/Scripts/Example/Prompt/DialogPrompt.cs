@@ -3,11 +3,11 @@
 
 using System;
 using System.Text;
-using WolfCurses.Window;
-using WolfCurses.Window.Form;
-using WolfCurses.Window.Form.Input;
+using Assets.Scripts.Engine.Window;
+using Assets.Scripts.Engine.Window.Form;
+using Assets.Scripts.Engine.Window.Form.Input;
 
-namespace WolfCurses.Example.Prompt
+namespace Assets.Scripts.Example.Prompt
 {
     /// <summary>
     ///     Shows a piece of information to the user, pressing any key will close the form.
@@ -37,9 +37,10 @@ namespace WolfCurses.Example.Prompt
         /// </returns>
         protected override string OnDialogPrompt()
         {
-            dialogPrompt.Clear();
+            dialogPrompt = new StringBuilder();
 
-            dialogPrompt.AppendLine($"{Environment.NewLine}Dialog Prompt Example{Environment.NewLine}");
+            dialogPrompt.AppendLine(string.Format("{0}Dialog Prompt Example{1}", Environment.NewLine,
+                Environment.NewLine));
             dialogPrompt.AppendLine("This is some very important information the user should know about!");
 
             return dialogPrompt.ToString();

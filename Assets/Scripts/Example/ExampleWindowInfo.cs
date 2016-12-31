@@ -2,9 +2,9 @@
 // Timestamp 01/07/2016@7:28 PM
 
 using System;
-using WolfCurses.Window;
+using Assets.Scripts.Engine.Window;
 
-namespace WolfCurses.Example
+namespace Assets.Scripts.Example
 {
     /// <summary>
     ///     Windows can have a class with any specific data or classes required for the window to function.
@@ -22,7 +22,7 @@ namespace WolfCurses.Example
         /// </summary>
         public string ExampleUserData
         {
-            get { return $"Time: {DateTime.Now}"; }
+            get { return string.Format("Time: {0}", DateTime.Now); }
         }
     }
 }
