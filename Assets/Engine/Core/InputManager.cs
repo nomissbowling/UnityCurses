@@ -2,6 +2,8 @@
 // Timestamp 12/31/2015@2:38 PM
 
 using System.Collections.Generic;
+using Assets.ProjectCommon;
+using UnityEngine;
 
 namespace Assets.Engine.Core
 {

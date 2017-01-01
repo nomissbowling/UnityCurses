@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 232142836}
   - component: {fileID: 232142835}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: ScreenCanvas
   m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -472,8 +472,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1924734839}
+  - component: {fileID: 1924734840}
   m_Layer: 2
-  m_Name: GameEngineApp
+  m_Name: Game
   m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -494,3 +495,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1924734840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1924734838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc70fbb979934146a6b576ac38b3985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

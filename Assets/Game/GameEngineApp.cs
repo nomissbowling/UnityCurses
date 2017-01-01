@@ -5,14 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Assets.Engine;
+using Assets.Engine.UISystem;
+using UnityEngine;
 
 namespace Assets.Game
 {
     /// <summary>
     ///     Abstract implementation of a cross-platform console application built using wolf curses library.
     /// </summary>
-    public sealed class ExampleApp : EngineApp
+    public sealed class GameEngineApp : EngineApp
     {
+        /// <summary>
+        ///     Controls child objects on the canvas in a managed way that allows for easy adding and removing of GUI controls.
+        /// </summary>
+        private static ScreenControlManager _controlManager;
+
         /// <summary>
         ///     Provides stub implementation of a module that ticks along with the simulation, allows logic to be ticked all the
         ///     time and to manipulate windows and forms without being apart of current view.
@@ -23,7 +30,7 @@ namespace Assets.Game
         ///     Singleton instance for the entire game simulation, does not block the calling thread though only listens for
         ///     commands.
         /// </summary>
-        public static ExampleApp Instance { get; private set; }
+        public static GameEngineApp Instance { get; private set; }
 
         /// <summary>
         ///     Determines what windows the simulation will be capable of using and creating using the window managers factory.
@@ -42,15 +49,33 @@ namespace Assets.Game
         }
 
         /// <summary>
+        ///     Controls child objects on the canvas in a managed way that allows for easy adding and removing of GUI controls.
+        /// </summary>
+        public ScreenControlManager ControlManager
+        {
+            get { return _controlManager; }
+            private set { _controlManager = value; }
+        }
+
+        /// <summary>
         ///     Creates new instance of simulation. Complains if instance already exists.
         /// </summary>
-        public static void Create()
+        /// <param name="guiCanvas">
+        ///     Reference to game object which is the canvas from the parent which hosted the creation of
+        ///     engine app.
+        /// </param>
+        public static void Create(Canvas guiCanvas)
         {
             if (Instance != null)
                 throw new InvalidOperationException(
                     "Unable to create new instance of simulation since it already exists!");
 
-            Instance = new ExampleApp();
+            Instance = new GameEngineApp();
+
+            // Deals with writing text to screen and adding and removing controls like health bars and buttons.
+            _controlManager = new ScreenControlManager(guiCanvas);
+
+            // Other startup initializations that will be project specific.
             Instance.OnPostCreate();
         }
 

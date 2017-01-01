@@ -48,7 +48,7 @@ namespace Assets.Game
                 return;
 
             // Pick a random number between 1 and 1000 every tick.
-            _randomData = ExampleApp.Instance.Random.Next(1, 1000);
+            _randomData = GameEngineApp.Instance.Random.Next(1, 1000);
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace Assets.ProjectEntities.Core
         private float[] controlKeysStrength;
 
         [SerializeField]
-        private Unit controlledObject;
+        private GameObject controlledObject;
 
         [SerializeField]
         private Faction faction;
@@ -56,11 +56,6 @@ namespace Assets.ProjectEntities.Core
             controlKeysStrength = new float[controlKeyCount];
         }
 
-        public new IntellectType Type
-        {
-            get { return _type; }
-        }
-
         public bool AllowTakeItems
         {
             get { return allowTakeItems; }
@@ -68,18 +63,13 @@ namespace Assets.ProjectEntities.Core
         }
 
         [Browsable(false)]
-        public Unit ControlledObject
+        public GameObject ControlledObject
         {
             get { return controlledObject; }
             set
             {
                 var oldObject = controlledObject;
-
-                if (controlledObject != null)
-                    UnsubscribeToDeletionEvent(controlledObject);
                 controlledObject = value;
-                if (controlledObject != null)
-                    SubscribeToDeletionEvent(controlledObject);
                 ResetControlKeys();
 
                 OnControlledObjectChange(oldObject);
@@ -103,14 +93,8 @@ namespace Assets.ProjectEntities.Core
             return GetControlKeyStrength(key) != 0.0f;
         }
 
-        protected virtual void OnControlledObjectChange(Unit oldObject)
+        protected virtual void OnControlledObjectChange(GameObject oldObject)
         {
-        }
-
-        protected override void OnDestroy()
-        {
-            ControlledObject = null;
-            base.OnDestroy();
         }
 
         protected void ControlKeyPress(GameControlKeys controlKey, float strength)
@@ -123,8 +107,8 @@ namespace Assets.ProjectEntities.Core
 
             controlKeysStrength[(int)controlKey] = strength;
 
-            if (controlledObject != null)
-                controlledObject.DoIntellectCommand(new Command(controlKey, true));
+            //if (controlledObject != null)
+            //    controlledObject.DoIntellectCommand(new Command(controlKey, true));
         }
 
         protected void ControlKeyRelease(GameControlKeys controlKey)
@@ -134,17 +118,8 @@ namespace Assets.ProjectEntities.Core
 
             controlKeysStrength[(int)controlKey] = 0;
 
-            if (controlledObject != null)
-                controlledObject.DoIntellectCommand(new Command(controlKey, false));
-        }
-
-        /// <summary>Overridden from <see cref="Entity.OnDeleteSubscribedToDeletionEvent(Entity)" /></summary>
-        protected override void OnDeleteSubscribedToDeletionEvent(MonoBehaviour entity)
-        {
-            base.OnDeleteSubscribedToDeletionEvent(entity);
-
-            if (controlledObject == entity)
-                ControlledObject = null;
+            //if (controlledObject != null)
+            //    controlledObject.DoIntellectCommand(new Command(controlKey, false));
         }
 
         private void ResetControlKeys()
