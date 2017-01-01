@@ -118,6 +118,6 @@ namespace Assets.Scripts.Engine.Window.Control
             ///     The left.
             /// </summary>
             Left
-        };
+        }
     }
 }

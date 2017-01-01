@@ -12,7 +12,7 @@ namespace Assets.Scripts.Example.Prompt
     /// <summary>
     ///     Shows a piece of information to the user, pressing any key will close the form.
     /// </summary>
-    [ParentWindow(typeof (ExampleWindow))]
+    [ParentWindow(typeof(ExampleWindow))]
     public sealed class DialogPrompt : InputForm<ExampleWindowInfo>
     {
         /// <summary>

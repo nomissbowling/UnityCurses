@@ -54,7 +54,6 @@ namespace Assets.Scripts.Engine.Utility
 
                 // Copy this line of text, breaking into smaller lines as needed
                 if (eol > pos)
-                {
                     do
                     {
                         var len = eol - pos;
@@ -65,10 +64,9 @@ namespace Assets.Scripts.Engine.Utility
 
                         // Trim whitespace following break
                         pos += len;
-                        while (pos < eol && char.IsWhiteSpace(text[pos]))
+                        while ((pos < eol) && char.IsWhiteSpace(text[pos]))
                             pos++;
                     } while (eol > pos);
-                }
                 else sb.Append(Environment.NewLine); // Empty line
             }
 
@@ -87,7 +85,7 @@ namespace Assets.Scripts.Engine.Utility
         {
             // Find last whitespace in line
             var i = max;
-            while (i >= 0 && !char.IsWhiteSpace(text[pos + i]))
+            while ((i >= 0) && !char.IsWhiteSpace(text[pos + i]))
                 i--;
 
             // If no whitespace found, break at maximum length
@@ -95,7 +93,7 @@ namespace Assets.Scripts.Engine.Utility
                 return max;
 
             // Find start of whitespace
-            while (i >= 0 && char.IsWhiteSpace(text[pos + i]))
+            while ((i >= 0) && char.IsWhiteSpace(text[pos + i]))
                 i--;
 
             // Return length of text before whitespace

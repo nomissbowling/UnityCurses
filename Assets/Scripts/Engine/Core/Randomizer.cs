@@ -11,14 +11,14 @@ namespace Assets.Scripts.Engine.Core
     public sealed class Randomizer : Module.Module
     {
         /// <summary>
-        ///     Game logic objects.
-        /// </summary>
-        private Random _random;
-
-        /// <summary>
         ///     Number used to seed the random number generator.
         /// </summary>
         private readonly int _randomSeed;
+
+        /// <summary>
+        ///     Game logic objects.
+        /// </summary>
+        private Random _random;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Randomizer" /> class.

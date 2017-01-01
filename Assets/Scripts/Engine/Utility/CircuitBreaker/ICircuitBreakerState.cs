@@ -1,7 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 06/18/2016@1:06 AM
 
-namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
+namespace Assets.Scripts.Engine.Utility.CircuitBreaker
 {
     /// <summary>
     ///     Contains all of the methods required for a circuit breaker state, this should be implemented into a class and used

@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     public class EnumerableCollection<T> : ICollection<T>
     {

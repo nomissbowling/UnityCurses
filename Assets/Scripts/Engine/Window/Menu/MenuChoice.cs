@@ -21,10 +21,8 @@ namespace Assets.Scripts.Engine.Window.Menu
         public MenuChoice(T command, Action action, string description)
         {
             // Complain the generics implemented is not of an enum type.
-            if (!typeof (T).IsEnum)
-            {
+            if (!typeof(T).IsEnum)
                 throw new InvalidCastException("T must be an enumerated type!");
-            }
 
             Command = command;
             Action = action;

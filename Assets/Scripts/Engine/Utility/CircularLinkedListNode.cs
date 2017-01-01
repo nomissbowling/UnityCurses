@@ -3,7 +3,7 @@
 
 using System.Diagnostics;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     /// <summary>
     ///     Represents a node

@@ -108,13 +108,11 @@ namespace Assets.Scripts.Engine.Core
 
             // Keeps track of active Windows name and active Windows current state name for debugging purposes.
             if (_simUnit.WindowManager.FocusedWindow != null)
-            {
                 tui.Append(_simUnit.WindowManager.FocusedWindow.CurrentForm != null
                     ? string.Format("Window({0}): {1}({2}) - ", _simUnit.WindowManager.Count,
                         _simUnit.WindowManager.FocusedWindow, _simUnit.WindowManager.FocusedWindow.CurrentForm)
                     : string.Format("Window({0}): {1}() - ", _simUnit.WindowManager.Count,
                         _simUnit.WindowManager.FocusedWindow));
-            }
 
             // Allows the implementing simulation to control text before window is rendered out.
             tui.Append(_simUnit.OnPreRender());

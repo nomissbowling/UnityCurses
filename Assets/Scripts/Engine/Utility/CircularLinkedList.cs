@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     /// <summary>
     ///     Represents a circular doubly linked list.
@@ -17,17 +17,13 @@ namespace Assets.Scripts.ProjectCommon.Utility
     [DebuggerDisplay("Count = {Count}")]
     public sealed class CircularLinkedList<T> : ICollection<T>, IEnumerable<T>
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IEqualityComparer<T> comparer;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private readonly IEqualityComparer<T> comparer;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int count;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private int count;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CircularLinkedListNode<T> head;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private CircularLinkedListNode<T> head;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CircularLinkedListNode<T> tail;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private CircularLinkedListNode<T> tail;
 
         /// <summary>
         ///     Initializes a new instance of CircularLinkedList.
@@ -67,10 +63,8 @@ namespace Assets.Scripts.ProjectCommon.Utility
                 throw new ArgumentNullException("comparer");
             this.comparer = comparer;
             if (collection != null)
-            {
                 foreach (var item in collection)
                     AddLast(item);
-            }
         }
 
         /// <summary>
@@ -98,7 +92,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
         {
             get
             {
-                if (index >= count || index < 0)
+                if ((index >= count) || (index < 0))
                     throw new ArgumentOutOfRangeException("index");
                 var node = head;
                 for (var i = 0; i < index; i++)
@@ -147,14 +141,11 @@ namespace Assets.Scripts.ProjectCommon.Utility
         {
             var current = head;
             if (current != null)
-            {
                 do
                 {
                     yield return current.Value;
                     current = current.Next;
-                }
-                while (current != head);
-            }
+                } while (current != head);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -176,7 +167,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
         {
             if (array == null)
                 throw new ArgumentNullException("array");
-            if (arrayIndex < 0 || arrayIndex > array.Length)
+            if ((arrayIndex < 0) || (arrayIndex > array.Length))
                 throw new ArgumentOutOfRangeException("arrayIndex");
 
             var node = head;
@@ -184,8 +175,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
             {
                 array[arrayIndex++] = node.Value;
                 node = node.Next;
-            }
-            while (node != head);
+            } while (node != head);
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -371,8 +361,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
             do
             {
                 removed = Remove(item);
-            }
-            while (removed);
+            } while (removed);
         }
 
         /// <summary>
@@ -396,9 +385,9 @@ namespace Assets.Scripts.ProjectCommon.Utility
         private CircularLinkedListNode<T> FindNode(CircularLinkedListNode<T> linkedListNode, T valueToCompare)
         {
             CircularLinkedListNode<T> result = null;
-            if (linkedListNode != null && comparer.Equals(linkedListNode.Value, valueToCompare))
+            if ((linkedListNode != null) && comparer.Equals(linkedListNode.Value, valueToCompare))
                 result = linkedListNode;
-            else if (linkedListNode != null && (result == null && linkedListNode.Next != head))
+            else if ((linkedListNode != null) && (result == null) && (linkedListNode.Next != head))
                 result = FindNode(linkedListNode.Next, valueToCompare);
             return result;
         }
@@ -411,14 +400,11 @@ namespace Assets.Scripts.ProjectCommon.Utility
         {
             var current = tail;
             if (current != null)
-            {
                 do
                 {
                     yield return current.Value;
                     current = current.Previous;
-                }
-                while (current != tail);
-            }
+                } while (current != tail);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Example.CustomInput
     /// <summary>
     ///     Asks for user name and then accepts the input from the input buffer.
     /// </summary>
-    [ParentWindow(typeof (ExampleWindow))]
+    [ParentWindow(typeof(ExampleWindow))]
     public sealed class DialogCustomInput : Form<ExampleWindowInfo>
     {
         /// <summary>
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Example.CustomInput
 
             // Copy name into user name and show form.
             UserData.PlayerName = input;
-            SetForm(typeof (ShowName));
+            SetForm(typeof(ShowName));
         }
     }
 }

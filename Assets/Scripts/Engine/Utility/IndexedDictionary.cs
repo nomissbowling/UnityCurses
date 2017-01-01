@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     /// <summary>
     ///     An indexable Dictionary
@@ -49,10 +49,8 @@ namespace Assets.Scripts.ProjectCommon.Utility
         /// </summary>
         private static void ValidateKeyType()
         {
-            if (typeof (TKey) == typeof (int))
-            {
+            if (typeof(TKey) == typeof(int))
                 throw new IndexedDictionaryException("Key of type int is not supported.");
-            }
         }
 
         #endregion
@@ -101,14 +99,12 @@ namespace Assets.Scripts.ProjectCommon.Utility
             // Raise before events:
             var bubble = true;
             if (BeforeAdd != null)
-            {
                 foreach (DictionaryBeforeDelegate<TKey, TValue> function in BeforeAdd.GetInvocationList())
                 {
                     e.Bubble = true;
                     function.Invoke(this, e);
                     bubble = bubble && e.Bubble;
                 }
-            }
             if (!bubble) return;
 
             // Add item:
@@ -125,15 +121,13 @@ namespace Assets.Scripts.ProjectCommon.Utility
 
             // Raise after events:
             if (AfterAdd != null)
-            {
                 AfterAdd.Invoke(this, e);
-            }
         }
 
         public virtual void RemoveAt(int index)
         {
             if (m_bThrowErrorOnInvalidRemove)
-                if (index < 0 || index >= m_col.Count)
+                if ((index < 0) || (index >= m_col.Count))
                     throw new IndexedDictionaryException("Cannot remove invalid Index");
             var key = m_col[index];
             Remove(TransformKey(key));
@@ -154,7 +148,6 @@ namespace Assets.Scripts.ProjectCommon.Utility
             // Raise before events:
             var bubble = true;
             if (BeforeRemove != null)
-            {
                 foreach (var @delegate in BeforeRemove.GetInvocationList())
                 {
                     var function = (DictionaryBeforeDelegate<TKey, TValue>) @delegate;
@@ -162,7 +155,6 @@ namespace Assets.Scripts.ProjectCommon.Utility
                     function.Invoke(this, e);
                     bubble = bubble && e.Bubble;
                 }
-            }
 
             if (!bubble)
                 return;
@@ -201,14 +193,12 @@ namespace Assets.Scripts.ProjectCommon.Utility
             // Raise before events:
             var bubble = true;
             if (BeforeClear != null)
-            {
                 foreach (DictionaryBeforeClearDelegate function in BeforeClear.GetInvocationList())
                 {
                     e.Bubble = true;
                     function.Invoke(this, e);
                     bubble = bubble && e.Bubble;
                 }
-            }
             if (!bubble) return;
 
             // Clear items item:
@@ -217,9 +207,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
 
             // Raise after events:
             if (AfterClear != null)
-            {
                 AfterClear.Invoke(this, new EventArgs());
-            }
         }
 
         /// <summary>
@@ -242,9 +230,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
             set
             {
                 if (!base.ContainsKey(TransformKey(key)))
-                {
                     throw new IndexedDictionaryException("Values cannot be added directly. Use Add() or AddAt() method.");
-                }
                 base[TransformKey(key)] = value;
             }
         }
@@ -276,7 +262,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
     }
 
     public delegate void DictionaryBeforeDelegate<TKey, TValue>(object sender, DictionaryBeforeEventArgs<TKey, TValue> e
-        );
+    );
 
     public delegate void DictionaryAfterDelegate<TKey, TValue>(object sender, DictionaryEventArgs<TKey, TValue> e);
 
@@ -286,25 +272,15 @@ namespace Assets.Scripts.ProjectCommon.Utility
 
     public class DictionaryEventArgs<TKey, TValue> : EventArgs
     {
-        private TKey _key;
-
-        private TValue _value;
-
         public DictionaryEventArgs(TKey key, TValue value)
         {
-            _value = value;
-            _key = key;
+            Value = value;
+            Key = key;
         }
 
-        public TValue Value
-        {
-            get { return _value; }
-        }
+        public TValue Value { get; private set; }
 
-        public TKey Key
-        {
-            get { return _key; }
-        }
+        public TKey Key { get; private set; }
     }
 
     public class DictionaryBeforeEventArgs<TKey, TValue> : DictionaryEventArgs<TKey, TValue>

@@ -43,27 +43,19 @@ namespace Assets.Scripts.Engine.Window.Control
 
             // Fill headers
             for (var colIndex = 0; colIndex < arrValues.GetLength(1); colIndex++)
-            {
                 arrValues[0, colIndex] = columnHeaders[colIndex];
-            }
 
             // Fill table rows
             for (var rowIndex = 1; rowIndex < arrValues.GetLength(0); rowIndex++)
-            {
                 for (var colIndex = 0; colIndex < arrValues.GetLength(1); colIndex++)
                 {
                     var value = valueSelectors[colIndex].Invoke(values[rowIndex - 1]);
 
                     if (value == null)
-                    {
                         arrValues[rowIndex, colIndex] = "null";
-                    }
                     else
-                    {
                         arrValues[rowIndex, colIndex] = value.ToString();
-                    }
                 }
-            }
 
             return ToStringTable(arrValues);
         }
@@ -110,18 +102,14 @@ namespace Assets.Scripts.Engine.Window.Control
         {
             var maxColumnsWidth = new int[arrValues.GetLength(1)];
             for (var colIndex = 0; colIndex < arrValues.GetLength(1); colIndex++)
-            {
                 for (var rowIndex = 0; rowIndex < arrValues.GetLength(0); rowIndex++)
                 {
                     var newLength = arrValues[rowIndex, colIndex].Length;
                     var oldLength = maxColumnsWidth[colIndex];
 
                     if (newLength > oldLength)
-                    {
                         maxColumnsWidth[colIndex] = newLength;
-                    }
                 }
-            }
 
             return maxColumnsWidth;
         }
@@ -154,7 +142,7 @@ namespace Assets.Scripts.Engine.Window.Control
         private static PropertyInfo GetProperty<T>(Expression<Func<T, object>> expresstion)
         {
             var unaryExpression = expresstion.Body as UnaryExpression;
-            if (unaryExpression != null && unaryExpression.Operand is MemberExpression)
+            if ((unaryExpression != null) && unaryExpression.Operand is MemberExpression)
             {
                 var memberExpression = ((UnaryExpression) expresstion.Body).Operand as MemberExpression;
                 if (memberExpression != null)

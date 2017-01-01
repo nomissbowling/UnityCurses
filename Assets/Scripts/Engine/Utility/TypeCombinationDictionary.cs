@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     public class TypeCombinationDictionary<T>
     {
@@ -16,7 +16,8 @@ namespace Assets.Scripts.ProjectCommon.Utility
             return
                 _registrations.Where(
                     r =>
-                        r.SourceType.IsAssignableFrom(sourceType) && r.DestinationType.IsAssignableFrom(destinationType));
+                        r.SourceType.IsAssignableFrom(sourceType) &&
+                        r.DestinationType.IsAssignableFrom(destinationType));
         }
 
         public TypeCombinationEntry GetSupportedRegistration(Type sourceType, Type destinationType)
@@ -48,8 +49,8 @@ namespace Assets.Scripts.ProjectCommon.Utility
 
         public class TypeCombinationEntry
         {
-            private readonly Type _sourceType;
             private readonly Type _destinationType;
+            private readonly Type _sourceType;
             private readonly T _value;
 
             public TypeCombinationEntry(Type sourceType, Type destinationType, T value)

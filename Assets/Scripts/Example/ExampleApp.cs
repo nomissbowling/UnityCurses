@@ -34,7 +34,7 @@ namespace Assets.Scripts.Example
             {
                 var windowList = new List<Type>
                 {
-                    typeof (ExampleWindow)
+                    typeof(ExampleWindow)
                 };
 
                 return windowList;
@@ -133,7 +133,7 @@ namespace Assets.Scripts.Example
             base.Restart();
 
             // Attach example window after the first tick.
-            WindowManager.Add(typeof (ExampleWindow));
+            WindowManager.Add(typeof(ExampleWindow));
         }
     }
 }

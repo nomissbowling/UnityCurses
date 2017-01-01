@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Text;
+using Assets.Scripts.Engine.Utility;
 using UnityEngine;
 
 namespace Assets.Scripts.Engine.FileSystem
@@ -308,7 +310,18 @@ namespace Assets.Scripts.Engine.FileSystem
         /// </example>
         public static TextBlock Parse(string str, out string errorString)
         {
-            return E.Parse(str, out errorString);
+            errorString = string.Empty;
+
+            try
+            {
+                return JSONExtensions.Deserialize<TextBlock>(str);
+            }
+            catch (Exception err)
+            {
+                errorString = err.Message;
+            }
+
+            return null;
         }
 
         /// <summary>

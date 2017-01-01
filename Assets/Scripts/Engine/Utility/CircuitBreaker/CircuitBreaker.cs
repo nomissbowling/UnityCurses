@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
+namespace Assets.Scripts.Engine.Utility.CircuitBreaker
 {
     /// <summary>
     ///     Implementation of circuit breaker design pattern interface using ticks as form of time measurement so it flows with
@@ -17,16 +17,17 @@ namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
         /// </summary>
         protected readonly Action _circuitAction;
 
+        private readonly int _circuitThreshold;
+        private readonly int _circuitTimeout;
+
         /// <summary>
         ///     Defines the current operational state the circuit breaker is in.
         /// </summary>
         private CircuitBreakerState _state;
 
-        private readonly int _circuitThreshold;
-        private readonly int _circuitTimeout;
-
         /// <summary>
-        ///     Initializes a new instance of the <see cref="T:Assets.Scripts.ProjectCommon.Utility.CircuitBreaker.CircuitBreaker" /> class.
+        ///     Initializes a new instance of the <see cref="T:Assets.Scripts.Engine.Utility.CircuitBreaker.CircuitBreaker" />
+        ///     class.
         /// </summary>
         /// <param name="threshold">Total number of failures that will trip the circuit into an open state.</param>
         /// <param name="timeout">Number of ticks that will be counted in open circuits until attempting requests again.</param>

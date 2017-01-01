@@ -1,7 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 06/18/2016@1:06 AM
 
-namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
+namespace Assets.Scripts.Engine.Utility.CircuitBreaker
 {
     /// <summary>
     ///     Contains the functions and properties required to rig up a circuit breaker design pattern.

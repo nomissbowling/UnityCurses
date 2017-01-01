@@ -41,6 +41,12 @@ namespace Assets.Scripts.Engine.Window
         private readonly EngineApp _simUnit;
 
         /// <summary>
+        ///     Intended to be overridden in abstract class by generics to provide method to return object that contains all the
+        ///     data for parent game Windows.
+        /// </summary>
+        private readonly TData _userData;
+
+        /// <summary>
         ///     Reference for mappings to go from enumeration value to action.
         /// </summary>
         private Dictionary<TCommands, Action> _menuActions;
@@ -70,12 +76,6 @@ namespace Assets.Scripts.Engine.Window
         ///     Holds the text user interface data that we are going to eventually render out to the user.
         /// </summary>
         private StringBuilder _menuPrompt;
-
-        /// <summary>
-        ///     Intended to be overridden in abstract class by generics to provide method to return object that contains all the
-        ///     data for parent game Windows.
-        /// </summary>
-        private readonly TData _userData;
 
         /// <summary>
         ///     Determines what is asked at the bottom of a windows menu system. By default this is "What is your choice?" and can

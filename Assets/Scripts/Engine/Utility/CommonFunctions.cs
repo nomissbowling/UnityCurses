@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     public static class CommonFunctions
     {
@@ -31,7 +31,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
 
             else
             {
-                percent = decimal.Divide(value, total) * 100;
+                percent = decimal.Divide(value, total)*100;
 
                 if (places > 0)
                     strplaces = "." + strplaces;
@@ -92,7 +92,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
         /// </summary>
         public static bool InRange<T>(this T value, T from, T to) where T : IComparable<T>
         {
-            return value.CompareTo(from) >= 1 && value.CompareTo(to) <= -1;
+            return (value.CompareTo(from) >= 1) && (value.CompareTo(to) <= -1);
         }
 
         /// <summary>
@@ -164,9 +164,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
             // into hex and appending it to a StringBuilder
             var sb = new StringBuilder();
             for (var i = 0; i < result.Length; i++)
-            {
                 sb.Append(result[i].ToString("X2"));
-            }
 
             // And return it
             return sb.ToString();

@@ -28,6 +28,7 @@ namespace Assets.Scripts.Engine.FileSystem
                         var textBlock = TextBlock.Parse(streamReader.ReadToEnd(), out errorString1);
                         if (textBlock == null)
                             errorString = string.Format("Parsing text block failed \"{0}\" ({1}).", path, errorString1);
+
                         return textBlock;
                     }
                 }

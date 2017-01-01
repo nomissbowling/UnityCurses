@@ -24,9 +24,9 @@ namespace Assets.Scripts.Engine.Utility
             where TAttribute : Attribute
         {
             return from a in AppDomain.CurrentDomain.GetAssemblies()
-                   from t in a.GetTypes()
-                   where t.IsDefined(typeof(TAttribute), inherit)
-                   select t;
+                from t in a.GetTypes()
+                where t.IsDefined(typeof(TAttribute), inherit)
+                select t;
         }
 
         /// <summary>Determine if a type implements a specific generic interface type.</summary>
@@ -46,8 +46,8 @@ namespace Assets.Scripts.Engine.Utility
         public static IEnumerable<T> GetAttributes<T>(this ICustomAttributeProvider source, bool inherit)
             where T : Attribute
         {
-            var attrs = source.GetCustomAttributes(typeof (T), inherit);
-            return (attrs != null) ? (T[]) attrs : Enumerable.Empty<T>();
+            var attrs = source.GetCustomAttributes(typeof(T), inherit);
+            return attrs != null ? (T[]) attrs : Enumerable.Empty<T>();
         }
 
         /// <summary>Extension method for enum's that helps with getting custom attributes off of enum values</summary>
@@ -61,9 +61,7 @@ namespace Assets.Scripts.Engine.Utility
             var result = default(T);
 
             if (attribs.Length > 0)
-            {
                 result = attribs[0] as T;
-            }
 
             return result;
         }
@@ -79,7 +77,7 @@ namespace Assets.Scripts.Engine.Utility
             var firstOrDefault = memberInfo.FirstOrDefault();
             if (firstOrDefault != null)
             {
-                var attributes = firstOrDefault.GetCustomAttributes(typeof (T), false);
+                var attributes = firstOrDefault.GetCustomAttributes(typeof(T), false);
                 return (T) attributes.FirstOrDefault();
             }
 

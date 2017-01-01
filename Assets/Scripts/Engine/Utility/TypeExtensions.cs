@@ -5,7 +5,7 @@ using System;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     /// <summary>
     ///     Helper class that deals with activating classes without using the actual activator class because that requires and
@@ -23,7 +23,7 @@ namespace Assets.Scripts.ProjectCommon.Utility
         /// <returns>The <see cref="bool" />.</returns>
         private static bool HasDefaultConstructor(this Type t)
         {
-            return t.IsValueType || t.GetConstructor(Type.EmptyTypes) != null;
+            return t.IsValueType || (t.GetConstructor(Type.EmptyTypes) != null);
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace Assets.Scripts.ProjectCommon.Utility
             /// </summary>
             private static Func<T> Creator()
             {
-                var t = typeof (T);
-                if (t == typeof (string))
+                var t = typeof(T);
+                if (t == typeof(string))
                     return Expression.Lambda<Func<T>>(Expression.Constant(string.Empty)).Compile();
 
                 if (t.HasDefaultConstructor())

@@ -128,15 +128,12 @@ namespace Assets.Scripts.ProjectCommon.Binds
     {
         public static string keyconfig = "user:Configs/Keybinds.config";
 
-        [Config("GameControls", "mouseSensitivity")]
-        public static Vector2 mouseSensitivity = new Vector2(1, 1);
+        [Config("GameControls", "mouseSensitivity")] public static Vector2 mouseSensitivity = new Vector2(1, 1);
 
-        [Config("GameControls", "joystickAxesSensitivity")]
-        public static Vector2 joystickAxesSensitivity =
+        [Config("GameControls", "joystickAxesSensitivity")] public static Vector2 joystickAxesSensitivity =
             new Vector2(1, 1);
 
-        [Config("GameControls", "BaseSensitivity")]
-        public static Vector2 baseSensitivity = new Vector2(2, 2);
+        [Config("GameControls", "BaseSensitivity")] public static Vector2 baseSensitivity = new Vector2(2, 2);
 
         private Dictionary<GameControlKeys, GameControlItem> itemsControlKeysDictionary;
 

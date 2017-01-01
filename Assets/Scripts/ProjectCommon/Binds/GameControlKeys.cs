@@ -10,21 +10,13 @@ namespace Assets.Scripts.ProjectCommon.Binds
         ///////////////////////////////////////////
         //Moving
 
-        [DefaultKeyboardMouseValue(KeyCode.W)]
-        [DefaultKeyboardMouseValue(KeyCode.UpArrow)]
-        Forward,
+        [DefaultKeyboardMouseValue(KeyCode.W)] [DefaultKeyboardMouseValue(KeyCode.UpArrow)] Forward,
 
-        [DefaultKeyboardMouseValue(KeyCode.S)]
-        [DefaultKeyboardMouseValue(KeyCode.DownArrow)]
-        Backward,
+        [DefaultKeyboardMouseValue(KeyCode.S)] [DefaultKeyboardMouseValue(KeyCode.DownArrow)] Backward,
 
-        [DefaultKeyboardMouseValue(KeyCode.A)]
-        [DefaultKeyboardMouseValue(KeyCode.LeftArrow)]
-        Left,
+        [DefaultKeyboardMouseValue(KeyCode.A)] [DefaultKeyboardMouseValue(KeyCode.LeftArrow)] Left,
 
-        [DefaultKeyboardMouseValue(KeyCode.D)]
-        [DefaultKeyboardMouseValue(KeyCode.RightArrow)]
-        Right,
+        [DefaultKeyboardMouseValue(KeyCode.D)] [DefaultKeyboardMouseValue(KeyCode.RightArrow)] Right,
 
         ///////////////////////////////////////////
         //Looking
@@ -44,49 +36,35 @@ namespace Assets.Scripts.ProjectCommon.Binds
         ///////////////////////////////////////////
         //Actions
 
-        [DefaultKeyboardMouseValue(KeyCode.Mouse0)]
-        Fire1,
+        [DefaultKeyboardMouseValue(KeyCode.Mouse0)] Fire1,
 
-        [DefaultKeyboardMouseValue(KeyCode.Mouse1)]
-        Fire2,
+        [DefaultKeyboardMouseValue(KeyCode.Mouse1)] Fire2,
 
-        [DefaultKeyboardMouseValue(KeyCode.R)]
-        Reload,
+        [DefaultKeyboardMouseValue(KeyCode.R)] Reload,
 
-        [DefaultKeyboardMouseValue(KeyCode.E)]
-        Use,
+        [DefaultKeyboardMouseValue(KeyCode.E)] Use,
 
-        [DefaultKeyboardMouseValue(KeyCode.LeftBracket)]
-        PreviousWeapon,
+        [DefaultKeyboardMouseValue(KeyCode.LeftBracket)] PreviousWeapon,
 
-        [DefaultKeyboardMouseValue(KeyCode.RightBracket)]
-        NextWeapon,
+        [DefaultKeyboardMouseValue(KeyCode.RightBracket)] NextWeapon,
 
-        [DefaultKeyboardMouseValue(KeyCode.H)]
-        Holster,
+        [DefaultKeyboardMouseValue(KeyCode.H)] Holster,
 
-        [DefaultKeyboardMouseValue(KeyCode.Alpha0)]
-        Weapon0,
+        [DefaultKeyboardMouseValue(KeyCode.Alpha0)] Weapon0,
 
-        [DefaultKeyboardMouseValue(KeyCode.Alpha1)]
-        Weapon1,
+        [DefaultKeyboardMouseValue(KeyCode.Alpha1)] Weapon1,
 
-        [DefaultKeyboardMouseValue(KeyCode.Alpha2)]
-        Weapon2,
+        [DefaultKeyboardMouseValue(KeyCode.Alpha2)] Weapon2,
 
-        [DefaultKeyboardMouseValue(KeyCode.Alpha3)]
-        Weapon3,
+        [DefaultKeyboardMouseValue(KeyCode.Alpha3)] Weapon3,
 
-        [DefaultKeyboardMouseValue(KeyCode.Alpha4)]
-        Weapon4,
+        [DefaultKeyboardMouseValue(KeyCode.Alpha4)] Weapon4,
 
-        [DefaultKeyboardMouseValue(KeyCode.Alpha5)]
-        Weapon5,
+        [DefaultKeyboardMouseValue(KeyCode.Alpha5)] Weapon5,
 
         ///////////////////////////////////////////
         //Dialogs
 
-        [DefaultKeyboardMouseValue(KeyCode.Tab)]
-        PersonalDigitalAssistant,
+        [DefaultKeyboardMouseValue(KeyCode.Tab)] PersonalDigitalAssistant
     }
 }

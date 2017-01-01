@@ -8,7 +8,7 @@ using Assets.Scripts.Engine.Window.Form.Input;
 
 namespace Assets.Scripts.Example.CustomInput
 {
-    [ParentWindow(typeof (ExampleWindow))]
+    [ParentWindow(typeof(ExampleWindow))]
     public sealed class ShowName : InputForm<ExampleWindowInfo>
     {
         /// <summary>

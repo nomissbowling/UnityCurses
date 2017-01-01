@@ -16,7 +16,10 @@ namespace Assets.Scripts.Engine.Window.Form
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public sealed class ParentWindowAttribute : Attribute
     {
-        /// <summary>Initializes a new instance of the <see cref="T:Assets.Scripts.Engine.Window.Form.ParentWindowAttribute" /> class.</summary>
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="T:Assets.Scripts.Engine.Window.Form.ParentWindowAttribute" />
+        ///     class.
+        /// </summary>
         /// <param name="parentWindow">The parent Window.</param>
         public ParentWindowAttribute(Type parentWindow)
         {

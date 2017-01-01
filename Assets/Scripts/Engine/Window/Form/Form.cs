@@ -10,11 +10,11 @@ namespace Assets.Scripts.Engine.Window.Form
     /// <summary>Forms are attached to windows.</summary>
     /// <typeparam name="TData">UserData type.</typeparam>
     public abstract class Form<TData> :
-        Comparer<Form<TData>>,
-        IComparable<Form<TData>>,
-        IEquatable<Form<TData>>,
-        IEqualityComparer<Form<TData>>,
-        IForm
+            Comparer<Form<TData>>,
+            IComparable<Form<TData>>,
+            IEquatable<Form<TData>>,
+            IEqualityComparer<Form<TData>>,
+            IForm
         where TData : WindowData, new()
     {
         /// <summary>
@@ -90,19 +90,13 @@ namespace Assets.Scripts.Engine.Window.Form
         {
             // Reference equality check
             if (this == other)
-            {
                 return true;
-            }
 
             if (other == null)
-            {
                 return false;
-            }
 
             if (other.GetType() != GetType())
-            {
                 return false;
-            }
 
             return UserData.Equals(other.UserData) &&
                    ParentWindow.Equals(other.ParentWindow);
@@ -276,8 +270,8 @@ namespace Assets.Scripts.Engine.Window.Form
         public override int GetHashCode()
         {
             var hash = 23;
-            hash = (hash*31) + UserData.GetHashCode();
-            hash = (hash*31) + ParentWindow.GetHashCode();
+            hash = hash*31 + UserData.GetHashCode();
+            hash = hash*31 + ParentWindow.GetHashCode();
             return hash;
         }
     }

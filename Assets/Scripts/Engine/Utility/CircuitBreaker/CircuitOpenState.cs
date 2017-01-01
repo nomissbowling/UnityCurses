@@ -1,7 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 06/18/2016@1:06 AM
 
-namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
+namespace Assets.Scripts.Engine.Utility.CircuitBreaker
 {
     /// <summary>
     ///     Open circuits will block requests each tick, but count the tick and work towards a timeout that will try to
@@ -42,14 +42,9 @@ namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
 
             // Count the tick timer upwards if it is below the maximum timeout value we got from circuit.
             if (tickTimer < tickTimeoutMax)
-            {
                 tickTimer++;
-            }
             else
-            {
-                // If the tick timer grows larger than or equal to timeout maximum we will move the circuit into half-open state.
                 _circuitBreaker.MoveToHalfOpenState();
-            }
         }
 
         /// <summary>

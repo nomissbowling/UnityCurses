@@ -81,15 +81,15 @@ namespace Assets.Scripts.Engine.Core
                     return false;
 
                 // Skip if Windows doesn't want input and has no state.
-                if (!FocusedWindow.AcceptsInput && FocusedWindow.CurrentForm == null)
+                if (!FocusedWindow.AcceptsInput && (FocusedWindow.CurrentForm == null))
                     return false;
 
                 // Skip if Windows state doesn't want input and current state is not null.
-                if (FocusedWindow.CurrentForm != null && !FocusedWindow.AcceptsInput)
+                if ((FocusedWindow.CurrentForm != null) && !FocusedWindow.AcceptsInput)
                     return false;
 
                 // Skip if state is not null and, game Windows accepts input, but current state doesn't want input.
-                return FocusedWindow.CurrentForm == null ||
+                return (FocusedWindow.CurrentForm == null) ||
                        !FocusedWindow.AcceptsInput ||
                        FocusedWindow.CurrentForm.InputFillsBuffer;
             }
@@ -132,7 +132,7 @@ namespace Assets.Scripts.Engine.Core
         {
             // If the active Windows is not null and flag is set to remove then do that!
             var updatedModes = false;
-            if (FocusedWindow != null && FocusedWindow.ShouldRemoveMode)
+            if ((FocusedWindow != null) && FocusedWindow.ShouldRemoveMode)
                 updatedModes = CleanWindows();
 
             // When list of modes is updated then we need to activate now active Windows since they shifted.
@@ -199,18 +199,10 @@ namespace Assets.Scripts.Engine.Core
             {
                 var tempWindowList = new Dictionary<Type, IWindow>(windowList);
                 foreach (var loadedMode in tempWindowList)
-                {
                     if (loadedMode.Key == FocusedWindow.GetType())
-                    {
-                        // Only call post create on the newly added active game Windows.
                         loadedMode.Value.OnWindowPostCreate();
-                    }
                     else
-                    {
-                        // All other game modes just get notification via method a Windows was added on top of them.
                         loadedMode.Value.OnWindowAdded();
-                    }
-                }
 
                 tempWindowList.Clear();
             }

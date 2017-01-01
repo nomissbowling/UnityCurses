@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     public class InverseComparer<T> : IComparer<T>
     {

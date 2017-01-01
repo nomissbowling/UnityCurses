@@ -1,7 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 06/18/2016@1:06 AM
 
-namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
+namespace Assets.Scripts.Engine.Utility.CircuitBreaker
 {
     /// <summary>
     ///     Closed circuit will allow requests to flow every tick if machine logic requires it.
@@ -40,10 +40,7 @@ namespace Assets.Scripts.ProjectCommon.Utility.CircuitBreaker
 
             // Check if maximum amount of failures have been reached.
             if (_circuitBreaker.CircuitThresholdReached())
-            {
-                // Trips the circuit to open state which will block all requests until tick timeout is reached.
                 _circuitBreaker.MoveToOpenState();
-            }
         }
     }
 }

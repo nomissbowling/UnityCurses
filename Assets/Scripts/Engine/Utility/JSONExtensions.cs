@@ -8,7 +8,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Assets.Scripts.ProjectCommon.Utility
+namespace Assets.Scripts.Engine.Utility
 {
     /// <summary>
     ///     Helper class that assists with converting engine type data into strings, compressing them, returning the bytes, and
@@ -100,13 +100,15 @@ namespace Assets.Scripts.ProjectCommon.Utility
         {
             var bytes = Convert.FromBase64String(str);
             using (var msi = new MemoryStream(bytes))
-            using (var mso = new MemoryStream())
             {
-                using (var gs = new GZipStream(msi, CompressionMode.Decompress))
+                using (var mso = new MemoryStream())
                 {
-                    CopyTo(gs, mso);
+                    using (var gs = new GZipStream(msi, CompressionMode.Decompress))
+                    {
+                        CopyTo(gs, mso);
+                    }
+                    return Encoding.UTF8.GetString(mso.ToArray());
                 }
-                return Encoding.UTF8.GetString(mso.ToArray());
             }
         }
 

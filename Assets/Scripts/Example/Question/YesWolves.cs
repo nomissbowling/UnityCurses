@@ -8,7 +8,7 @@ using Assets.Scripts.Engine.Window.Form.Input;
 
 namespace Assets.Scripts.Example.Question
 {
-    [ParentWindow(typeof (ExampleWindow))]
+    [ParentWindow(typeof(ExampleWindow))]
     public sealed class YesWolves : InputForm<ExampleWindowInfo>
     {
         /// <summary>

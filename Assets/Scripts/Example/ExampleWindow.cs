@@ -8,7 +8,6 @@ using Assets.Scripts.Engine.Window;
 using Assets.Scripts.Example.CustomInput;
 using Assets.Scripts.Example.Prompt;
 using Assets.Scripts.Example.Question;
-using Assets.Scripts.Example;
 
 namespace Assets.Scripts.Example
 {
@@ -53,17 +52,17 @@ namespace Assets.Scripts.Example
 
         private void CustomPrompt()
         {
-            SetForm(typeof (DialogCustomInput));
+            SetForm(typeof(DialogCustomInput));
         }
 
         private void YesNoPrompt()
         {
-            SetForm(typeof (QuestionDialog));
+            SetForm(typeof(QuestionDialog));
         }
 
         private void TextPrompt()
         {
-            SetForm(typeof (DialogPrompt));
+            SetForm(typeof(DialogPrompt));
         }
     }
 }

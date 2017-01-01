@@ -13,7 +13,7 @@ namespace Assets.Scripts.Example.Question
     /// <summary>
     ///     Asks the user a yes/no based question, they can only reply with those predetermined answers.
     /// </summary>
-    [ParentWindow(typeof (ExampleWindow))]
+    [ParentWindow(typeof(ExampleWindow))]
     public sealed class QuestionDialog : InputForm<ExampleWindowInfo>
     {
         /// <summary>
@@ -69,10 +69,10 @@ namespace Assets.Scripts.Example.Question
             {
                 case DialogResponse.Custom:
                 case DialogResponse.No:
-                    SetForm(typeof (NoWolves));
+                    SetForm(typeof(NoWolves));
                     break;
                 case DialogResponse.Yes:
-                    SetForm(typeof (YesWolves));
+                    SetForm(typeof(YesWolves));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("reponse", reponse, null);
