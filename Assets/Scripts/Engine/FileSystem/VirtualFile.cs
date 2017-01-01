@@ -43,15 +43,6 @@ namespace Assets.Scripts.Engine.FileSystem
                     Debug.LogFormat("Logging File Operations: VirtualFile.Open( \"{0}\" )", (object) path);
 
                 path = VirtualFileSystem.NormalizePath(path);
-                path = VirtualFileSystem.A(path, true);
-                bool local_2 = VirtualFileSystem.A(path);
-
-                if (local_2)
-                {
-                    byte[] local_5 = VirtualFileSystem.a(path);
-                    if (local_5 != null)
-                        return new MemoryVirtualFileStream(local_5);
-                }
 
                 if (VirtualFileSystem.X.Count != 0)
                 {

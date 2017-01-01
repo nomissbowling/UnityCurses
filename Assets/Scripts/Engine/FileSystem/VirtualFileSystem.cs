@@ -165,33 +165,5 @@ namespace Assets.Scripts.Engine.FileSystem
 
             return str;
         }
-
-        public class PreloadFileToMemoryItem
-        {
-            internal volatile bool an;
-            internal string aN;
-            internal volatile byte[] ao;
-            internal volatile string aO = string.Empty;
-
-            public string Path
-            {
-                get { return aN; }
-            }
-
-            public bool Loaded
-            {
-                get { return an; }
-            }
-
-            public string Error
-            {
-                get { return aO; }
-            }
-
-            public byte[] Data
-            {
-                get { return ao; }
-            }
-        }
     }
 }
