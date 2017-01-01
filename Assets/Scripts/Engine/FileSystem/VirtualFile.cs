@@ -12,9 +12,9 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <returns><b>true</b> if the file is exists; otherwise, <b>false</b>.</returns>
         public static bool Exists(string path)
         {
-            lock (VirtualFileSystem.W)
+            lock (VirtualFileSystem.FileLock)
             {
-                if (!VirtualFileSystem.s)
+                if (!VirtualFileSystem.Started)
                 {
                     Debug.LogError("VirtualFileSystem: File system is not initialized.");
                     return false;
@@ -24,61 +24,41 @@ namespace Assets.Scripts.Engine.FileSystem
                     Debug.LogFormat("Logging File Operations: VirtualFile.Exists( \"{0}\" )", (object) path);
 
                 path = VirtualFileSystem.NormalizePath(path);
-                path = VirtualFileSystem.A(path, true);
                 return File.Exists(VirtualFileSystem.GetRealPathByVirtual(path));
             }
         }
 
-        public static VirtualFileStream Open(string path)
+        public static Stream Open(string path)
         {
-            lock (VirtualFileSystem.W)
+            lock (VirtualFileSystem.FileLock)
             {
-                if (!VirtualFileSystem.s)
+                if (!VirtualFileSystem.Started)
                 {
                     Debug.LogError("VirtualFileSystem: File system is not initialized.");
                     return null;
                 }
 
                 if (VirtualFileSystem.LoggingFileOperations)
-                    Debug.LogFormat("Logging File Operations: VirtualFile.Open( \"{0}\" )", (object) path);
+                    Debug.LogFormat("Logging File Operations: VirtualFile.Open( \"{0}\" )", path as object);
 
                 path = VirtualFileSystem.NormalizePath(path);
 
-                if (VirtualFileSystem.X.Count != 0)
-                {
-                    var local_6 = path.ToLower();
-                    VirtualFileSystem.PreloadFileToMemoryItem local_7;
-                    if (VirtualFileSystem.X.TryGetValue(local_6, out local_7) && local_7.an)
-                        return new MemoryVirtualFileStream(local_7.ao);
-                }
-
-                VirtualFileStream local_3 = null;
-                var local_8 = VirtualFileSystem.GetRealPathByVirtual(path);
+                Stream localBytes = null;
+                var localPath = VirtualFileSystem.GetRealPathByVirtual(path);
                 try
                 {
-                    local_3 = c.Platform != c.A.Windows
-                        ? (c.Platform != c.A.MacOSX
-                            ? (VirtualFileStream) new G(local_8)
-                            : (VirtualFileStream) new f(local_8))
-                        : (VirtualFileStream) new g(local_8);
+                    localBytes = new MemoryStream(File.ReadAllBytes(localPath));
                 }
-                catch (FileNotFoundException exception_0)
+                catch (FileNotFoundException)
                 {
                 }
-                catch (Exception exception_1)
+                catch (Exception err)
                 {
-                    throw exception_1;
+                    // ReSharper disable once PossibleIntendedRethrow
+                    throw err;
                 }
 
-                if (local_2)
-                {
-                    var local_9 = new byte[local_3.Length];
-                    if (local_3.Read(local_9, 0, (int) local_3.Length) == local_3.Length)
-                        VirtualFileSystem.A(path, local_9);
-                    local_3.Position = 0L;
-                }
-
-                return local_3;
+                return localBytes;
             }
         }
     }

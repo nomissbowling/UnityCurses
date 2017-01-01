@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -13,25 +12,15 @@ namespace Assets.Scripts.Engine.FileSystem
     /// </summary>
     public static class VirtualFileSystem
     {
-        private static Dictionary<string, int> t = new Dictionary<string, int>();
-        private static Dictionary<string, byte[]> U = new Dictionary<string, byte[]>();
-        private static string V = string.Empty;
-        internal static object W = new object();
+        internal static readonly object FileLock = new object();
+        internal static bool Started;
 
-        internal static Dictionary<string, PreloadFileToMemoryItem> X =
-            new Dictionary<string, PreloadFileToMemoryItem>();
-
-        private static string r;
-        private static string S;
-        internal static bool s;
-        private static Dictionary<string, string> T;
-        private static bool u;
-        private static bool w;
+        private static bool _loggingFileOperations;
 
         public static bool LoggingFileOperations
         {
-            get { return w; }
-            set { w = value; }
+            get { return _loggingFileOperations; }
+            set { _loggingFileOperations = value; }
         }
 
         /// <summary>
@@ -108,7 +97,8 @@ namespace Assets.Scripts.Engine.FileSystem
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("en-US");
 
             Debug.Log("VirtualFileSystem::Init()");
-            return true;
+            Started = true;
+            return Started;
         }
 
         public static void Shutdown()

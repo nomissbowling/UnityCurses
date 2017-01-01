@@ -8,6 +8,7 @@ using Assets.Scripts.Engine.Window;
 using Assets.Scripts.Example.CustomInput;
 using Assets.Scripts.Example.Prompt;
 using Assets.Scripts.Example.Question;
+using UnityEngine;
 
 namespace Assets.Scripts.Example
 {
@@ -47,7 +48,7 @@ namespace Assets.Scripts.Example
 
         private void CloseSimulation()
         {
-            ExampleScript.Destroy();
+            Application.Quit();
         }
 
         private void CustomPrompt()

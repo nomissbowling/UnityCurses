@@ -270,7 +270,8 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <seealso cref="M:Assets.Scripts.Engine.FileSystem.TextBlock.Parse(System.String,System.String@)" />
         public string DumpToString()
         {
-            var stringBuilder = new StringBuilder();
+            // Dumps the current instance of this text block into a string representation of itself.
+            var stringBuilder = new StringBuilder(JSONExtensions.Serialize(this));
             return stringBuilder.ToString();
         }
 

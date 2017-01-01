@@ -4,10 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Threading;
 using Assets.Scripts.Engine.Core;
 using Assets.Scripts.Engine.FileSystem;
 using Assets.Scripts.Engine.Window.Control;
 using Assets.Scripts.ProjectCommon.Binds;
+using UnityEngine;
 
 namespace Assets.Scripts.Engine
 {
@@ -51,6 +54,10 @@ namespace Assets.Scripts.Engine
         /// </summary>
         protected EngineApp()
         {
+            // Set culture to en-US to prevent strange things happening with numbers and thousands-separators.
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("en-US");
+
             // We are not closing...
             IsClosing = false;
 
@@ -217,6 +224,9 @@ namespace Assets.Scripts.Engine
             // Set flag that we are closing now so we can ignore ticks during shutdown.
             IsClosing = true;
 
+            // Message that says we are being ended.
+            Debug.Log("Program END\r\n");
+
             // Allows game simulation above us to cleanup any data structures it cares about.
             OnPreDestroy();
 
@@ -232,6 +242,10 @@ namespace Assets.Scripts.Engine
             WindowManager = null;
             SceneGraph = null;
             InputManager = null;
+
+            // Closes out external static modules.
+            VirtualFileSystem.Shutdown();
+            GameControlsManager.Shutdown();
         }
 
         /// <summary>

@@ -126,21 +126,20 @@ namespace Assets.Scripts.ProjectCommon.Binds
     /// </summary>
     public sealed class GameControlsManager
     {
-        public static string keyconfig = "user:Configs/Keybinds.config";
+        public static string _keybindsPath = "user:Configs/Keybinds.config";
 
-        [Config("GameControls", "mouseSensitivity")] public static Vector2 mouseSensitivity = new Vector2(1, 1);
+        [SerializeField]
+        public static Vector2 _mouseSensitivity = new Vector2(1, 1);
 
-        [Config("GameControls", "joystickAxesSensitivity")] public static Vector2 joystickAxesSensitivity =
-            new Vector2(1, 1);
-
-        [Config("GameControls", "BaseSensitivity")] public static Vector2 baseSensitivity = new Vector2(2, 2);
+        [SerializeField]
+        public static Vector2 _baseSensitivity = new Vector2(2, 2);
 
         private Dictionary<GameControlKeys, GameControlItem> itemsControlKeysDictionary;
 
         public Vector2 BaseSensitivity
         {
-            set { baseSensitivity = value; }
-            get { return baseSensitivity; }
+            set { _baseSensitivity = value; }
+            get { return _baseSensitivity; }
         }
 
         /// <summary>
@@ -150,14 +149,8 @@ namespace Assets.Scripts.ProjectCommon.Binds
 
         public Vector2 MouseSensitivity
         {
-            get { return mouseSensitivity; }
-            set { mouseSensitivity = value; }
-        }
-
-        public Vector2 JoystickAxesSensitivity
-        {
-            get { return joystickAxesSensitivity; }
-            set { joystickAxesSensitivity = value; }
+            get { return _mouseSensitivity; }
+            set { _mouseSensitivity = value; }
         }
 
         /// <summary>
@@ -175,7 +168,7 @@ namespace Assets.Scripts.ProjectCommon.Binds
         ///     Initialization the class.
         /// </summary>
         /// <returns><b>true</b> if the object successfully initialized; otherwise, <b>false</b>.</returns>
-        public static bool Init()
+        public static void Init()
         {
             if (Instance != null)
                 Debug.LogError("GameControlsManager class is already initialized.");
@@ -184,7 +177,6 @@ namespace Assets.Scripts.ProjectCommon.Binds
             var ret = Instance.InitInternal();
             if (!ret)
                 Shutdown();
-            return ret;
         }
 
         /// <summary>
@@ -192,11 +184,11 @@ namespace Assets.Scripts.ProjectCommon.Binds
         /// </summary>
         public static void Shutdown()
         {
-            if (Instance != null)
-            {
-                Instance.ShutdownInternal();
-                Instance = null;
-            }
+            if (Instance == null)
+                return;
+
+            Instance.ShutdownInternal();
+            Instance = null;
         }
 
         private bool InitInternal()
@@ -225,7 +217,7 @@ namespace Assets.Scripts.ProjectCommon.Binds
                     Items[n] = new GameControlItem(controlKey);
                 }
 
-                var customControlsFile = VirtualFileSystem.GetRealPathByVirtual(keyconfig);
+                var customControlsFile = VirtualFileSystem.GetRealPathByVirtual(_keybindsPath);
                 if (File.Exists(customControlsFile))
                 {
                     LoadCustomConfig();
@@ -444,11 +436,11 @@ namespace Assets.Scripts.ProjectCommon.Binds
                 }
             }
 
-            var fileName = VirtualFileSystem.GetRealPathByVirtual(keyconfig);
+            var fileName = VirtualFileSystem.GetRealPathByVirtual(_keybindsPath);
             try
             {
                 var directoryName = Path.GetDirectoryName(fileName);
-                if ((directoryName != "") && !Directory.Exists(directoryName))
+                if (!string.IsNullOrEmpty(directoryName) && !Directory.Exists(directoryName))
                     Directory.CreateDirectory(directoryName);
 
                 using (var writer = new StreamWriter(fileName))
@@ -465,7 +457,7 @@ namespace Assets.Scripts.ProjectCommon.Binds
         public void LoadCustomConfig()
         {
             string error;
-            var customFilename = VirtualFileSystem.GetRealPathByVirtual(keyconfig);
+            var customFilename = VirtualFileSystem.GetRealPathByVirtual(_keybindsPath);
             var customblock = TextBlockUtils.LoadFromRealFile(customFilename, out error);
             if (error != null)
                 Debug.LogError(string.Format("Loading file failed \"{0}\"  // {1}.", error, customFilename));

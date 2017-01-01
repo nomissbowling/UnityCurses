@@ -42,8 +42,8 @@ namespace Assets.Scripts.Example
         // ReSharper disable once UnusedMember.Local
         private void Update()
         {
-            if (Input.GetKeyDown("space"))
-                print("space key was pressed");
+            //if (Input.GetKeyDown("space"))
+            //    print("space key was pressed");
 
             //Debug.Log("ExampleScript::Update()");
 
@@ -111,6 +111,9 @@ namespace Assets.Scripts.Example
             Debug.Log("EngineApp Example Script");
             Debug.Log("Starting...");
 
+            // Prevent Unity from destroying this object when attaching new scenes.
+            DontDestroyOnLoad(this);
+
             // Entry point for the entire simulation.
             ExampleApp.Create();
 
@@ -163,6 +166,10 @@ namespace Assets.Scripts.Example
         // ReSharper disable once UnusedMember.Local
         private void OnApplicationQuit()
         {
+            // Cleans up simulation
+            if (ExampleApp.Instance != null)
+                ExampleApp.Instance.Destroy();
+
             Debug.Log("OnApplicationQuit::OnApplicationQuit()");
             Debug.Log("Goodbye!");
         }
@@ -211,10 +218,8 @@ namespace Assets.Scripts.Example
         public static void Destroy()
         {
             // Cleans up simulation
-            ExampleApp.Instance.Destroy();
-
-            // Closes unity engine.
-            Application.Quit();
+            if (ExampleApp.Instance != null)
+                ExampleApp.Instance.Destroy();
         }
     }
 }
