@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -12,6 +13,27 @@ namespace Assets.Scripts.Engine.FileSystem
     /// </summary>
     public static class VirtualFileSystem
     {
+        private static Dictionary<string, int> t = new Dictionary<string, int>();
+        private static Dictionary<string, byte[]> U = new Dictionary<string, byte[]>();
+        private static string V = string.Empty;
+        internal static object W = new object();
+
+        internal static Dictionary<string, PreloadFileToMemoryItem> X =
+            new Dictionary<string, PreloadFileToMemoryItem>();
+
+        private static string r;
+        private static string S;
+        internal static bool s;
+        private static Dictionary<string, string> T;
+        private static bool u;
+        private static bool w;
+
+        public static bool LoggingFileOperations
+        {
+            get { return w; }
+            set { w = value; }
+        }
+
         /// <summary>
         ///     Contains the path to the game data folder (Read Only).
         /// </summary>
@@ -142,6 +164,34 @@ namespace Assets.Scripts.Engine.FileSystem
                     : str.Replace('/', '\\');
 
             return str;
+        }
+
+        public class PreloadFileToMemoryItem
+        {
+            internal volatile bool an;
+            internal string aN;
+            internal volatile byte[] ao;
+            internal volatile string aO = string.Empty;
+
+            public string Path
+            {
+                get { return aN; }
+            }
+
+            public bool Loaded
+            {
+                get { return an; }
+            }
+
+            public string Error
+            {
+                get { return aO; }
+            }
+
+            public byte[] Data
+            {
+                get { return ao; }
+            }
         }
     }
 }

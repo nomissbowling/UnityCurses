@@ -8,6 +8,7 @@ using Assets.Scripts.Engine.Window;
 using Assets.Scripts.Example.CustomInput;
 using Assets.Scripts.Example.Prompt;
 using Assets.Scripts.Example.Question;
+using Assets.Scripts.Example;
 
 namespace Assets.Scripts.Example
 {

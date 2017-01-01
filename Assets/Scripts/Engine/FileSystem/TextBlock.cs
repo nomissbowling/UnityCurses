@@ -12,11 +12,11 @@ namespace Assets.Scripts.Engine.FileSystem
     /// </summary>
     public class TextBlock
     {
-        private string L;
-        private ReadOnlyCollection<TextBlock> m;
-        private List<TextBlock> M = new List<TextBlock>();
-        private ReadOnlyCollection<Attribute> n;
-        private List<Attribute> N = new List<Attribute>();
+        private List<Attribute> _attributeList = new List<Attribute>();
+        private ReadOnlyCollection<Attribute> _attributes;
+        private string _name;
+        private List<TextBlock> _textBlockList = new List<TextBlock>();
+        private ReadOnlyCollection<TextBlock> _textBlocks;
 
         /// <summary>
         ///     It is applied only to creation root blocks. Not for creation of children.
@@ -33,8 +33,8 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <seealso cref="M:Assets.Scripts.Engine.FileSystem.TextBlock.SetAttribute(System.String,System.String)" />
         public TextBlock()
         {
-            m = new ReadOnlyCollection<TextBlock>(M);
-            n = new ReadOnlyCollection<Attribute>(N);
+            _textBlocks = new ReadOnlyCollection<TextBlock>(_textBlockList);
+            _attributes = new ReadOnlyCollection<Attribute>(_attributeList);
         }
 
         /// <summary>Gets the parent block.</summary>
@@ -43,14 +43,14 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <summary>Gets or set block name.</summary>
         public string Name
         {
-            get { return L; }
+            get { return _name; }
             set
             {
-                if (L == value)
+                if (_name == value)
                     return;
 
-                L = value;
-                if (!string.IsNullOrEmpty(L))
+                _name = value;
+                if (!string.IsNullOrEmpty(_name))
                     return;
 
                 Debug.LogError("TextBlock: set Name: \"name\" is null or empty.");
@@ -63,13 +63,13 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <summary>Gets the children collection.</summary>
         public IList<TextBlock> Children
         {
-            get { return m; }
+            get { return _textBlocks; }
         }
 
         /// <summary>Gets the attributes collection.</summary>
         public IList<Attribute> Attributes
         {
-            get { return n; }
+            get { return _attributes; }
         }
 
         /// <summary>Finds child block by name.</summary>
@@ -80,12 +80,13 @@ namespace Assets.Scripts.Engine.FileSystem
         /// </returns>
         public TextBlock FindChild(string name)
         {
-            for (var index = 0; index < M.Count; ++index)
+            for (var index = 0; index < _textBlockList.Count; ++index)
             {
-                var textBlock = M[index];
+                var textBlock = _textBlockList[index];
                 if (textBlock.Name == name)
                     return textBlock;
             }
+
             return null;
         }
 
@@ -98,11 +99,15 @@ namespace Assets.Scripts.Engine.FileSystem
         {
             if (string.IsNullOrEmpty(name))
                 Debug.LogError("TextBlock: AddChild: \"name\" is null or empty.");
-            var textBlock = new TextBlock();
-            textBlock.Parent = this;
-            textBlock.L = name;
-            textBlock.Data = data;
-            M.Add(textBlock);
+
+            var textBlock = new TextBlock
+            {
+                Parent = this,
+                _name = name,
+                Data = data
+            };
+
+            _textBlockList.Add(textBlock);
             return textBlock;
         }
 
@@ -112,19 +117,19 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <remarks>Names of blocks can repeat.</remarks>
         public TextBlock AddChild(string name)
         {
-            return AddChild(name, "");
+            return AddChild(name, string.Empty);
         }
 
         /// <summary>Deletes child block.</summary>
         /// <param name="child">The child block.</param>
         public void DeleteChild(TextBlock child)
         {
-            M.Remove(child);
+            _textBlockList.Remove(child);
             child.Parent = null;
-            child.L = "";
+            child._name = "";
             child.Data = "";
-            child.M = null;
-            child.N = null;
+            child._textBlockList = null;
+            child._attributeList = null;
         }
 
         /// <summary>Attaches the child block.</summary>
@@ -136,14 +141,14 @@ namespace Assets.Scripts.Engine.FileSystem
                 Debug.LogError(
                     "TextBlock: AddChild: Unable to attach. Block is already attached to another block. child.Parent != null.");
             child.Parent = this;
-            M.Add(child);
+            _textBlockList.Add(child);
         }
 
         /// <summary>Detaches child block without deleting.</summary>
         /// <param name="child">The child block.</param>
         public void DetachChild(TextBlock child)
         {
-            M.Remove(child);
+            _textBlockList.Remove(child);
             child.Parent = null;
         }
 
@@ -153,12 +158,10 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <returns>The attribute value if the attribute exists; otherwise, default value.</returns>
         public string GetAttribute(string name, string defaultValue)
         {
-            for (var index = 0; index < N.Count; ++index)
-            {
-                var attribute = N[index];
+            foreach (var attribute in _attributeList)
                 if (attribute.Name == name)
                     return attribute.Value;
-            }
+
             return defaultValue;
         }
 
@@ -167,7 +170,7 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <returns>The attribute value if the attribute exists; otherwise, empty string.</returns>
         public string GetAttribute(string name)
         {
-            return GetAttribute(name, "");
+            return GetAttribute(name, string.Empty);
         }
 
         /// <summary>Checks existence of attribute.</summary>
@@ -175,9 +178,10 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <returns><b>true</b> if the block exists; otherwise, <b>false</b>.</returns>
         public bool IsAttributeExist(string name)
         {
-            for (var index = 0; index < N.Count; ++index)
-                if (N[index].Name == name)
+            for (var index = 0; index < _attributeList.Count; ++index)
+                if (_attributeList[index].Name == name)
                     return true;
+
             return false;
         }
 
@@ -190,21 +194,24 @@ namespace Assets.Scripts.Engine.FileSystem
         {
             if (string.IsNullOrEmpty(name))
                 Debug.LogError("TextBlock: AddChild: \"name\" is null or empty.");
+
             if (value == null)
                 Debug.LogError("TextBlock: AddChild: \"value\" is null.");
-            for (var index = 0; index < N.Count; ++index)
+
+            for (var index = 0; index < _attributeList.Count; ++index)
             {
-                var attribute = N[index];
+                var attribute = _attributeList[index];
                 if (attribute.Name == name)
                 {
-                    attribute.ai = value;
+                    attribute._value = value;
                     return;
                 }
             }
-            N.Add(new Attribute
+
+            _attributeList.Add(new Attribute
             {
-                aI = name,
-                ai = value
+                _name = name,
+                _value = value
             });
         }
 
@@ -212,15 +219,18 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <param name="name">The attribute name.</param>
         public void DeleteAttribute(string name)
         {
-            for (var index = 0; index < N.Count; ++index)
-                if (name == N[index].aI)
+            for (var index = 0; index < _attributeList.Count; ++index)
+                if (name == _attributeList[index]._name)
                 {
-                    var attribute = N[index];
-                    var str1 = "";
-                    attribute.aI = str1;
-                    var str2 = "";
-                    attribute.ai = str2;
-                    N.RemoveAt(index);
+                    var attribute = _attributeList[index];
+
+                    var str1 = string.Empty;
+                    attribute._name = str1;
+
+                    var str2 = string.Empty;
+                    attribute._value = str2;
+
+                    _attributeList.RemoveAt(index);
                     break;
                 }
         }
@@ -228,7 +238,7 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <summary>Deletes all attributes.</summary>
         public void DeleteAllAttributes()
         {
-            N.Clear();
+            _attributeList.Clear();
         }
 
         private static string A([In] int obj0)
@@ -268,9 +278,11 @@ namespace Assets.Scripts.Engine.FileSystem
         /// <returns>A string that represents the current text block.</returns>
         public override string ToString()
         {
-            var str = string.Format("Name: \"{0}\"", L);
+            var str = string.Format("Name: \"{0}\"", _name);
+
             if (!string.IsNullOrEmpty(Data))
                 str += string.Format(", Data: \"{0}\"", Data);
+
             return str;
         }
 
@@ -304,8 +316,8 @@ namespace Assets.Scripts.Engine.FileSystem
         /// </summary>
         public sealed class Attribute
         {
-            internal string ai;
-            internal string aI;
+            internal string _name;
+            internal string _value;
 
             internal Attribute()
             {
@@ -314,13 +326,13 @@ namespace Assets.Scripts.Engine.FileSystem
             /// <summary>Gets the attribute name.</summary>
             public string Name
             {
-                get { return aI; }
+                get { return _name; }
             }
 
             /// <summary>Gets the attribute value.</summary>
             public string Value
             {
-                get { return ai; }
+                get { return _value; }
             }
 
             /// <summary>
@@ -329,7 +341,7 @@ namespace Assets.Scripts.Engine.FileSystem
             /// <returns>A string that represents the current attribute.</returns>
             public override string ToString()
             {
-                return string.Format("Name: \"{0}\", Value \"{1}\"", aI, ai);
+                return string.Format("Name: \"{0}\", Value \"{1}\"", _name, _value);
             }
         }
     }

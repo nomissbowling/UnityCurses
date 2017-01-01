@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Engine.FileSystem.TextBlockUtils
-// Assembly: FileSystem, Version=3.5.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: D37DBC12-68EC-404D-961A-339F38385C94
-// Assembly location: C:\SpaceTrucker\Bin\FileSystem.dll
-
-using System;
+﻿using System;
 using System.IO;
 using UnityEngine;
 
