@@ -49,7 +49,7 @@ namespace Assets.Scripts.Engine.Utility
         public static string GetValidFilename(string filename)
         {
             var invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
-            var invalidReStr = $@"[{invalidChars}]+";
+            var invalidReStr = string.Format(@"[{0}]+", invalidChars);
 
             var reservedWords = new[]
             {
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Engine.Utility
             var sanitisedNamePart = Regex.Replace(filename, invalidReStr, "_");
             foreach (var reservedWord in reservedWords)
             {
-                var reservedWordPattern = $"^{reservedWord}\\.";
+                var reservedWordPattern = string.Format("^{0}\\.", reservedWord);
                 sanitisedNamePart = Regex.Replace(sanitisedNamePart, reservedWordPattern, "_reservedWord_.",
                     RegexOptions.IgnoreCase);
             }

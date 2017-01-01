@@ -11,14 +11,18 @@ namespace Assets.Scripts.Engine.Utility
     public class EnumerableCollection<T> : ICollection<T>
     {
         private readonly IEnumerable<T> _enumerable;
+        private readonly int _count;
 
         public EnumerableCollection(IEnumerable<T> enumerable, int count)
         {
             _enumerable = enumerable;
-            Count = count;
+            _count = count;
         }
 
-        public int Count { get; }
+        public int Count
+        {
+            get { return _count; }
+        }
 
         public bool IsReadOnly
         {
