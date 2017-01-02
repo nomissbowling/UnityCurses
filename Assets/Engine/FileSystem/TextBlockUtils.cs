@@ -33,13 +33,13 @@ namespace Assets.Engine.FileSystem
                     }
                 }
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 errorString = string.Format("Reading file failed \"{0}\".", path);
                 fileNotFound = true;
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 errorString = string.Format("Reading file failed \"{0}\".", path);
                 return null;

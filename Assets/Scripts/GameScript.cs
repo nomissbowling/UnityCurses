@@ -265,9 +265,9 @@ namespace Assets.Scripts
         /// </summary>
         public static void Destroy()
         {
-            // Cleans up simulation
-            if (GameEngineApp.Instance != null)
-                GameEngineApp.Instance.Destroy();
+            //// Cleans up simulation
+            //if (GameEngineApp.Instance != null)
+            //    GameEngineApp.Instance.Destroy();
         }
     }
 }

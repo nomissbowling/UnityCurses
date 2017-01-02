@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
-using System.Text;
-using Assets.Engine.Utility;
 using UnityEngine;
 
 namespace Assets.Engine.FileSystem
@@ -12,12 +10,20 @@ namespace Assets.Engine.FileSystem
     ///     The class allows to store the text information in the hierarchical form.
     ///     Supports creation of children and attributes.
     /// </summary>
+    [Serializable]
     public class TextBlock
     {
         private List<Attribute> _attributeList = new List<Attribute>();
+
         private ReadOnlyCollection<Attribute> _attributes;
+
         private string _name;
+
+        /// <summary>Gets the parent block.</summary>
+        [NonSerialized] private TextBlock _parent;
+
         private List<TextBlock> _textBlockList = new List<TextBlock>();
+
         private ReadOnlyCollection<TextBlock> _textBlocks;
 
         /// <summary>
@@ -40,7 +46,11 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets the parent block.</summary>
-        public TextBlock Parent { get; private set; }
+        public TextBlock Parent
+        {
+            get { return _parent; }
+            private set { _parent = value; }
+        }
 
         /// <summary>Gets or set block name.</summary>
         public string Name
@@ -271,8 +281,7 @@ namespace Assets.Engine.FileSystem
         public string DumpToString()
         {
             // Dumps the current instance of this text block into a string representation of itself.
-            var stringBuilder = new StringBuilder(JSONExtensions.Serialize(this));
-            return stringBuilder.ToString();
+            return JsonUtility.ToJson(this);
         }
 
         /// <summary>
@@ -315,7 +324,7 @@ namespace Assets.Engine.FileSystem
 
             try
             {
-                return JSONExtensions.Deserialize<TextBlock>(str);
+                return JsonUtility.FromJson<TextBlock>(str);
             }
             catch (Exception err)
             {
