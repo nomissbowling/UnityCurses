@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using System.Text;
 using Assets.Engine.Utility;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Assets.Engine.FileSystem
@@ -10,28 +13,13 @@ namespace Assets.Engine.FileSystem
     ///     The class allows to store the text information in the hierarchical form.
     ///     Supports creation of children and attributes.
     /// </summary>
-    [Serializable]
     public class TextBlock
     {
-        [SerializeField]
         private List<Attribute> _attributeList = new List<Attribute>();
-
-        [SerializeField]
         private ReadOnlyCollection<Attribute> _attributes;
-
-        [SerializeField]
         private string _name;
-
-        /// <summary>Gets the parent block.</summary>
-        private TextBlock _parent;
-
-        [SerializeField]
         private List<TextBlock> _textBlockList = new List<TextBlock>();
-
-        [SerializeField]
         private ReadOnlyCollection<TextBlock> _textBlocks;
-
-        private string _data;
 
         /// <summary>
         ///     It is applied only to creation root blocks. Not for creation of children.
@@ -53,11 +41,8 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets the parent block.</summary>
-        public TextBlock Parent
-        {
-            get { return _parent; }
-            private set { _parent = value; }
-        }
+        [JsonIgnore]
+        public TextBlock Parent { get; private set; }
 
         /// <summary>Gets or set block name.</summary>
         public string Name
@@ -77,11 +62,7 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets or set block string data.</summary>
-        public string Data
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public string Data { get; set; }
 
         /// <summary>Gets the children collection.</summary>
         public IList<TextBlock> Children
@@ -103,9 +84,9 @@ namespace Assets.Engine.FileSystem
         /// </returns>
         public TextBlock FindChild(string name)
         {
-            for (int index = 0; index < _textBlockList.Count; ++index)
+            for (var index = 0; index < _textBlockList.Count; ++index)
             {
-                TextBlock textBlock = _textBlockList[index];
+                var textBlock = _textBlockList[index];
                 if (textBlock.Name == name)
                     return textBlock;
             }
@@ -123,10 +104,12 @@ namespace Assets.Engine.FileSystem
             if (string.IsNullOrEmpty(name))
                 Debug.LogError("TextBlock: AddChild: \"name\" is null or empty.");
 
-            TextBlock textBlock = new TextBlock();
-            textBlock.Parent = this;
-            textBlock._name = name;
-            textBlock.Data = data;
+            var textBlock = new TextBlock
+            {
+                Parent = this,
+                _name = name,
+                Data = data
+            };
 
             _textBlockList.Add(textBlock);
             return textBlock;
@@ -179,7 +162,7 @@ namespace Assets.Engine.FileSystem
         /// <returns>The attribute value if the attribute exists; otherwise, default value.</returns>
         public string GetAttribute(string name, string defaultValue)
         {
-            foreach (Attribute attribute in _attributeList)
+            foreach (var attribute in _attributeList)
                 if (attribute.Name == name)
                     return attribute.Value;
 
@@ -199,7 +182,7 @@ namespace Assets.Engine.FileSystem
         /// <returns><b>true</b> if the block exists; otherwise, <b>false</b>.</returns>
         public bool IsAttributeExist(string name)
         {
-            for (int index = 0; index < _attributeList.Count; ++index)
+            for (var index = 0; index < _attributeList.Count; ++index)
                 if (_attributeList[index].Name == name)
                     return true;
 
@@ -219,9 +202,9 @@ namespace Assets.Engine.FileSystem
             if (value == null)
                 Debug.LogError("TextBlock: AddChild: \"value\" is null.");
 
-            for (int index = 0; index < _attributeList.Count; ++index)
+            for (var index = 0; index < _attributeList.Count; ++index)
             {
-                Attribute attribute = _attributeList[index];
+                var attribute = _attributeList[index];
                 if (attribute.Name == name)
                 {
                     attribute._value = value;
@@ -229,25 +212,26 @@ namespace Assets.Engine.FileSystem
                 }
             }
 
-            Attribute item = new Attribute();
-            item._name = name;
-            item._value = value;
-            _attributeList.Add(item);
+            _attributeList.Add(new Attribute
+            {
+                _name = name,
+                _value = value
+            });
         }
 
         /// <summary>Deletes attribute if he exists.</summary>
         /// <param name="name">The attribute name.</param>
         public void DeleteAttribute(string name)
         {
-            for (int index = 0; index < _attributeList.Count; ++index)
+            for (var index = 0; index < _attributeList.Count; ++index)
                 if (name == _attributeList[index]._name)
                 {
-                    Attribute attribute = _attributeList[index];
+                    var attribute = _attributeList[index];
 
-                    string str1 = string.Empty;
+                    var str1 = string.Empty;
                     attribute._name = str1;
 
-                    string str2 = string.Empty;
+                    var str2 = string.Empty;
                     attribute._value = str2;
 
                     _attributeList.RemoveAt(index);
@@ -259,6 +243,14 @@ namespace Assets.Engine.FileSystem
         public void DeleteAllAttributes()
         {
             _attributeList.Clear();
+        }
+
+        private static string A([In] int obj0)
+        {
+            var str = "";
+            for (var index = 0; index < obj0; ++index)
+                str += "\t";
+            return str;
         }
 
         /// <summary>
@@ -281,7 +273,8 @@ namespace Assets.Engine.FileSystem
         public string DumpToString()
         {
             // Dumps the current instance of this text block into a string representation of itself.
-            return JsonUtility.ToJson(this);
+            var stringBuilder = new StringBuilder(JSONExtensions.Serialize(this, false));
+            return stringBuilder.ToString();
         }
 
         /// <summary>
@@ -290,7 +283,7 @@ namespace Assets.Engine.FileSystem
         /// <returns>A string that represents the current text block.</returns>
         public override string ToString()
         {
-            string str = string.Format("Name: \"{0}\"", _name);
+            var str = string.Format("Name: \"{0}\"", _name);
 
             if (!string.IsNullOrEmpty(Data))
                 str += string.Format(", Data: \"{0}\"", Data);

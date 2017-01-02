@@ -23,7 +23,7 @@ namespace Assets.Engine.Window.Control
         /// <typeparam name="T"></typeparam>
         /// <returns>The <see cref="string" />.</returns>
         public static string ToStringTable<T>(this IEnumerable<T> values, string[] columnHeaders,
-            params LinqBridge.Func<T, object>[] valueSelectors)
+            params Func<T, object>[] valueSelectors)
         {
             return ToStringTable(values.ToArray(), columnHeaders, valueSelectors);
         }
@@ -35,7 +35,7 @@ namespace Assets.Engine.Window.Control
         /// <typeparam name="T"></typeparam>
         /// <returns>The <see cref="string" />.</returns>
         public static string ToStringTable<T>(this T[] values, string[] columnHeaders,
-            params LinqBridge.Func<T, object>[] valueSelectors)
+            params Func<T, object>[] valueSelectors)
         {
             Debug.Assert(columnHeaders.Length == valueSelectors.Length);
 
@@ -120,14 +120,14 @@ namespace Assets.Engine.Window.Control
         /// <typeparam name="T"></typeparam>
         /// <returns>The <see cref="string" />.</returns>
         public static string ToStringTable<T>(this IEnumerable<T> values,
-            params Expression<LinqBridge.Func<T, object>>[] valueSelectors)
+            params Expression<Func<T, object>>[] valueSelectors)
         {
             var list = new List<string>();
             foreach (var func in valueSelectors)
                 list.Add(GetProperty(func).Name);
 
             var headers = list.ToArray();
-            var list1 = new List<LinqBridge.Func<T, object>>();
+            var list1 = new List<Func<T, object>>();
             foreach (var exp in valueSelectors)
                 list1.Add(exp.Compile());
 
@@ -139,7 +139,7 @@ namespace Assets.Engine.Window.Control
         /// <param name="expresstion">The expression.</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>The <see cref="PropertyInfo" />.</returns>
-        private static PropertyInfo GetProperty<T>(Expression<LinqBridge.Func<T, object>> expresstion)
+        private static PropertyInfo GetProperty<T>(Expression<Func<T, object>> expresstion)
         {
             var unaryExpression = expresstion.Body as UnaryExpression;
             if ((unaryExpression != null) && unaryExpression.Operand is MemberExpression)

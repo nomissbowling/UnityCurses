@@ -40,8 +40,6 @@ namespace Assets.Engine.Core
         /// </summary>
         private readonly EngineApp _simUnit;
 
-        private string _screenBuffer;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="SceneGraph" /> class.
         /// </summary>
@@ -57,11 +55,7 @@ namespace Assets.Engine.Core
         ///     update
         ///     when a change occurs.
         /// </summary>
-        private string ScreenBuffer
-        {
-            get { return _screenBuffer; }
-            set { _screenBuffer = value; }
-        }
+        private string ScreenBuffer { get; set; }
 
         /// <summary>
         ///     Fired when the simulation is closing and needs to clear out any data structures that it created so the program can
@@ -89,7 +83,7 @@ namespace Assets.Engine.Core
         public override void OnTick(bool systemTick, bool skipDay)
         {
             // GetModule the current text user interface data from inheriting class.
-            string tuiContent = OnRender();
+            var tuiContent = OnRender();
             if (ScreenBuffer.Equals(tuiContent, StringComparison.OrdinalIgnoreCase))
                 return;
 
@@ -109,7 +103,7 @@ namespace Assets.Engine.Core
         private string OnRender()
         {
             // Spinning ticker that shows activity, lets us know if application hangs or freezes.
-            StringBuilder tui = new StringBuilder();
+            var tui = new StringBuilder();
             tui.Append(string.Format("[ {0} ] - ", _simUnit.TickPhase));
 
             // Keeps track of active Windows name and active Windows current state name for debugging purposes.
@@ -142,7 +136,7 @@ namespace Assets.Engine.Core
         private string RenderWindow()
         {
             // If TUI for active game Windows is not null or empty then use it.
-            string activeWindowText = string.Empty;
+            var activeWindowText = string.Empty;
 
             if (_simUnit.WindowManager.FocusedWindow != null)
                 activeWindowText = _simUnit.WindowManager.FocusedWindow.OnRenderWindow();

@@ -20,12 +20,12 @@ namespace Assets.Engine.FileSystem
             fileNotFound = false;
             try
             {
-                using (Stream stream = (Stream) VirtualFile.Open(path))
+                using (var stream = (Stream) VirtualFile.Open(path))
                 {
-                    using (StreamReader streamReader = new StreamReader(stream))
+                    using (var streamReader = new StreamReader(stream))
                     {
                         string errorString1;
-                        TextBlock textBlock = TextBlock.Parse(streamReader.ReadToEnd(), out errorString1);
+                        var textBlock = TextBlock.Parse(streamReader.ReadToEnd(), out errorString1);
                         if (textBlock == null)
                             errorString = string.Format("Parsing text block failed \"{0}\" ({1}).", path, errorString1);
 
@@ -62,7 +62,7 @@ namespace Assets.Engine.FileSystem
         public static TextBlock LoadFromVirtualFile(string path)
         {
             string errorString;
-            TextBlock textBlock = LoadFromVirtualFile(path, out errorString);
+            var textBlock = LoadFromVirtualFile(path, out errorString);
             if (textBlock != null)
                 return textBlock;
             Debug.LogError(errorString);
@@ -80,12 +80,12 @@ namespace Assets.Engine.FileSystem
             fileNotFound = false;
             try
             {
-                using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (StreamReader streamReader = new StreamReader(fileStream))
+                    using (var streamReader = new StreamReader(fileStream))
                     {
                         string errorString1;
-                        TextBlock textBlock = TextBlock.Parse(streamReader.ReadToEnd(), out errorString1);
+                        var textBlock = TextBlock.Parse(streamReader.ReadToEnd(), out errorString1);
 
                         if (textBlock == null)
                             errorString = string.Format("Parsing text block failed \"{0}\" ({1}).", path, errorString1);
@@ -124,7 +124,7 @@ namespace Assets.Engine.FileSystem
         public static TextBlock LoadFromRealFile(string path)
         {
             string errorString;
-            TextBlock textBlock = LoadFromRealFile(path, out errorString);
+            var textBlock = LoadFromRealFile(path, out errorString);
 
             if (textBlock != null)
                 return textBlock;

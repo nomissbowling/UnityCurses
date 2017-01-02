@@ -41,18 +41,18 @@ namespace Assets.Engine.UISystem
             if (_controlsCanvas == null)
                 return;
 
-            Text text = _controlsCanvas.gameObject.AddComponent<Text>();
+            var text = _controlsCanvas.gameObject.AddComponent<Text>();
             text.text = textString;
 
-            Font arialFont = (Font) Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
+            var arialFont = (Font) Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
             text.font = arialFont;
             text.material = arialFont.material;
         }
 
         public void PlaySound(string name)
         {
-            AudioSource audio = _controlsCanvas.gameObject.AddComponent<AudioSource>();
-            AudioClip clip = (AudioClip) Resources.Load(name);
+            var audio = _controlsCanvas.gameObject.AddComponent<AudioSource>();
+            var clip = (AudioClip) Resources.Load(name);
             if (clip != null)
                 audio.PlayOneShot(clip, 1.0F);
             else

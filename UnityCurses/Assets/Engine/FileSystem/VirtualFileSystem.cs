@@ -38,7 +38,7 @@ namespace Assets.Engine.FileSystem
         {
             get
             {
-                string path = Application.dataPath;
+                var path = Application.dataPath;
                 switch (Application.platform)
                 {
                     case RuntimePlatform.OSXPlayer:
@@ -134,7 +134,7 @@ namespace Assets.Engine.FileSystem
                 Debug.LogError("VirtualFileSystem: GetVirtualPathByReal: realPath == null.");
 
             realPath = NormalizePath(realPath);
-            string str = Path.IsPathRooted(realPath) ? realPath : Path.Combine(ExecutableDirectoryPath, realPath);
+            var str = Path.IsPathRooted(realPath) ? realPath : Path.Combine(ExecutableDirectoryPath, realPath);
 
             if ((str.Length <= ResourceDirectoryPath.Length) ||
                 !string.Equals(str.Substring(0, ResourceDirectoryPath.Length), ResourceDirectoryPath,
@@ -146,7 +146,7 @@ namespace Assets.Engine.FileSystem
 
         public static string NormalizePath(string path)
         {
-            string str = path;
+            var str = path;
 
             if (str != null)
                 str = (Application.platform != RuntimePlatform.WindowsPlayer) &&

@@ -19,9 +19,9 @@ namespace Assets.Engine.Utility
         /// <param name="booleans">Array of bool.</param>
         /// <returns>Number of bool values in array that were true.</returns>
         /// <remarks>http://stackoverflow.com/a/378282</remarks>
-        public static int TrueCount(IEnumerable<bool> booleans)
+        public static int TrueCount(this IEnumerable<bool> booleans)
         {
-            return Enumerable.Count(booleans, delegate(bool b) { return b; });
+            return booleans.Count(b => b);
         }
 
         /// <summary>
@@ -32,13 +32,13 @@ namespace Assets.Engine.Utility
         /// <param name="target">Target value which needs to be compared against collection values.</param>
         /// <returns>Int closest matching in collection to target value.</returns>
         /// <remarks>http://stackoverflow.com/a/10120982</remarks>
-        public static int ClosestTo(IEnumerable<int> collection, int target)
+        public static int ClosestTo(this IEnumerable<int> collection, int target)
         {
-            int closest = int.MaxValue;
-            int minDifference = int.MaxValue;
-            foreach (int element in collection)
+            var closest = int.MaxValue;
+            var minDifference = int.MaxValue;
+            foreach (var element in collection)
             {
-                long difference = Math.Abs((long) element - target);
+                var difference = Math.Abs((long) element - target);
                 if (minDifference <= difference)
                     continue;
 

@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using Enumerable = Assets.LinqBridge.Query_Operators.Enumerable;
 
 namespace Assets.Engine.Utility
 {
@@ -34,31 +34,31 @@ namespace Assets.Engine.Utility
         /// <param name="interfaceType">The interface Type.</param>
         /// <remarks>http://stackoverflow.com/a/503359</remarks>
         /// <returns>The <see cref="bool" />.</returns>
-        public static bool IsImplementationOf(Type baseType, Type interfaceType)
+        public static bool IsImplementationOf(this Type baseType, Type interfaceType)
         {
-            return System.Linq.Enumerable.Any(baseType.GetInterfaces(), interfaceType.Equals);
+            return baseType.GetInterfaces().Any(interfaceType.Equals);
         }
 
         /// <summary>Find the fields in an enum that have a specific attribute with a specific value.</summary>
         /// <param name="source">The source.</param>
         /// <param name="inherit">The inherit.</param>
         /// <returns>The <see cref="IEnumerable" />.</returns>
-        public static IEnumerable<T> GetAttributes<T>(ICustomAttributeProvider source, bool inherit)
+        public static IEnumerable<T> GetAttributes<T>(this ICustomAttributeProvider source, bool inherit)
             where T : Attribute
         {
-            object[] attrs = source.GetCustomAttributes(typeof(T), inherit);
-            return (T[]) attrs;
+            var attrs = source.GetCustomAttributes(typeof(T), inherit);
+            return attrs != null ? (T[]) attrs : Enumerable.Empty<T>();
         }
 
         /// <summary>Extension method for enum's that helps with getting custom attributes off of enum values</summary>
         /// <param name="enumValue">The enum Value.</param>
         /// <returns>The <see cref="T" />.</returns>
-        public static T GetEnumAttribute<T>(Enum enumValue)
+        public static T GetEnumAttribute<T>(this Enum enumValue)
             where T : Attribute
         {
-            FieldInfo field = enumValue.GetType().GetField(enumValue.ToString());
-            object[] attribs = field.GetCustomAttributes(typeof(T), false);
-            T result = default(T);
+            var field = enumValue.GetType().GetField(enumValue.ToString());
+            var attribs = field.GetCustomAttributes(typeof(T), false);
+            var result = default(T);
 
             if (attribs.Length > 0)
                 result = attribs[0] as T;
@@ -70,15 +70,15 @@ namespace Assets.Engine.Utility
         /// <typeparam name="T">Role of attribute that we should be looking for.</typeparam>
         /// <param name="value">Object that will have attribute tag specified in generic parameter..</param>
         /// <returns>Attribute of the specified type from inputted object.</returns>
-        private static T GetAttribute<T>(object value) where T : Attribute
+        private static T GetAttribute<T>(this object value) where T : Attribute
         {
-            Type type = value.GetType();
-            MemberInfo[] memberInfo = type.GetMember(value.ToString());
-            MemberInfo firstOrDefault = Enumerable.FirstOrDefault(memberInfo);
+            var type = value.GetType();
+            var memberInfo = type.GetMember(value.ToString());
+            var firstOrDefault = memberInfo.FirstOrDefault();
             if (firstOrDefault != null)
             {
-                object[] attributes = firstOrDefault.GetCustomAttributes(typeof(T), false);
-                return (T) Enumerable.FirstOrDefault(attributes);
+                var attributes = firstOrDefault.GetCustomAttributes(typeof(T), false);
+                return (T) attributes.FirstOrDefault();
             }
 
             return null;
@@ -87,9 +87,9 @@ namespace Assets.Engine.Utility
         /// <summary>Attempts to grab description attribute from any object.</summary>
         /// <param name="value">Object that should have description attribute.</param>
         /// <returns>Description attribute text, if null then type name without name space.</returns>
-        public static string ToDescriptionAttribute(object value)
+        public static string ToDescriptionAttribute(this object value)
         {
-            DescriptionAttribute attribute = GetAttribute<DescriptionAttribute>(value);
+            var attribute = value.GetAttribute<DescriptionAttribute>();
             return attribute == null ? value.ToString() : attribute.Description;
         }
     }

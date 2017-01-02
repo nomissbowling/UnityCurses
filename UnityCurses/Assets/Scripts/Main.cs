@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/07/2016@7:10 PM
 
+using System;
 using Assets.Game;
 using Assets.ProjectCommon;
 using UnityEngine;
@@ -89,7 +90,7 @@ namespace Assets.Scripts
 
             // Send to currently active window and form if they exist.
             var e = Event.current;
-            if (e != null && e.isKey)
+            if ((e != null) && e.isKey)
                 switch (e.keyCode)
                 {
                     case KeyCode.Return:
@@ -104,7 +105,7 @@ namespace Assets.Scripts
                 }
 
             // Simulation takes any numbers of pulses to determine seconds elapsed.
-            GameEngineApp.Instance.OnTick(true);
+            GameEngineApp.Instance.OnTick(true, false);
 
             // Provides the time since last unity tick for control manager.
             if (GameControlsManager.Instance != null)
@@ -196,7 +197,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnGUI()
         {
-            if (_isPaused && GameEngineApp.Instance != null)
+            if (_isPaused && (GameEngineApp.Instance != null))
                 GameEngineApp.Instance.ControlManager.AddTextToCanvas("Game paused");
         }
 
@@ -264,9 +265,9 @@ namespace Assets.Scripts
         /// </summary>
         public static void Destroy()
         {
-            //// Cleans up simulation
-            //if (GameEngineApp.Instance != null)
-            //    GameEngineApp.Instance.Destroy();
+            // Cleans up simulation
+            if (GameEngineApp.Instance != null)
+                GameEngineApp.Instance.Destroy();
         }
     }
 }

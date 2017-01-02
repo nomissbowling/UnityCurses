@@ -448,7 +448,7 @@ namespace Assets.ProjectCommon
                     writer.Write(block.DumpToString());
                 }
             }
-            catch (Exception)
+            catch
             {
                 Debug.LogError(string.Format("Saving file failed \"{0}\".", fileName));
             }

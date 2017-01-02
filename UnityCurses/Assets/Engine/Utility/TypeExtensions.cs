@@ -38,19 +38,19 @@ namespace Assets.Engine.Utility
             /// <summary>
             ///     The instance.
             /// </summary>
-            public static readonly LinqBridge.Func<T> Instance = Creator();
+            public static readonly Func<T> Instance = Creator();
 
             /// <summary>
             ///     The creator.
             /// </summary>
-            private static LinqBridge.Func<T> Creator()
+            private static Func<T> Creator()
             {
                 var t = typeof(T);
                 if (t == typeof(string))
-                    return Expression.Lambda<LinqBridge.Func<T>>(Expression.Constant(string.Empty)).Compile();
+                    return Expression.Lambda<Func<T>>(Expression.Constant(string.Empty)).Compile();
 
                 if (t.HasDefaultConstructor())
-                    return Expression.Lambda<LinqBridge.Func<T>>(Expression.New(t)).Compile();
+                    return Expression.Lambda<Func<T>>(Expression.New(t)).Compile();
 
                 return () => (T) FormatterServices.GetUninitializedObject(t);
             }

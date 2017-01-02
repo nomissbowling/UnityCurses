@@ -44,7 +44,7 @@ namespace Assets.Engine.FileSystem
                 path = VirtualFileSystem.NormalizePath(path);
 
                 Stream localBytes = null;
-                string localPath = VirtualFileSystem.GetRealPathByVirtual(path);
+                var localPath = VirtualFileSystem.GetRealPathByVirtual(path);
                 try
                 {
                     localBytes = new MemoryStream(File.ReadAllBytes(localPath));

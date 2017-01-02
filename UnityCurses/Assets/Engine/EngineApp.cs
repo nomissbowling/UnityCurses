@@ -49,14 +49,6 @@ namespace Assets.Engine
         /// </summary>
         private SpinningPixel _spinningPixel;
 
-        private bool _isClosing;
-        private string _tickPhase;
-        private ulong _totalSecondsTicked;
-        private Randomizer _random;
-        private WindowManager _windowManager;
-        private InputManager _inputManager;
-        private SceneGraph _sceneGraph;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:TrailGame.SimulationApp" /> class.
         /// </summary>
@@ -106,72 +98,44 @@ namespace Assets.Engine
         /// <summary>
         ///     Determines if the simulation is currently closing down.
         /// </summary>
-        public bool IsClosing
-        {
-            get { return _isClosing; }
-            private set { _isClosing = value; }
-        }
+        public bool IsClosing { get; private set; }
 
         /// <summary>
         ///     Shows the current status of the simulation visually as a spinning glyph, the purpose of which is to show that there
         ///     is no hang in the simulation or logic controllers and everything is moving along and waiting for input or
         ///     displaying something to user.
         /// </summary>
-        internal string TickPhase
-        {
-            get { return _tickPhase; }
-            private set { _tickPhase = value; }
-        }
+        internal string TickPhase { get; private set; }
 
         /// <summary>
         ///     Total number of ticks that have gone by from measuring system ticks, this means this measures the total number of
         ///     seconds that have gone by using the pulses and time dilation without the use of dirty times that spawn more
         ///     threads.
         /// </summary>
-        private ulong TotalSecondsTicked
-        {
-            get { return _totalSecondsTicked; }
-            set { _totalSecondsTicked = value; }
-        }
+        private ulong TotalSecondsTicked { get; set; }
 
         /// <summary>
         ///     Used for rolling the virtual dice in the simulation to determine the outcome of various events.
         /// </summary>
-        public Randomizer Random
-        {
-            get { return _random; }
-            private set { _random = value; }
-        }
+        public Randomizer Random { get; private set; }
 
         /// <summary>
         ///     Keeps track of the currently attached game Windows, which one is active, and getting text user interface data.
         /// </summary>
-        public WindowManager WindowManager
-        {
-            get { return _windowManager; }
-            private set { _windowManager = value; }
-        }
+        public WindowManager WindowManager { get; private set; }
 
         /// <summary>
         ///     Handles input from the users keyboard, holds an input buffer and will push it to the simulation when return key is
         ///     pressed.
         /// </summary>
-        public InputManager InputManager
-        {
-            get { return _inputManager; }
-            private set { _inputManager = value; }
-        }
+        public InputManager InputManager { get; private set; }
 
         /// <summary>
         ///     Shows the current state of the simulation as text only interface (TUI). Uses default constants if the attached
         ///     Windows
         ///     or state does not override this functionality and it is ticked.
         /// </summary>
-        public SceneGraph SceneGraph
-        {
-            get { return _sceneGraph; }
-            private set { _sceneGraph = value; }
-        }
+        public SceneGraph SceneGraph { get; private set; }
 
         /// <summary>
         ///     Determines what windows the simulation will be capable of using and creating using the window managers factory.
@@ -219,8 +183,8 @@ namespace Assets.Engine
             if (systemTick)
             {
                 _currentTickTime = DateTime.UtcNow;
-                long elapsedTicks = _currentTickTime.Ticks - _lastTickTime.Ticks;
-                TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
+                var elapsedTicks = _currentTickTime.Ticks - _lastTickTime.Ticks;
+                var elapsedSpan = new TimeSpan(elapsedTicks);
 
                 // Check if more than an entire second has gone by.
                 if (!(elapsedSpan.TotalMilliseconds > TICK_INTERVAL))

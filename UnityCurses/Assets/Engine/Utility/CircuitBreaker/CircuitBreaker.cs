@@ -3,7 +3,6 @@
 
 using System;
 using UnityEngine;
-using Action = Assets.LinqBridge.Action;
 
 namespace Assets.Engine.Utility.CircuitBreaker
 {

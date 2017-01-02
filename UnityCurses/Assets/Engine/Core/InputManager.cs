@@ -30,8 +30,6 @@ namespace Assets.Engine.Core
         /// </summary>
         private Queue<string> _commandQueue;
 
-        private string _inputBuffer;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="InputManager" /> class.
         /// </summary>
@@ -46,11 +44,7 @@ namespace Assets.Engine.Core
         /// <summary>
         ///     Input buffer that we will use to hold characters until need to send them to simulation.
         /// </summary>
-        public string InputBuffer
-        {
-            get { return _inputBuffer; }
-            private set { _inputBuffer = value; }
-        }
+        public string InputBuffer { get; private set; }
 
         /// <summary>
         ///     Fired when the simulation is closing and needs to clear out any data structures that it created so the program can
@@ -98,7 +92,7 @@ namespace Assets.Engine.Core
         public void SendInputBufferAsCommand()
         {
             // Trim the result of the input so no extra whitespace at front or end exists.
-            string lineBufferTrimmed = InputBuffer.Trim();
+            var lineBufferTrimmed = InputBuffer.Trim();
 
             // Destroy the input buffer if we are not accepting commands but return is pressed anyway.
             if (!_simUnit.WindowManager.AcceptingInput)
@@ -138,7 +132,7 @@ namespace Assets.Engine.Core
                 return;
 
             // Convert character to string representation if itself.
-            string addedKeyString = char.ToString(keyChar);
+            var addedKeyString = char.ToString(keyChar);
             OnCharacterAddedToInputBuffer(addedKeyString);
         }
 
@@ -159,7 +153,7 @@ namespace Assets.Engine.Core
         private void AddCommandToQueue(string returnedLine)
         {
             // Trim the input.
-            string trimmedInput = returnedLine.Trim();
+            var trimmedInput = returnedLine.Trim();
 
             // Skip if we already entered the same command, simulation is state based... no need for flooding.
             if (_commandQueue.Contains(trimmedInput))

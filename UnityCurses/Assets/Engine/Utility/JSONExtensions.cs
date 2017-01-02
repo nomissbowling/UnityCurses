@@ -23,24 +23,21 @@ namespace Assets.Engine.Utility
         /// <param name="compress">Determines if the JSON string should be compressed before being returned as a string.</param>
         public static string Serialize(object value, bool compress)
         {
-            JsonSerializerSettings jsonSettings = new JsonSerializerSettings();
-            jsonSettings.TypeNameHandling = TypeNameHandling.All;
-            StringEnumConverter item = new StringEnumConverter();
-            item.CamelCaseText = true;
-            jsonSettings.Converters.Add(item);
+            var jsonSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All};
+            jsonSettings.Converters.Add(new StringEnumConverter {CamelCaseText = true});
 
             if (!compress)
             {
                 // Standard JSON serialization with no compression (easy to read with indents).
                 jsonSettings.Formatting = Formatting.Indented;
-                string result = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSettings);
+                var result = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSettings);
                 return result;
             }
 
             // Advanced JSON string compression.
             jsonSettings.Formatting = Formatting.None;
-            string jsonResult = JsonConvert.SerializeObject(value, Formatting.None, jsonSettings);
-            string compressedResult = Compress(jsonResult);
+            var jsonResult = JsonConvert.SerializeObject(value, Formatting.None, jsonSettings);
+            var compressedResult = Compress(jsonResult);
             return compressedResult;
         }
 
@@ -55,25 +52,22 @@ namespace Assets.Engine.Utility
         /// </param>
         public static T Deserialize<T>(string value, bool decompress)
         {
-            JsonSerializerSettings jsonSettings = new JsonSerializerSettings();
-            jsonSettings.TypeNameHandling = TypeNameHandling.All;
-            StringEnumConverter item = new StringEnumConverter();
-            item.CamelCaseText = true;
-            jsonSettings.Converters.Add(item);
+            var jsonSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All};
+            jsonSettings.Converters.Add(new StringEnumConverter {CamelCaseText = true});
 
             if (!decompress)
             {
                 // Standard JSON string deserialization (easier for user to read with indents).
                 jsonSettings.Formatting = Formatting.Indented;
-                T result = JsonConvert.DeserializeObject<T>(value, jsonSettings);
+                var result = JsonConvert.DeserializeObject<T>(value, jsonSettings);
                 return result;
             }
             else
             {
                 // Advanced JSON string decompression.
-                string jsonDecompressed = Decompress(value);
+                var jsonDecompressed = Decompress(value);
                 jsonSettings.Formatting = Formatting.None;
-                T result = JsonConvert.DeserializeObject<T>(jsonDecompressed, jsonSettings);
+                var result = JsonConvert.DeserializeObject<T>(jsonDecompressed, jsonSettings);
                 return result;
             }
         }
@@ -84,12 +78,12 @@ namespace Assets.Engine.Utility
         /// <returns>Compressed string of bytes.</returns>
         private static string Compress(string str)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(str);
-            using (MemoryStream msi = new MemoryStream(bytes))
+            var bytes = Encoding.UTF8.GetBytes(str);
+            using (var msi = new MemoryStream(bytes))
             {
-                using (MemoryStream mso = new MemoryStream())
+                using (var mso = new MemoryStream())
                 {
-                    using (GZipStream gs = new GZipStream(mso, CompressionMode.Compress))
+                    using (var gs = new GZipStream(mso, CompressionMode.Compress))
                     {
                         CopyTo(msi, gs);
                     }
@@ -104,15 +98,17 @@ namespace Assets.Engine.Utility
         /// <returns>Decompressed string.</returns>
         private static string Decompress(string str)
         {
-            byte[] bytes = Convert.FromBase64String(str);
-            using (MemoryStream msi = new MemoryStream(bytes))
-            using (MemoryStream mso = new MemoryStream())
+            var bytes = Convert.FromBase64String(str);
+            using (var msi = new MemoryStream(bytes))
             {
-                using (GZipStream gs = new GZipStream(msi, CompressionMode.Decompress))
+                using (var mso = new MemoryStream())
                 {
-                    CopyTo(gs, mso);
+                    using (var gs = new GZipStream(msi, CompressionMode.Decompress))
+                    {
+                        CopyTo(gs, mso);
+                    }
+                    return Encoding.UTF8.GetString(mso.ToArray());
                 }
-                return Encoding.UTF8.GetString(mso.ToArray());
             }
         }
 
@@ -123,7 +119,7 @@ namespace Assets.Engine.Utility
         /// <param name="dest"></param>
         private static void CopyTo(Stream src, Stream dest)
         {
-            byte[] bytes = new byte[4096];
+            var bytes = new byte[4096];
             int cnt;
             while ((cnt = src.Read(bytes, 0, bytes.Length)) != 0)
                 dest.Write(bytes, 0, cnt);

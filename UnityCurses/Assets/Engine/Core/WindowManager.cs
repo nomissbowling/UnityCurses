@@ -3,10 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
-using Assets.LinqBridge;
-using Assets.LinqBridge.Query_Operators;
 
 namespace Assets.Engine.Core
 {
@@ -132,7 +131,7 @@ namespace Assets.Engine.Core
         public override void OnTick(bool systemTick, bool skipDay)
         {
             // If the active Windows is not null and flag is set to remove then do that!
-            bool updatedModes = false;
+            var updatedModes = false;
             if ((FocusedWindow != null) && FocusedWindow.ShouldRemoveMode)
                 updatedModes = CleanWindows();
 
@@ -170,9 +169,9 @@ namespace Assets.Engine.Core
                     return false;
 
                 // Create copy of all modes so we can destroy while iterating.
-                Dictionary<Type, IWindow> tempWindowList = new Dictionary<Type, IWindow>(windowList);
-                bool updatedWindowList = false;
-                foreach (KeyValuePair<Type, IWindow> mode in tempWindowList)
+                var tempWindowList = new Dictionary<Type, IWindow>(windowList);
+                var updatedWindowList = false;
+                foreach (var mode in tempWindowList)
                 {
                     // Skip if the Windows doesn't want to be removed.
                     if (!mode.Value.ShouldRemoveMode)
@@ -198,8 +197,8 @@ namespace Assets.Engine.Core
         {
             lock (windowList)
             {
-                Dictionary<Type, IWindow> tempWindowList = new Dictionary<Type, IWindow>(windowList);
-                foreach (KeyValuePair<Type, IWindow> loadedMode in tempWindowList)
+                var tempWindowList = new Dictionary<Type, IWindow>(windowList);
+                foreach (var loadedMode in tempWindowList)
                     if (loadedMode.Key == FocusedWindow.GetType())
                         loadedMode.Value.OnWindowPostCreate();
                     else
@@ -227,7 +226,7 @@ namespace Assets.Engine.Core
                 }
 
                 // Create the game Windows using factory.
-                IWindow modeProduct = windowFactory.CreateWindow(window);
+                var modeProduct = windowFactory.CreateWindow(window);
 
                 // Add the game Windows to the simulation now that we know it does not exist in the stack yet.
                 windowList.Add(window, modeProduct);

@@ -2,7 +2,6 @@
 // Timestamp 12/31/2015@4:49 AM
 
 using System;
-using Action = Assets.LinqBridge.Action;
 
 namespace Assets.Engine.Window.Menu
 {
