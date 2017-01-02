@@ -118,8 +118,9 @@ namespace Assets.Engine.FileSystem
                 virtualPath = virtualPath.Replace('\\', '/');
 
             if ((virtualPath.Length >= 5) && (virtualPath[4] == 58) && (virtualPath.Substring(0, 5) == "user:"))
-                return Path.Combine(UserDirectoryPath, virtualPath.Substring(5));
-            return Path.Combine(ResourceDirectoryPath, virtualPath);
+                return NormalizePath(Path.Combine(UserDirectoryPath, virtualPath.Substring(5)));
+
+            return NormalizePath(Path.Combine(ResourceDirectoryPath, virtualPath));
         }
 
         /// <summary>

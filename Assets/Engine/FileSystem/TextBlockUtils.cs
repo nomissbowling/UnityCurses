@@ -86,19 +86,22 @@ namespace Assets.Engine.FileSystem
                     {
                         string errorString1;
                         var textBlock = TextBlock.Parse(streamReader.ReadToEnd(), out errorString1);
+
                         if (textBlock == null)
                             errorString = string.Format("Parsing text block failed \"{0}\" ({1}).", path, errorString1);
+
                         return textBlock;
                     }
                 }
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                errorString = string.Format("Reading file failed \"{0}\".", path);
+                // File not found errors are ignored and don't throw a full on error.
+                errorString = string.Format("File not found \"{0}\".", path);
                 fileNotFound = true;
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 errorString = string.Format("Reading file failed \"{0}\".", path);
                 return null;
@@ -122,10 +125,12 @@ namespace Assets.Engine.FileSystem
         {
             string errorString;
             var textBlock = LoadFromRealFile(path, out errorString);
+
             if (textBlock != null)
                 return textBlock;
+
             Debug.LogError(errorString);
-            return textBlock;
+            return null;
         }
     }
 }

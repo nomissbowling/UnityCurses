@@ -459,9 +459,13 @@ namespace Assets.ProjectCommon
             string error;
             var customFilename = VirtualFileSystem.GetRealPathByVirtual(_keybindsPath);
             var customblock = TextBlockUtils.LoadFromRealFile(customFilename, out error);
-            if (error != null)
-                Debug.LogError(string.Format("Loading file failed \"{0}\"  // {1}.", error, customFilename));
 
+            // Only print out error if one exists, FileNotFound is ignored error.
+            if (customblock == null)
+            {
+                Debug.Log("No custom keyboard and mouse binds found, skipping file load...");
+                return;
+            }
 
             var controlBloc = customblock.FindChild("Controls");
             if (controlBloc == null)

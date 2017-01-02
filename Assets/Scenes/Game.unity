@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 232142836}
   - component: {fileID: 232142835}
   m_Layer: 5
-  m_Name: ScreenCanvas
+  m_Name: Canvas
   m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

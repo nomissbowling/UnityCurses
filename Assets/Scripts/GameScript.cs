@@ -62,8 +62,7 @@ namespace Assets.Scripts
             Debug.ClearDeveloperConsole();
 
             // Creates instance of the engine application.
-            Debug.Log("EngineApp Startup Script");
-            Debug.Log("Starting...");
+            Debug.Log("EngineApp Starting...");
 
             // Prevent Unity from destroying this object when attaching new scenes.
             DontDestroyOnLoad(this);
@@ -137,7 +136,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void Reset()
         {
-            Debug.Log("ExampleScript::Reset()");
+            Debug.Log("GameScript::Reset()");
         }
 
         /// <summary>
@@ -169,12 +168,18 @@ namespace Assets.Scripts
 
         protected virtual void OnKeyUp(GameControlsKeyUpEventData evt)
         {
-            throw new NotImplementedException();
+            if (evt == null)
+                return;
+
+            Debug.Log("GameScript::OnKeyUp: " + evt.ControlKey);
         }
 
         protected virtual void OnKeyDown(GameControlsKeyDownEventData evt)
         {
-            throw new NotImplementedException();
+            if (evt == null)
+                return;
+
+            Debug.Log("GameScript::OnKeyDown: " + evt.ControlKey);
         }
 
         /// <summary>
@@ -183,7 +188,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void Awake()
         {
-            Debug.Log("ExampleScript::Awake()");
+            Debug.Log("GameScript::Awake()");
         }
 
         /// <summary>
@@ -202,7 +207,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnEnable()
         {
-            Debug.Log("ExampleScript::OnEnable()");
+            Debug.Log("GameScript::OnEnable()");
         }
 
         /// <summary>
@@ -211,7 +216,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnDestroy()
         {
-            Debug.Log("ExampleScript::OnDestroy()");
+            Debug.Log("GameScript::OnDestroy()");
         }
 
         /// <summary>
@@ -224,7 +229,7 @@ namespace Assets.Scripts
             if (GameEngineApp.Instance != null)
                 GameEngineApp.Instance.Destroy();
 
-            Debug.Log("OnApplicationQuit::OnApplicationQuit()");
+            Debug.Log("GameScript::OnApplicationQuit()");
             Debug.Log("Goodbye!");
         }
 
@@ -234,7 +239,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnApplicationPause(bool pauseStatus)
         {
-            Debug.Log("ExampleScript::OnApplicationPause()");
+            Debug.Log("GameScript::OnApplicationPause()");
             _isPaused = pauseStatus;
         }
 
@@ -244,7 +249,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnApplicationFocus(bool hasFocus)
         {
-            Debug.Log("ExampleScript::OnApplicationFocus()");
+            Debug.Log("GameScript::OnApplicationFocus()");
             _isPaused = !hasFocus;
         }
 

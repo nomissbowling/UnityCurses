@@ -8,12 +8,12 @@ namespace Assets.Engine.UISystem
     ///     that it can bind to the wolf curses style of window management to Unity with this class acting as the bridge
     ///     between the two systems.
     /// </summary>
-    public class ScreenControlManager : MonoBehaviour
+    public class ScreenControlManager
     {
         /// <summary>
         ///     Holds reference to the canvas object which all GUI controls are attached to while the game is running.
         /// </summary>
-        [SerializeField] private Canvas _controlsCanvas;
+        private Canvas _controlsCanvas;
 
         public ScreenControlManager(Canvas guiRenderer)
         {
@@ -38,7 +38,10 @@ namespace Assets.Engine.UISystem
         /// <remarks>http://answers.unity3d.com/answers/1084894/view.html</remarks>
         public void AddTextToCanvas(string textString)
         {
-            var text = gameObject.AddComponent<Text>();
+            if (_controlsCanvas == null)
+                return;
+
+            var text = _controlsCanvas.gameObject.AddComponent<Text>();
             text.text = textString;
 
             var arialFont = (Font) Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
@@ -48,7 +51,7 @@ namespace Assets.Engine.UISystem
 
         public void PlaySound(string name)
         {
-            var audio = gameObject.AddComponent<AudioSource>();
+            var audio = _controlsCanvas.gameObject.AddComponent<AudioSource>();
             var clip = (AudioClip) Resources.Load(name);
             if (clip != null)
                 audio.PlayOneShot(clip, 1.0F);

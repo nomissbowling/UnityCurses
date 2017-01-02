@@ -54,7 +54,6 @@ namespace Assets.Game
         public ScreenControlManager ControlManager
         {
             get { return _controlManager; }
-            private set { _controlManager = value; }
         }
 
         /// <summary>
