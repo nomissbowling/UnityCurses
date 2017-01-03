@@ -1,9 +1,6 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/07/2016@7:10 PM
 
-using System;
-using Assets.Game;
-using Assets.ProjectCommon;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -62,21 +59,13 @@ namespace Assets.Scripts
             Debug.ClearDeveloperConsole();
 
             // Creates instance of the engine application.
-            Debug.Log("EngineApp Starting...");
+            Debug.Log("----------PROGRAM START----------");
 
             // Prevent Unity from destroying this object when attaching new scenes.
             DontDestroyOnLoad(this);
-
-            // Entry point for the entire simulation.
-            GameEngineApp.Create(GetComponentInParent<Canvas>());
-
-            // Hook event to know when screen buffer wants to redraw the entire console screen.
-            GameEngineApp.Instance.SceneGraph.ScreenBufferDirtyEvent += Simulation_ScreenBufferDirtyEvent;
-
-            // Accept commands of the player.
-            if (GameControlsManager.Instance != null)
-                GameControlsManager.Instance.GameControlsEvent += GameControlsManager_GameControlsEvent;
         }
+
+        public static Canvas Canvas { get; set; }
 
         /// <summary>
         ///     Update is called every frame, if the MonoBehaviour is enabled.
@@ -84,32 +73,6 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void Update()
         {
-            // Skip if the example application is not ready to execute.
-            if (GameEngineApp.Instance == null)
-                return;
-
-            // Send to currently active window and form if they exist.
-            var e = Event.current;
-            if ((e != null) && e.isKey)
-                switch (e.keyCode)
-                {
-                    case KeyCode.Return:
-                        GameEngineApp.Instance.InputManager.SendInputBufferAsCommand();
-                        break;
-                    case KeyCode.Backspace:
-                        GameEngineApp.Instance.InputManager.RemoveLastCharOfInputBuffer();
-                        break;
-                    default:
-                        GameEngineApp.Instance.InputManager.AddCharToInputBuffer(e.character);
-                        break;
-                }
-
-            // Simulation takes any numbers of pulses to determine seconds elapsed.
-            GameEngineApp.Instance.OnTick(true, false);
-
-            // Provides the time since last unity tick for control manager.
-            if (GameControlsManager.Instance != null)
-                GameControlsManager.Instance.DoTick(Time.deltaTime);
         }
 
         /// <summary>
@@ -140,49 +103,6 @@ namespace Assets.Scripts
         }
 
         /// <summary>
-        ///     Interprets commands of an external influence such as the player using his keyboard and mouse.
-        /// </summary>
-        /// <param name="e">Incoming key data that needs to be interpreted into correct key-up or key-down events.</param>
-        private void GameControlsManager_GameControlsEvent(GameControlsEventData e)
-        {
-            // Skip if the example application is not ready to execute.
-            if (GameEngineApp.Instance == null)
-                return;
-
-            //GameControlsKeyDownEventData
-            {
-                var evt = e as GameControlsKeyDownEventData;
-                if (evt != null)
-                {
-                    OnKeyDown(evt);
-                    return;
-                }
-            }
-
-            //GameControlsKeyUpEventData
-            {
-                var evt = e as GameControlsKeyUpEventData;
-                OnKeyUp(evt);
-            }
-        }
-
-        protected virtual void OnKeyUp(GameControlsKeyUpEventData evt)
-        {
-            if (evt == null)
-                return;
-
-            Debug.Log("GameScript::OnKeyUp: " + evt.ControlKey);
-        }
-
-        protected virtual void OnKeyDown(GameControlsKeyDownEventData evt)
-        {
-            if (evt == null)
-                return;
-
-            Debug.Log("GameScript::OnKeyDown: " + evt.ControlKey);
-        }
-
-        /// <summary>
         ///     Awake is called when the script instance is being loaded.
         /// </summary>
         // ReSharper disable once UnusedMember.Local
@@ -197,8 +117,8 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnGUI()
         {
-            if (_isPaused && (GameEngineApp.Instance != null))
-                GameEngineApp.Instance.ControlManager.AddTextToCanvas("Game paused");
+            if (_isPaused && _instance != null)
+                Debug.Log("----------PROGRAM PAUSED----------");
         }
 
         /// <summary>
@@ -216,7 +136,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnDestroy()
         {
-            Debug.Log("GameScript::OnDestroy()");
+            Debug.Log("----------PROGRAM END----------");
         }
 
         /// <summary>
@@ -225,12 +145,7 @@ namespace Assets.Scripts
         // ReSharper disable once UnusedMember.Local
         private void OnApplicationQuit()
         {
-            // Cleans up simulation
-            if (GameEngineApp.Instance != null)
-                GameEngineApp.Instance.Destroy();
-
             Debug.Log("GameScript::OnApplicationQuit()");
-            Debug.Log("Goodbye!");
         }
 
         /// <summary>
@@ -251,23 +166,6 @@ namespace Assets.Scripts
         {
             Debug.Log("GameScript::OnApplicationFocus()");
             _isPaused = !hasFocus;
-        }
-
-        /// <summary>Write all text from objects to screen.</summary>
-        /// <param name="tuiContent">The text user interface content.</param>
-        private static void Simulation_ScreenBufferDirtyEvent(string tuiContent)
-        {
-            GameEngineApp.Instance.ControlManager.AddTextToCanvas(tuiContent);
-        }
-
-        /// <summary>
-        ///     Forces the current simulation app to close and return control to underlying operating system.
-        /// </summary>
-        public static void Destroy()
-        {
-            // Cleans up simulation
-            if (GameEngineApp.Instance != null)
-                GameEngineApp.Instance.Destroy();
         }
     }
 }
