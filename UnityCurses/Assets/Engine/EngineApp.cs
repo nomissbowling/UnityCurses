@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Assets.Engine.Window.Control;
-using UnityEngine;
 
 namespace Assets.Engine
 {
@@ -13,7 +12,7 @@ namespace Assets.Engine
     ///     Base simulation application class object. This class should not be declared directly but inherited by actual
     ///     instance of game controller.
     /// </summary>
-    public abstract class EngineApp : MonoBehaviour, ITick
+    public abstract class EngineApp : ITick
     {
         /// <summary>
         ///     Determines if the dynamic menu system should show the command names or only numbers. If false then only numbers
@@ -45,8 +44,6 @@ namespace Assets.Engine
         ///     Spinning character pixel.
         /// </summary>
         private SpinningPixel _spinningPixel;
-
-        private static EngineApp _instance;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:TrailGame.EngineApp" /> class.
@@ -127,10 +124,7 @@ namespace Assets.Engine
         ///     Holds reference to the current simulation logic that inherits and extends the functionality provided by engine app
         ///     base ticks.
         /// </summary>
-        public static EngineApp Instance
-        {
-            get { return _instance ?? (_instance = (new GameObject("EngineApp")).AddComponent<EngineApp>()); }
-        }
+        public static EngineApp Instance { get; private set; }
 
         /// <summary>
         ///     Called when the simulation is ticked by underlying operating system, game engine, or potato. Each of these system
@@ -213,10 +207,10 @@ namespace Assets.Engine
             }
 
             // Use the instance that was passed into us from constructor.
-            _instance = instance;
+            Instance = instance;
 
             // Call OnCreate on the abstract method to allow inheriting simulation data to initialize.
-            if (!_instance.OnCreate())
+            if (!Instance.OnCreate())
             {
                 throw new InvalidOperationException(
                     "Unable to create engine instance, there was a problem during Init and OnCreate methods!");
@@ -266,7 +260,7 @@ namespace Assets.Engine
             }
 
             // Destroys the session instance.
-            _instance = null;
+            Instance = null;
         }
 
         /// <summary>
@@ -294,6 +288,6 @@ namespace Assets.Engine
         ///     Called by the text user interface scene graph renderer before it asks the active window to render itself out for
         ///     display.
         /// </summary>
-        public abstract string OnPreRenderScene();
+        public abstract string OnPreRender();
     }
 }

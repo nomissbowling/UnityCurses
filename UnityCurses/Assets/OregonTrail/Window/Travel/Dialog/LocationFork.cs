@@ -132,7 +132,9 @@ namespace Assets.OregonTrail.Window.Travel.Dialog
                 }
             }
             else
+            {
                 SetForm(typeof(LookAtMap));
+            }
         }
     }
 }

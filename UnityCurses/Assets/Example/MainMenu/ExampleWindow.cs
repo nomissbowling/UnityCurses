@@ -8,7 +8,6 @@ using Assets.Engine.Window;
 using Assets.Example.CustomInput;
 using Assets.Example.Prompt;
 using Assets.Example.Question;
-using Assets.Game;
 
 namespace Assets.Example.MainMenu
 {
@@ -48,7 +47,7 @@ namespace Assets.Example.MainMenu
 
         private void CloseSimulation()
         {
-            Program.Destroy();
+            EngineApp.Shutdown();
         }
 
         private void CustomPrompt()

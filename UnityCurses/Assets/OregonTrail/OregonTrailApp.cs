@@ -181,7 +181,7 @@ namespace Assets.OregonTrail
         ///     Called by the text user interface scene graph renderer before it asks the active window to render itself out for
         ///     display.
         /// </summary>
-        public override string OnPreRenderScene()
+        public override string OnPreRender()
         {
             // Total number of turns that have passed in the simulation.
             var tui = new StringBuilder();
