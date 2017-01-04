@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Assets.Engine;
 using Assets.Engine.Utility;
 using Assets.OregonTrail.Entity.Item;
 using Assets.OregonTrail.Entity.Person;
@@ -235,7 +236,7 @@ namespace Assets.OregonTrail.Entity.Vehicle
 
                 // Variables that will hold the distance we should travel in the next day.
                 var total_miles = Mileage + (cost_animals - 110) / 2.5 +
-                                  10 * OregonTrailApp.Instance.Random.NextDouble();
+                                  10 * EngineApp.Random.NextDouble();
 
                 return (int) Math.Abs(total_miles);
             }
@@ -435,7 +436,7 @@ namespace Assets.OregonTrail.Entity.Vehicle
             Mileage = RandomMileage;
 
             // Sometimes things just go slow on the trail, cut mileage in half if above zero randomly.
-            if (OregonTrailApp.Instance.Random.NextBool() && Mileage > 0)
+            if (EngineApp.Random.NextBool() && Mileage > 0)
                 Mileage = Mileage / 2;
 
             // Check for random events that might trigger regardless of calculations made.
@@ -481,7 +482,7 @@ namespace Assets.OregonTrail.Entity.Vehicle
                 return;
 
             // Randomly select one of the parts to break in the vehicle.
-            var randomPartIndex = OregonTrailApp.Instance.Random.Next(_parts.Count);
+            var randomPartIndex = EngineApp.Random.Next(_parts.Count);
 
             // Sets the broken part for other processes to deal with.
             BrokenPart = _parts[randomPartIndex];
@@ -591,7 +592,7 @@ namespace Assets.OregonTrail.Entity.Vehicle
             foreach (var itemPair in DefaultInventory)
             {
                 // Determine if we will be making more of this item, if it's the last one then we have to.
-                if (OregonTrailApp.Instance.Random.NextBool())
+                if (EngineApp.Random.NextBool())
                     continue;
 
                 // Skip certain items that cannot be traded.
@@ -619,7 +620,7 @@ namespace Assets.OregonTrail.Entity.Vehicle
                             amountToMake = 1;
 
                         // Add some random amount of the item from one to total amount.
-                        var createdAmount = OregonTrailApp.Instance.Random.Next(1, amountToMake);
+                        var createdAmount = EngineApp.Random.Next(1, amountToMake);
 
                         // Init a new item with generated quantity.
                         var createdItem = new SimItem(itemPair.Value, createdAmount);
@@ -660,11 +661,11 @@ namespace Assets.OregonTrail.Entity.Vehicle
                     continue;
 
                 // Determine if we will be making more of this item.
-                if (OregonTrailApp.Instance.Random.NextBool())
+                if (EngineApp.Random.NextBool())
                     continue;
 
                 // Add some random amount of the item from one to total amount.
-                var createdAmount = OregonTrailApp.Instance.Random.Next(1, itemPair.Value.MaxQuantity / 4);
+                var createdAmount = EngineApp.Random.Next(1, itemPair.Value.MaxQuantity / 4);
 
                 // Add the amount ahead of time so we can figure out of it is above maximum.
                 var simulatedAmountAdd = itemPair.Value.Quantity + createdAmount;
@@ -709,11 +710,11 @@ namespace Assets.OregonTrail.Entity.Vehicle
                     continue;
 
                 // Determine if we will be destroying this item.
-                if (OregonTrailApp.Instance.Random.NextBool())
+                if (EngineApp.Random.NextBool())
                     continue;
 
                 // Shutdown some random amount of the item from one to total amount.
-                var destroyAmount = OregonTrailApp.Instance.Random.Next(1, itemPair.Value.Quantity);
+                var destroyAmount = EngineApp.Random.Next(1, itemPair.Value.Quantity);
 
                 // Remove the amount we destroyed from the actual inventory.
                 Inventory[itemPair.Key].ReduceQuantity(destroyAmount);

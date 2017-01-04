@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System.Collections.ObjectModel;
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Location;
 using Assets.OregonTrail.Entity.Vehicle;
 using Assets.OregonTrail.Window.Travel;
@@ -180,7 +181,7 @@ namespace Assets.OregonTrail.Module.Trail
             CurrentLocation.Status = LocationStatus.Arrived;
 
             // Check for end of game if we are at the end of the trail.
-            OregonTrailApp.Instance.WindowManager.Add(typeof(Travel));
+            EngineApp.WindowManager.Add(typeof(Travel));
         }
 
         /// <summary>Forcefully inserts skip location into location list after current location.</summary>

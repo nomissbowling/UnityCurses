@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System.Diagnostics.CodeAnalysis;
+using Assets.Engine;
 using Assets.OregonTrail.Entity;
 using Assets.OregonTrail.Module.Director;
 using Assets.OregonTrail.Window.RandomEvent;
@@ -37,7 +38,7 @@ namespace Assets.OregonTrail.Event.Animal
             OregonTrailApp.Instance.Vehicle.Inventory[Entities.Ammo].ReduceQuantity(10);
 
             // Damage the person that was bit by the snake, it might be a little or a huge poisonousness bite.
-            if (OregonTrailApp.Instance.Random.NextBool())
+            if (EngineApp.Random.NextBool())
             {
                 person.Infect();
                 person.Damage(256);

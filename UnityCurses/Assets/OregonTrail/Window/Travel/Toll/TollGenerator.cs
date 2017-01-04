@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Location.Point;
 
 namespace Assets.OregonTrail.Window.Travel.Toll
@@ -20,7 +21,7 @@ namespace Assets.OregonTrail.Window.Travel.Toll
         /// <param name="tollRoad">Location that is going to cost the player money in order to use the path to travel to it.</param>
         public TollGenerator(TollRoad tollRoad)
         {
-            _cost = OregonTrailApp.Instance.Random.Next(1, 13);
+            _cost = EngineApp.Random.Next(1, 13);
             _road = tollRoad;
         }
 

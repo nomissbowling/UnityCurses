@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Location;
 using Assets.OregonTrail.Entity.Location.Point;
 
@@ -104,7 +105,7 @@ namespace Assets.OregonTrail.Module.Trail
         /// <returns>Trail length for this location, distance vehicle will need to travel before arrival at next location.</returns>
         private int CreateRandomLength()
         {
-            var generatedLength = OregonTrailApp.Instance.Random.Next(LengthMin, LengthMax);
+            var generatedLength = EngineApp.Random.Next(LengthMin, LengthMax);
             return generatedLength;
         }
 

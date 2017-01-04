@@ -1,7 +1,5 @@
 using System;
-using System.Globalization;
 using System.IO;
-using System.Threading;
 using UnityEngine;
 
 namespace Assets.Engine.FileSystem
@@ -10,12 +8,13 @@ namespace Assets.Engine.FileSystem
     ///     Keeps track of file locations on users disk across whatever platforms Unity supports using the persistent data
     ///     path.
     /// </summary>
-    public static class VirtualFileSystem
+    public sealed class VirtualFileSystem
     {
         internal static readonly object FileLock = new object();
         internal static bool Started;
 
         private static bool _loggingFileOperations;
+        public static VirtualFileSystem Instance { get; private set; }
 
         public static bool LoggingFileOperations
         {
@@ -72,19 +71,21 @@ namespace Assets.Engine.FileSystem
             get { return Application.persistentDataPath; }
         }
 
+        public static bool IsClosing { get; set; }
+
         /// <summary>
         ///     Determines if the path is a user directory path.
         /// </summary>
         public static bool IsUserDirectoryPath(string path)
         {
-            return (path.Length >= 5) && (path[4] == 58) && (path.Substring(0, 5) == "user:");
+            return path.Length >= 5 && path[4] == 58 && path.Substring(0, 5) == "user:";
         }
 
         /// <summary>Reset the current directory of the application.</summary>
         public static void _CorrectCurrentDirectory()
         {
-            if ((Application.platform != RuntimePlatform.WindowsPlayer) &&
-                (Application.platform != RuntimePlatform.WindowsEditor))
+            if (Application.platform != RuntimePlatform.WindowsPlayer &&
+                Application.platform != RuntimePlatform.WindowsEditor)
                 return;
 
             Directory.SetCurrentDirectory(ExecutableDirectoryPath);
@@ -92,18 +93,31 @@ namespace Assets.Engine.FileSystem
 
         public static bool Init()
         {
-            // Set culture to en-US to prevent strange things happening with numbers and thousands-separators.
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("en-US");
+            // Destroy any existing instance.
+            if (Instance != null)
+            {
+                Shutdown();
+                Instance = null;
+            }
 
-            Debug.Log("VirtualFileSystem::Init()");
+            // Create new instance if none exists.
+            if (Instance == null)
+            {
+                Debug.Log("VirtualFileSystem::Init()");
+                Instance = new VirtualFileSystem();
+            }
+
+            // Make the virtual filesystem as being started.
             Started = true;
             return Started;
         }
 
         public static void Shutdown()
         {
-            Debug.Log("VirtualFileSystem::Shutdown()");
+            if (!IsClosing)
+                Debug.Log("VirtualFileSystem::Shutdown()");
+
+            IsClosing = true;
         }
 
         /// <summary>
@@ -113,11 +127,11 @@ namespace Assets.Engine.FileSystem
         /// <returns>The real file path.</returns>
         public static string GetRealPathByVirtual(string virtualPath)
         {
-            if ((Application.platform != RuntimePlatform.WindowsPlayer) &&
-                (Application.platform != RuntimePlatform.WindowsEditor))
+            if (Application.platform != RuntimePlatform.WindowsPlayer &&
+                Application.platform != RuntimePlatform.WindowsEditor)
                 virtualPath = virtualPath.Replace('\\', '/');
 
-            if ((virtualPath.Length >= 5) && (virtualPath[4] == 58) && (virtualPath.Substring(0, 5) == "user:"))
+            if (virtualPath.Length >= 5 && virtualPath[4] == 58 && virtualPath.Substring(0, 5) == "user:")
                 return NormalizePath(Path.Combine(UserDirectoryPath, virtualPath.Substring(5)));
 
             return NormalizePath(Path.Combine(ResourceDirectoryPath, virtualPath));
@@ -136,7 +150,7 @@ namespace Assets.Engine.FileSystem
             realPath = NormalizePath(realPath);
             var str = Path.IsPathRooted(realPath) ? realPath : Path.Combine(ExecutableDirectoryPath, realPath);
 
-            if ((str.Length <= ResourceDirectoryPath.Length) ||
+            if (str.Length <= ResourceDirectoryPath.Length ||
                 !string.Equals(str.Substring(0, ResourceDirectoryPath.Length), ResourceDirectoryPath,
                     StringComparison.OrdinalIgnoreCase))
                 return string.Empty;
@@ -149,8 +163,8 @@ namespace Assets.Engine.FileSystem
             var str = path;
 
             if (str != null)
-                str = (Application.platform != RuntimePlatform.WindowsPlayer) &&
-                      (Application.platform != RuntimePlatform.WindowsEditor)
+                str = Application.platform != RuntimePlatform.WindowsPlayer &&
+                      Application.platform != RuntimePlatform.WindowsEditor
                     ? str.Replace('\\', '/')
                     : str.Replace('/', '\\');
 

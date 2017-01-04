@@ -228,7 +228,7 @@ namespace Assets.OregonTrail.Window.Travel
             var game = OregonTrailApp.Instance;
 
             // Skip ticking logic for travel mode if game is closing.
-            if (game.IsClosing)
+            if (EngineApp.IsClosing)
                 return;
 
             // Skip if we have already ended the game.
@@ -239,7 +239,7 @@ namespace Assets.OregonTrail.Window.Travel
             if (game.Trail.CurrentLocation.LastLocation || game.Vehicle.PassengersDead)
             {
                 GameOver = true;
-                game.WindowManager.Add(typeof(GameOver.GameOver));
+                EngineApp.WindowManager.Add(typeof(GameOver.GameOver));
                 return;
             }
 

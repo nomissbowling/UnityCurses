@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
+using Assets.Engine;
 using Assets.OregonTrail.Entity;
 using Assets.OregonTrail.Module.Director;
 using Assets.OregonTrail.Window.RandomEvent;
@@ -42,7 +43,7 @@ namespace Assets.OregonTrail.Event.Prefab
             var spoiledFood = vehicle.Inventory[Entities.Food].Quantity / 4;
 
             // Remove some random amount of food, the minimum being three pieces.
-            vehicle.Inventory[Entities.Food].ReduceQuantity(OregonTrailApp.Instance.Random.Next(3, spoiledFood));
+            vehicle.Inventory[Entities.Food].ReduceQuantity(EngineApp.Random.Next(3, spoiledFood));
         }
 
         /// <summary>

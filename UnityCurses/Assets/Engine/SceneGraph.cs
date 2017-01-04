@@ -104,15 +104,15 @@ namespace Assets.Engine
         {
             // Spinning ticker that shows activity, lets us know if application hangs or freezes.
             var tui = new StringBuilder();
-            tui.Append(string.Format("[ {0} ] - ", _simUnit.TickPhase));
+            tui.Append(string.Format("[ {0} ] - ", EngineApp.TickPhase));
 
             // Keeps track of active Windows name and active Windows current state name for debugging purposes.
-            tui.Append(_simUnit.WindowManager.FocusedWindow != null &&
-                       _simUnit.WindowManager.FocusedWindow.CurrentForm != null
-                ? string.Format("Window({0}): {1}({2}) - ", _simUnit.WindowManager.Count,
-                    _simUnit.WindowManager.FocusedWindow, _simUnit.WindowManager.FocusedWindow.CurrentForm)
-                : string.Format("Window({0}): {1}() - ", _simUnit.WindowManager.Count,
-                    _simUnit.WindowManager.FocusedWindow));
+            tui.Append(EngineApp.WindowManager.FocusedWindow != null &&
+                       EngineApp.WindowManager.FocusedWindow.CurrentForm != null
+                ? string.Format("Window({0}): {1}({2}) - ", EngineApp.WindowManager.Count,
+                    EngineApp.WindowManager.FocusedWindow, EngineApp.WindowManager.FocusedWindow.CurrentForm)
+                : string.Format("Window({0}): {1}() - ", EngineApp.WindowManager.Count,
+                    EngineApp.WindowManager.FocusedWindow));
 
             // Allows the implementing simulation to control text before window is rendered out.
             tui.Append(_simUnit.OnPreRender());
@@ -121,11 +121,11 @@ namespace Assets.Engine
             tui.Append(string.Format("{0}{1}", RenderWindow(), Environment.NewLine));
 
             // Determines if the user is allowed to see their input from buffer as they type it, or is it stored until they press enter.
-            if (_simUnit.WindowManager.AcceptingInput)
-                tui.Append(_simUnit.WindowManager.FocusedWindow != null
-                    ? string.Format("{0} {1}", _simUnit.WindowManager.FocusedWindow.PromptText,
-                        _simUnit.InputManager.InputBuffer)
-                    : string.Format("{0} {1}", PROMPT_TEXT_DEFAULT, _simUnit.InputManager.InputBuffer));
+            if (EngineApp.WindowManager.AcceptingInput)
+                tui.Append(EngineApp.WindowManager.FocusedWindow != null
+                    ? string.Format("{0} {1}", EngineApp.WindowManager.FocusedWindow.PromptText,
+                        EngineApp.InputManager.InputBuffer)
+                    : string.Format("{0} {1}", PROMPT_TEXT_DEFAULT, EngineApp.InputManager.InputBuffer));
 
             // Outputs the result of the string builder to TUI builder above.
             return tui.ToString();
@@ -137,15 +137,15 @@ namespace Assets.Engine
         {
             // If TUI for active game Windows is not null or empty then use it.
             // ReSharper disable once InvertIf
-            if (_simUnit.WindowManager.FocusedWindow != null)
+            if (EngineApp.WindowManager.FocusedWindow != null)
             {
-                var activeWindowText = _simUnit.WindowManager.FocusedWindow.OnRenderWindow();
+                var activeWindowText = EngineApp.WindowManager.FocusedWindow.OnRenderWindow();
                 if (!string.IsNullOrEmpty(activeWindowText) && !activeWindowText.IsNullOrWhiteSpace())
                     return activeWindowText;
             }
 
             // Otherwise, display default message if null for Windows.
-            return _simUnit.WindowManager.FocusedWindow == null ? GAMEMODE_EMPTY_TUI : GAMEMODE_DEFAULT_TUI;
+            return EngineApp.WindowManager.FocusedWindow == null ? GAMEMODE_EMPTY_TUI : GAMEMODE_DEFAULT_TUI;
         }
 
         /// <summary>

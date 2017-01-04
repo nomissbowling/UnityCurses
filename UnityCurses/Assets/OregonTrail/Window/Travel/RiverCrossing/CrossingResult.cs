@@ -3,6 +3,7 @@
 
 using System;
 using System.Text;
+using Assets.Engine;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
 using Assets.Engine.Window.Form.Input;
@@ -50,7 +51,7 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
             switch (UserData.River.CrossingType)
             {
                 case RiverCrossChoice.Ford:
-                    if (OregonTrailApp.Instance.Random.NextBool())
+                    if (EngineApp.Random.NextBool())
                     {
                         // No loss in time, but warning to let the player know it's dangerous.
                         _crossingResult.AppendLine(string.Format("{0}It was a muddy crossing,", Environment.NewLine));

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Assets.Engine.Window.Control;
+using UnityEngine;
 
 namespace Assets.Engine
 {
@@ -31,19 +32,19 @@ namespace Assets.Engine
         /// <summary>
         ///     Time and date of latest system tick, used to measure total elapsed time and tick simulation after each second.
         /// </summary>
-        private DateTime _currentTickTime;
+        private static DateTime _currentTickTime;
 
         /// <summary>
         ///     Last known time the simulation was ticked with logic and all sub-systems. This is not the same as a system tick
         ///     which can happen hundreds of thousands of times a second or just a few, we only measure the difference in time on
         ///     them.
         /// </summary>
-        private DateTime _lastTickTime;
+        private static DateTime _lastTickTime;
 
         /// <summary>
         ///     Spinning character pixel.
         /// </summary>
-        private SpinningPixel _spinningPixel;
+        private static SpinningPixel _spinningPixel;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:TrailGame.EngineApp" /> class.
@@ -76,44 +77,44 @@ namespace Assets.Engine
         /// <summary>
         ///     Determines if the simulation is currently closing down.
         /// </summary>
-        public bool IsClosing { get; private set; }
+        public static bool IsClosing { get; private set; }
 
         /// <summary>
         ///     Shows the current status of the simulation visually as a spinning glyph, the purpose of which is to show that there
         ///     is no hang in the simulation or logic controllers and everything is moving along and waiting for input or
         ///     displaying something to user.
         /// </summary>
-        internal string TickPhase { get; private set; }
+        internal static string TickPhase { get; private set; }
 
         /// <summary>
         ///     Total number of ticks that have gone by from measuring system ticks, this means this measures the total number of
         ///     seconds that have gone by using the pulses and time dilation without the use of dirty times that spawn more
         ///     threads.
         /// </summary>
-        private ulong TotalSecondsTicked { get; set; }
+        private static ulong TotalSecondsTicked { get; set; }
 
         /// <summary>
         ///     Used for rolling the virtual dice in the simulation to determine the outcome of various events.
         /// </summary>
-        public Randomizer Random { get; private set; }
+        public static Randomizer Random { get; private set; }
 
         /// <summary>
         ///     Keeps track of the currently attached game Windows, which one is active, and getting text user interface data.
         /// </summary>
-        public WindowManager WindowManager { get; private set; }
+        public static WindowManager WindowManager { get; private set; }
 
         /// <summary>
         ///     Handles input from the users keyboard, holds an input buffer and will push it to the simulation when return key is
         ///     pressed.
         /// </summary>
-        public InputManager InputManager { get; private set; }
+        public static InputManager InputManager { get; private set; }
 
         /// <summary>
         ///     Shows the current state of the simulation as text only interface (TUI). Uses default constants if the attached
         ///     Windows
         ///     or state does not override this functionality and it is ticked.
         /// </summary>
-        public SceneGraph SceneGraph { get; private set; }
+        public static SceneGraph SceneGraph { get; private set; }
 
         /// <summary>
         ///     Determines what windows the simulation will be capable of using and creating using the window managers factory.
@@ -201,20 +202,16 @@ namespace Assets.Engine
         {
             // Ensure the instance does not already exist.
             if (Instance != null)
-            {
                 throw new InvalidOperationException(
                     "Unable to create new instance of game simulation since it already exists!");
-            }
 
             // Use the instance that was passed into us from constructor.
             Instance = instance;
 
             // Call OnCreate on the abstract method to allow inheriting simulation data to initialize.
             if (!Instance.OnCreate())
-            {
                 throw new InvalidOperationException(
                     "Unable to create engine instance, there was a problem during Init and OnCreate methods!");
-            }
         }
 
         /// <summary>
@@ -237,27 +234,25 @@ namespace Assets.Engine
         /// </summary>
         public static void Shutdown()
         {
-            if (Instance != null)
-            {
-                // Set flag that we are closing now so we can ignore ticks during shutdown.
-                Instance.IsClosing = true;
+            // Final logging message is only printed once.
+            if (!IsClosing)
+                Debug.Log("----------PROGRAM END----------");
 
-                // Allows game simulation above us to cleanup any data structures it cares about.
-                Instance.OnShutdown();
+            // Set flag that we are closing now so we can ignore ticks during shutdown.
+            IsClosing = true;
 
-                // Remove simulation presentation variables.
-                Instance._lastTickTime = DateTime.MinValue;
-                Instance._currentTickTime = DateTime.MinValue;
-                Instance.TotalSecondsTicked = 0;
-                Instance._spinningPixel = null;
-                Instance.TickPhase = string.Empty;
+            // Remove simulation presentation variables.
+            _lastTickTime = DateTime.MinValue;
+            _currentTickTime = DateTime.MinValue;
+            TotalSecondsTicked = 0;
+            _spinningPixel = null;
+            TickPhase = string.Empty;
 
-                // Remove simulation core modules.
-                Instance.Random = null;
-                Instance.WindowManager = null;
-                Instance.SceneGraph = null;
-                Instance.InputManager = null;
-            }
+            // Remove simulation core modules.
+            Random = null;
+            WindowManager = null;
+            SceneGraph = null;
+            InputManager = null;
 
             // Destroys the session instance.
             Instance = null;

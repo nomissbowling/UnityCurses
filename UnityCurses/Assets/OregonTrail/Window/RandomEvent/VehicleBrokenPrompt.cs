@@ -3,6 +3,7 @@
 
 using System;
 using System.Text;
+using Assets.Engine;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
 using Assets.Engine.Window.Form.Input;
@@ -71,7 +72,7 @@ namespace Assets.OregonTrail.Window.RandomEvent
                 case DialogResponse.Yes:
                     // Depending on dice roll player might be able to fix their broken vehicle part.
                     game.EventDirector.TriggerEvent(game.Vehicle,
-                        game.Random.NextBool() ? typeof(RepairVehiclePart) : typeof(NoRepairVehicle));
+                        EngineApp.Random.NextBool() ? typeof(RepairVehiclePart) : typeof(NoRepairVehicle));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("reponse", reponse, null);

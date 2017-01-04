@@ -333,7 +333,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
                 return;
 
             // There is a change we will not tick awareness this time.
-            if (OregonTrailApp.Instance.Random.NextBool())
+            if (EngineApp.Random.NextBool())
                 return;
 
             // Check target ticking if not null and shooting word not none.
@@ -368,7 +368,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
             ShootingWord = HuntWord.None;
 
             // Clear the input buffer.
-            OregonTrailApp.Instance.InputManager.ClearBuffer();
+            EngineApp.InputManager.ClearBuffer();
         }
 
         /// <summary>
@@ -387,11 +387,11 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
                 return;
 
             // There is a chance that you will not get prey this tick.
-            if (OregonTrailApp.Instance.Random.NextBool())
+            if (EngineApp.Random.NextBool())
                 return;
 
             // Randomly select one of the hunting words from the list.
-            var tempShootWord = (HuntWord) OregonTrailApp.Instance.Random.Next(_shootWords.Count);
+            var tempShootWord = (HuntWord)EngineApp.Random.Next(_shootWords.Count);
 
             // Check if we are already trying to hunt a particular animal.
             if (tempShootWord == HuntWord.None || tempShootWord == ShootingWord)
@@ -401,7 +401,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
             ShootingWord = tempShootWord;
 
             // Randomly select one of the prey from the list.
-            var randomPreyIndex = OregonTrailApp.Instance.Random.Next(_sortedPrey.Count);
+            var randomPreyIndex = EngineApp.Random.Next(_sortedPrey.Count);
             var randomPrey = _sortedPrey[randomPreyIndex];
 
             // Check the prey to make sure it is still alive.
@@ -421,7 +421,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
         private void GeneratePrey()
         {
             // Check to make sure spawn count is above zero.
-            var preySpawnCount = OregonTrailApp.Instance.Random.Next(MAXPREY);
+            var preySpawnCount = EngineApp.Random.Next(MAXPREY);
             if (preySpawnCount <= 0)
                 return;
 
@@ -454,7 +454,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
             var game = OregonTrailApp.Instance;
 
             // Check if the player outright missed their target, banker is way worse than farmer.
-            if (100 * game.Random.Next() < ((int) game.Vehicle.PassengerLeader.Profession - 13) * _target.TargetTime)
+            if (100 * EngineApp.Random.Next() < ((int) game.Vehicle.PassengerLeader.Profession - 13) * _target.TargetTime)
             {
                 _preyEscaped.Add(_target);
                 ClearTarget();
@@ -471,7 +471,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
 
             // Calculate the total cost of this shot in bullets.
             var bulletCost = (int) game.Vehicle.Inventory[Entities.Ammo].TotalValue - 10 -
-                             game.Random.Next() * 4;
+                             EngineApp.Random.Next() * 4;
 
             // Remove the amount of bullets from vehicle inventory.
             game.Vehicle.Inventory[Entities.Ammo].ReduceQuantity(bulletCost);

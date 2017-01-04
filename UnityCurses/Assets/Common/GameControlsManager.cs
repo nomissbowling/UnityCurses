@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Assets.Engine.FileSystem;
+using Assets.Engine.Utility;
 using UnityEngine;
 
 namespace Assets.Common
@@ -128,10 +129,8 @@ namespace Assets.Common
     {
         public static string _keybindsPath = "user:Configs/Keybinds.config";
 
-        [SerializeField]
         public static Vector2 _mouseSensitivity = new Vector2(1, 1);
 
-        [SerializeField]
         public static Vector2 _baseSensitivity = new Vector2(2, 2);
 
         private Dictionary<GameControlKeys, GameControlItem> itemsControlKeysDictionary;
@@ -184,12 +183,18 @@ namespace Assets.Common
         /// </summary>
         public static void Shutdown()
         {
+            if (!IsClosing)
+                Debug.Log("GameControlsManager::Shutdown()");
+
+            IsClosing = true;
+
             if (Instance == null)
                 return;
 
-            Instance.ShutdownInternal();
             Instance = null;
         }
+
+        public static bool IsClosing { get; set; }
 
         private bool InitInternal()
         {
@@ -237,10 +242,6 @@ namespace Assets.Common
             }
 
             return true;
-        }
-
-        private void ShutdownInternal()
-        {
         }
 
         /// <summary>
@@ -445,7 +446,12 @@ namespace Assets.Common
 
                 using (var writer = new StreamWriter(fileName))
                 {
-                    writer.Write(block.DumpToString());
+                    string errorString;
+                    var output = block.DumpToString(out errorString);
+                    if (!string.IsNullOrEmpty(errorString) && !errorString.IsNullOrWhiteSpace())
+                    {
+                        writer.Write(output);
+                    }
                 }
             }
             catch

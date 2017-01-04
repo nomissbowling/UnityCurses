@@ -1,6 +1,8 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
+using Assets.Engine;
+
 namespace Assets.OregonTrail.Entity.Item
 {
     /// <summary>
@@ -24,7 +26,7 @@ namespace Assets.OregonTrail.Entity.Item
             get
             {
                 return new SimItem(Entities.Food, "Buffalo", "pounds", "pound", 2000, 0,
-                    OregonTrailApp.Instance.Random.Next(350, 500), 1, 0, 1, 1);
+                    EngineApp.Random.Next(350, 500), 1, 0, 1, 1);
             }
         }
 
@@ -36,7 +38,7 @@ namespace Assets.OregonTrail.Entity.Item
             get
             {
                 return new SimItem(Entities.Food, "Caribou", "pounds", "pound", 2000, 0,
-                    OregonTrailApp.Instance.Random.Next(300, 350), 1, 0, 1, 1);
+                    EngineApp.Random.Next(300, 350), 1, 0, 1, 1);
             }
         }
 

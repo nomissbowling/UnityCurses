@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System;
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Vehicle;
 using Assets.OregonTrail.Event;
 using Assets.OregonTrail.Event.Person;
@@ -255,19 +256,19 @@ namespace Assets.OregonTrail.Entity.Person
             if (game.Vehicle.Ration == RationLevel.BareBones)
                 CheckIllness();
             else if (game.Vehicle.Ration == RationLevel.Meager &&
-                     game.Random.NextBool())
+                     EngineApp.Random.NextBool())
                 CheckIllness();
 
             // More change for illness if you have no clothes.
             var cost_clothes = game.Vehicle.Inventory[Entities.Clothes].TotalValue;
-            if (cost_clothes > 22 + 4 * game.Random.Next())
+            if (cost_clothes > 22 + 4 * EngineApp.Random.Next())
             {
                 CheckIllness();
             }
             else
             {
                 // Random chance for illness in general, even with nice clothes but much lower.
-                if (game.Random.NextBool() && game.Random.NextBool())
+                if (EngineApp.Random.NextBool() && EngineApp.Random.NextBool())
                     CheckIllness();
             }
 
@@ -323,7 +324,7 @@ namespace Assets.OregonTrail.Entity.Person
             var game = OregonTrailApp.Instance;
 
             // Person will not get healed every single time it is possible to do so.
-            if (game.Random.NextBool())
+            if (EngineApp.Random.NextBool())
                 return;
 
             // Check if the player has made a recovery from near death.
@@ -333,14 +334,14 @@ namespace Assets.OregonTrail.Entity.Person
                 nearDeathExperience = false;
 
                 // Roll the dice, person can get better or way worse here.
-                game.EventDirector.TriggerEvent(this, game.Random.NextBool()
+                game.EventDirector.TriggerEvent(this, EngineApp.Random.NextBool()
                     ? typeof(WellAgain)
                     : typeof(TurnForWorse));
             }
             else
             {
                 // Increase health by a random amount.
-                Status += game.Random.Next(1, 10);
+                Status += EngineApp.Random.Next(1, 10);
             }
         }
 
@@ -367,17 +368,17 @@ namespace Assets.OregonTrail.Entity.Person
                 return;
 
             // Person will not get hurt every single time it is called.
-            if (game.Random.NextBool())
+            if (EngineApp.Random.NextBool())
                 return;
 
-            if (game.Random.Next(100) <= 10 +
+            if (EngineApp.Random.Next(100) <= 10 +
                 35 * ((int) game.Vehicle.Ration - 1))
             {
                 // Mild illness.
                 game.Vehicle.ReduceMileage(5);
                 Damage(10, 50);
             }
-            else if (game.Random.Next(100) <= 5 -
+            else if (EngineApp.Random.Next(100) <= 5 -
                      40 / game.Vehicle.Passengers.Count *
                      ((int) game.Vehicle.Ration - 1))
             {
@@ -399,7 +400,7 @@ namespace Assets.OregonTrail.Entity.Person
                     break;
                 case HealthStatus.Fair:
                     if ((Infected || Injured) && game.Vehicle.Status != VehicleStatus.Stopped)
-                        if (game.Random.NextBool())
+                        if (EngineApp.Random.NextBool())
                         {
                             // Hurt the player and reduce total possible mileage this turn.
                             game.Vehicle.ReduceMileage(5);
@@ -449,7 +450,7 @@ namespace Assets.OregonTrail.Entity.Person
             var game = OregonTrailApp.Instance;
 
             // Reduce the persons health by random amount from death amount to desired damage level.
-            Status -= game.Random.Next(minAmount, maxAmount);
+            Status -= EngineApp.Random.Next(minAmount, maxAmount);
 
             // Chance for broken bones and other ailments related to damage (but not death).
             if (!Infected || !Injured)

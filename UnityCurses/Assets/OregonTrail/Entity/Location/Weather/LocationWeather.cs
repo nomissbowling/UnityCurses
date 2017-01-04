@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Vehicle;
 using Assets.OregonTrail.Event;
 using Assets.OregonTrail.Event.Weather;
@@ -104,7 +105,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
             var game = OregonTrailApp.Instance;
 
             // Fire off weather related events so this module and thus weather will affect the simulation.
-            if (_disasterChance > 0 && game.Random.NextDouble() >= _disasterChance)
+            if (_disasterChance > 0 && EngineApp.Random.NextDouble() >= _disasterChance)
             {
                 // Only trigger weather events if the vehicle is moving and we are on the trail.
                 if (game.Vehicle.Status == VehicleStatus.Moving &&
@@ -117,11 +118,11 @@ namespace Assets.OregonTrail.Entity.Location.Weather
             }
 
             var possibleClimate = GetTemperatureByMonth(game.Time.CurrentMonth);
-            var possibleTemperature = game.Random.Next((int) possibleClimate.TemperatureMin,
+            var possibleTemperature = EngineApp.Random.Next((int) possibleClimate.TemperatureMin,
                 (int) possibleClimate.TemperatureMax);
 
             // Make it so climate doesn't change every single day (ex. 4 days of clear skies, 2 of rain).
-            if (_nextWeatherChance > 0 && game.Random.NextDouble() >= _nextWeatherChance)
+            if (_nextWeatherChance > 0 && EngineApp.Random.NextDouble() >= _nextWeatherChance)
                 return;
 
             // If generated temp is greater than average for this month we consider this a good day!
@@ -130,7 +131,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
             if (possibleTemperature > possibleClimate.Temperature)
             {
                 // Determine if this should be a very hot day or not for the region.
-                if (game.Random.NextBool())
+                if (EngineApp.Random.NextBool())
                     HotDay();
                 else
                     NiceDay();
@@ -138,7 +139,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
             else
             {
                 // It was a bad day outside!
-                if (possibleClimate.Rainfall > game.Random.NextDouble())
+                if (possibleClimate.Rainfall > EngineApp.Random.NextDouble())
                     RainyDay();
                 else
                     ColdDay();
@@ -175,7 +176,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
             if (InsideTemperature > OutsideTemperature)
                 if (_climateType == Climate.Polar)
 
-                    InsideTemperature -= OregonTrailApp.Instance.Random.Next(1, 3);
+                    InsideTemperature -= EngineApp.Random.Next(1, 3);
                 else
                     InsideTemperature--;
             else if (InsideTemperature < OutsideTemperature)
@@ -195,7 +196,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 return;
 
             // Randomly select another type to replace it with because of temp being to high!
-            switch (OregonTrailApp.Instance.Random.Next(5))
+            switch (EngineApp.Random.Next(5))
             {
                 case 0:
                     Condition = Weather.Clear;
@@ -216,12 +217,12 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 4:
                     Condition = Weather.ChanceOfThunderstorm;
                     _nextWeatherChance = 0.45d;
-                    _disasterChance = OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = EngineApp.Random.NextDouble();
                     break;
                 case 5:
                     Condition = Weather.ChanceOfRain;
                     _nextWeatherChance = 0.55d;
-                    _disasterChance = OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = EngineApp.Random.NextDouble();
                     break;
                 default:
                     Condition = Weather.Clear;
@@ -235,7 +236,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
         /// </summary>
         private void ColdDay()
         {
-            switch (OregonTrailApp.Instance.Random.Next(5))
+            switch (EngineApp.Random.Next(5))
             {
                 case 0:
                     Condition = Weather.Flurries;
@@ -256,7 +257,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 4:
                     Condition = Weather.Hail;
                     _nextWeatherChance = 0.95d;
-                    if (OregonTrailApp.Instance.Random.NextBool())
+                    if (EngineApp.Random.NextBool())
                         OregonTrailApp.Instance.EventDirector.TriggerEvent(OregonTrailApp.Instance.Vehicle,
                             typeof(HailStorm));
 
@@ -264,9 +265,9 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 5:
                     Condition = Weather.Storm;
                     _nextWeatherChance = 0.85d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
 
-                    if (OregonTrailApp.Instance.Random.NextBool())
+                    if (EngineApp.Random.NextBool())
                         OregonTrailApp.Instance.EventDirector.TriggerEvent(OregonTrailApp.Instance.Vehicle,
                             typeof(SevereWeather));
 
@@ -283,14 +284,14 @@ namespace Assets.OregonTrail.Entity.Location.Weather
         /// </summary>
         private void RainyDay()
         {
-            switch (OregonTrailApp.Instance.Random.Next(8))
+            switch (EngineApp.Random.Next(8))
             {
                 case 0:
                     Condition = Weather.ScatteredThunderstorms;
                     _nextWeatherChance = 0.90d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
 
-                    if (OregonTrailApp.Instance.Random.NextBool())
+                    if (EngineApp.Random.NextBool())
                         OregonTrailApp.Instance.EventDirector.TriggerEvent(OregonTrailApp.Instance.Vehicle,
                             typeof(SevereWeather));
 
@@ -298,7 +299,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 1:
                     Condition = Weather.ScatteredShowers;
                     _nextWeatherChance = 0.85d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
                     break;
                 case 2:
                     Condition = Weather.MostlySunny;
@@ -307,9 +308,9 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 3:
                     Condition = Weather.Thunderstorm;
                     _nextWeatherChance = 0.90d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
 
-                    if (OregonTrailApp.Instance.Random.NextBool())
+                    if (EngineApp.Random.NextBool())
                         OregonTrailApp.Instance.EventDirector.TriggerEvent(OregonTrailApp.Instance.Vehicle,
                             typeof(SevereWeather));
 
@@ -322,7 +323,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                     Condition = Weather.Fog;
                     _nextWeatherChance = 0.78d;
 
-                    if (OregonTrailApp.Instance.Random.NextBool())
+                    if (EngineApp.Random.NextBool())
                         OregonTrailApp.Instance.EventDirector.TriggerEvent(OregonTrailApp.Instance.Vehicle,
                             typeof(HeavyFog));
 
@@ -351,7 +352,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
         /// </summary>
         private void NiceDay()
         {
-            switch (OregonTrailApp.Instance.Random.Next(5))
+            switch (EngineApp.Random.Next(5))
             {
                 case 0:
                     Condition = Weather.Clear;
@@ -372,12 +373,12 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 4:
                     Condition = Weather.ChanceOfThunderstorm;
                     _nextWeatherChance = 0.60d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
                     break;
                 case 5:
                     Condition = Weather.ChanceOfRain;
                     _nextWeatherChance = 0.56d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
                     break;
                 default:
                     Condition = Weather.Clear;
@@ -391,7 +392,7 @@ namespace Assets.OregonTrail.Entity.Location.Weather
         /// </summary>
         private void HotDay()
         {
-            switch (OregonTrailApp.Instance.Random.Next(5))
+            switch (EngineApp.Random.Next(5))
             {
                 case 0:
                     Condition = Weather.Clear;
@@ -412,12 +413,12 @@ namespace Assets.OregonTrail.Entity.Location.Weather
                 case 4:
                     Condition = Weather.ChanceOfThunderstorm;
                     _nextWeatherChance = 0.30d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
                     break;
                 case 5:
                     Condition = Weather.ChanceOfRain;
                     _nextWeatherChance = 0.33d;
-                    _disasterChance = (float) OregonTrailApp.Instance.Random.NextDouble();
+                    _disasterChance = (float)EngineApp.Random.NextDouble();
                     break;
                 default:
                     Condition = Weather.Clear;

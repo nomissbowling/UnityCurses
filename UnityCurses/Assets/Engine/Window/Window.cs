@@ -30,11 +30,6 @@ namespace Assets.Engine.Window
     {
         private readonly bool _showCommandNamesInMenu;
 
-        /// <summary>
-        ///     Reference to simulation core which houses the window manager and other core modules.
-        /// </summary>
-        private readonly EngineApp _simUnit;
-
         private readonly TData _userData;
 
         /// <summary>
@@ -75,7 +70,6 @@ namespace Assets.Engine.Window
         protected Window(EngineApp simUnit)
         {
             // Copy over reference for simulation core.
-            _simUnit = simUnit;
 
             // Reference for our text user interface data so we can build it up in pieces.
             _menuPrompt = new StringBuilder();
@@ -435,7 +429,7 @@ namespace Assets.Engine.Window
                 ClearForm();
 
             // States and modes both direct calls to window manager for adding a state.
-            Form = _simUnit.WindowManager.CreateStateFromType(this, stateType);
+            Form = EngineApp.WindowManager.CreateStateFromType(this, stateType);
 
             // Fire method that will allow attaching state to know it is ready for work.
             Form.OnFormPostCreate();

@@ -3,6 +3,7 @@
 
 using System;
 using System.Text;
+using Assets.Engine;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
 using Assets.Engine.Window.Form.Input;
@@ -67,7 +68,7 @@ namespace Assets.OregonTrail.Window.Travel.Dialog
                     break;
                 case DialogResponse.Yes:
                 case DialogResponse.Custom:
-                    OregonTrailApp.Instance.WindowManager.Add(typeof(Graveyard.Graveyard));
+                    EngineApp.WindowManager.Add(typeof(Graveyard.Graveyard));
 
                     // Goes back to continue on trail form below us.
                     ClearForm();

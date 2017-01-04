@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Text;
 using Assets.Engine.Utility;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Assets.Engine.FileSystem
@@ -40,6 +41,7 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets the parent block.</summary>
+        [JsonIgnore]
         public TextBlock Parent { get; private set; }
 
         /// <summary>Gets or set block name.</summary>
@@ -268,11 +270,22 @@ namespace Assets.Engine.FileSystem
         /// </code>
         /// </example>
         /// <seealso cref="M:Assets.Engine.FileSystem.TextBlock.Parse(System.String,System.String@)" />
-        public string DumpToString()
+        public string DumpToString(out string errorString)
         {
             // Dumps the current instance of this text block into a string representation of itself.
-            var stringBuilder = new StringBuilder(JSONExtensions.Serialize(this, false));
-            return stringBuilder.ToString();
+            var jsonBlock = string.Empty;
+            errorString = string.Empty;
+
+            try
+            {
+                jsonBlock = JSONExtensions.Serialize(this, false);
+            }
+            catch (Exception err)
+            {
+                errorString = err.Message;
+            }
+            
+            return jsonBlock;
         }
 
         /// <summary>

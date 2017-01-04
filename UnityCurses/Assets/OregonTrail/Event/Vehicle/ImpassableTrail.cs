@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System.Diagnostics.CodeAnalysis;
+using Assets.Engine;
 using Assets.OregonTrail.Event.Prefab;
 using Assets.OregonTrail.Module.Director;
 
@@ -22,7 +23,7 @@ namespace Assets.OregonTrail.Event.Vehicle
         /// <returns>Number of days that should be skipped in the simulation.</returns>
         protected override int DaysToSkip()
         {
-            return OregonTrailApp.Instance.Random.Next(2, 6);
+            return EngineApp.Random.Next(2, 6);
         }
 
         /// <summary>

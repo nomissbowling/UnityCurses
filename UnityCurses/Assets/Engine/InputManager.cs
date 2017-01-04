@@ -19,11 +19,6 @@ namespace Assets.Engine
         public const string PRESSENTER = "Press ENTER KEY to continue";
 
         /// <summary>
-        ///     Reference to simulation that is controlling the input manager.
-        /// </summary>
-        private readonly EngineApp _simUnit;
-
-        /// <summary>
         ///     Holds a series of commands that need to be executed in the order they come out of the collection.
         /// </summary>
         private Queue<string> _commandQueue;
@@ -34,7 +29,6 @@ namespace Assets.Engine
         /// <param name="simUnit">Core simulation which is controlling the window manager.</param>
         public InputManager(EngineApp simUnit)
         {
-            _simUnit = simUnit;
             _commandQueue = new Queue<string>();
             InputBuffer = string.Empty;
         }
@@ -79,8 +73,8 @@ namespace Assets.Engine
                 return;
 
             // Dequeue the next command to send and pass along to currently active game Windows if it exists.
-            if (_simUnit.WindowManager.FocusedWindow != null)
-                _simUnit.WindowManager.FocusedWindow.SendCommand(_commandQueue.Dequeue());
+            if (EngineApp.WindowManager.FocusedWindow != null)
+                EngineApp.WindowManager.FocusedWindow.SendCommand(_commandQueue.Dequeue());
         }
 
         /// <summary>
@@ -93,7 +87,7 @@ namespace Assets.Engine
             var lineBufferTrimmed = InputBuffer.Trim();
 
             // Shutdown the input buffer if we are not accepting commands but return is pressed anyway.
-            if (!_simUnit.WindowManager.AcceptingInput)
+            if (!EngineApp.WindowManager.AcceptingInput)
                 InputBuffer = string.Empty;
 
             // Send trimmed line buffer to game simulation, if not accepting input we just pass along empty string.
@@ -111,7 +105,7 @@ namespace Assets.Engine
         private void OnCharacterAddedToInputBuffer(string addedKeyString)
         {
             // Disable passing along input buffer if the simulation is not currently accepting input from the user.
-            if (!_simUnit.WindowManager.AcceptingInput)
+            if (!EngineApp.WindowManager.AcceptingInput)
                 return;
 
             // Add the character to the end of the input buffer.

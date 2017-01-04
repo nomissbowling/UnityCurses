@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using Assets.Engine;
 using Assets.OregonTrail.Entity;
 using Assets.OregonTrail.Event.Prefab;
 using Assets.OregonTrail.Module.Director;
@@ -43,7 +44,7 @@ namespace Assets.OregonTrail.Event.River
 
             // Reduce the total possible mileage of the vehicle this turn.
             if (vehicle != null)
-                vehicle.ReduceMileage(20 - 20 * OregonTrailApp.Instance.Random.Next());
+                vehicle.ReduceMileage(20 - 20 * EngineApp.Random.Next());
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
 
 using System;
 using System.Text;
+using Assets.Engine;
 using Assets.Engine.Utility;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
@@ -149,7 +150,7 @@ namespace Assets.OregonTrail.Window.MainMenu.Names
                 "Kristy", "Sharice", "Joanna", "Chrystal", "Genevie", "Angela", "Ruthann", "Viva", "Iris", "Anderson",
                 "Siobhan", "Karey", "Jolie", "Carlene", "Lekisha", "Buck"
             };
-            return names[OregonTrailApp.Instance.Random.Next(names.Length)];
+            return names[EngineApp.Random.Next(names.Length)];
         }
     }
 }

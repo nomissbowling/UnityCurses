@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System;
+using Assets.Engine;
 
 namespace Assets.OregonTrail.Window.Travel.RiverCrossing
 {
@@ -31,10 +32,10 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
                     "Unable to cast location as river crossing even though it returns as one!");
 
             // Randomly generates statistics about the river each time you cross it.
-            _riverDepth = game.Random.Next(1, 20);
+            _riverDepth = EngineApp.Random.Next(1, 20);
 
             // Determines how long the player will spend crossing river.
-            _riverWidth = game.Random.Next(100, 1500);
+            _riverWidth = EngineApp.Random.Next(100, 1500);
 
             // Determines how the player will want to cross the river.
             CrossingType = RiverCrossChoice.None;
@@ -44,8 +45,8 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
             {
                 case RiverOption.FerryOperator:
                     IndianCost = 0;
-                    FerryCost = game.Random.Next(3, 8);
-                    FerryDelayInDays = game.Random.Next(1, 10);
+                    FerryCost = EngineApp.Random.Next(3, 8);
+                    FerryDelayInDays = EngineApp.Random.Next(1, 10);
                     break;
                 case RiverOption.FloatAndFord:
                     IndianCost = 0;
@@ -53,7 +54,7 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
                     FerryDelayInDays = 0;
                     break;
                 case RiverOption.IndianGuide:
-                    IndianCost = game.Random.Next(3, 8);
+                    IndianCost = EngineApp.Random.Next(3, 8);
                     FerryCost = 0;
                     FerryDelayInDays = 0;
                     break;

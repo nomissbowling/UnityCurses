@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
+using Assets.Engine;
 using Assets.OregonTrail.Event.Prefab;
 using Assets.OregonTrail.Module.Director;
 
@@ -20,7 +21,7 @@ namespace Assets.OregonTrail.Event.Vehicle
         /// <returns>Number of days that should be skipped in the simulation.</returns>
         protected override int DaysToSkip()
         {
-            return OregonTrailApp.Instance.Random.Next(1, 3);
+            return EngineApp.Random.Next(1, 3);
         }
 
         /// <summary>

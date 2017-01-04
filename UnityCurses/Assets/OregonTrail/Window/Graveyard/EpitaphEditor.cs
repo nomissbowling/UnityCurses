@@ -3,6 +3,7 @@
 
 using System;
 using System.Text;
+using Assets.Engine;
 using Assets.Engine.Utility;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
@@ -44,7 +45,7 @@ namespace Assets.OregonTrail.Window.Graveyard
         /// <remarks>Default is FALSE. Setting to TRUE allows characters and input buffer to be read when submitted.</remarks>
         public override bool InputFillsBuffer
         {
-            get { return OregonTrailApp.Instance.InputManager.InputBuffer.Length <= EPITAPH_MAXLENGTH; }
+            get { return EngineApp.InputManager.InputBuffer.Length <= EPITAPH_MAXLENGTH; }
         }
 
         /// <summary>

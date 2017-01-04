@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Engine;
 using Assets.Engine.Utility;
 using Assets.OregonTrail.Event;
 
@@ -115,7 +116,7 @@ namespace Assets.OregonTrail.Module.Director
                 return null;
 
             // Roll the dice against the event reference ceiling count to see which one we use.
-            var diceRoll = OregonTrailApp.Instance.Random.Next(groupedEventList.Count);
+            var diceRoll = EngineApp.Random.Next(groupedEventList.Count);
 
             // Init the event we decided to execute from these types of event types.
             var randomEvent = CreateInstance(groupedEventList[diceRoll]);

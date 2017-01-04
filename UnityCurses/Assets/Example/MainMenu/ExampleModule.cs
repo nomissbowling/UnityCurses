@@ -49,7 +49,7 @@ namespace Assets.Example.MainMenu
                 return;
 
             // Pick a random number between 1 and 1000 every tick.
-            _randomData = EngineApp.Instance.Random.Next(1, 1000);
+            _randomData = EngineApp.Random.Next(1, 1000);
         }
 
         /// <summary>

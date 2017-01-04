@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
+using Assets.Engine;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Form;
 
@@ -52,7 +53,7 @@ namespace Assets.OregonTrail.Window.GameOver
         public override string OnRenderForm()
         {
             // Jump right to tombstone game window, it will reset the game.
-            OregonTrailApp.Instance.WindowManager.Add(typeof(Graveyard.Graveyard));
+            EngineApp.WindowManager.Add(typeof(Graveyard.Graveyard));
             return string.Empty;
         }
 

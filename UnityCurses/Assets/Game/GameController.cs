@@ -1,16 +1,16 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/07/2016@7:10 PM
 
-using System;
 using Assets.Common;
 using Assets.Engine;
+using Assets.Engine.FileSystem;
 using Assets.Example;
 using UnityEngine;
 
 namespace Assets.Game
 {
-    [Prefab("Game Controller")]
-    public class GameController : UnitySingleton<GameController>
+    [Prefab("GameController")]
+    public sealed class GameController : UnitySingleton<GameController>
     {
         /// <summary>
         ///     Update is called every frame, if the MonoBehaviour is enabled.
@@ -18,7 +18,59 @@ namespace Assets.Game
         // ReSharper disable once UnusedMember.Local
         private void Update()
         {
-            
+            // Grab the current event that's being processed right now by Unity.
+            var guiEvent = Event.current;
+            Debug.Log(guiEvent != null ? string.Format("GameScript::OnGUI::{0}", guiEvent) : "GameScript::OnGUI()");
+
+            // Skip if the engine is not currently initialized.
+            if (EngineApp.Instance == null)
+                return;
+
+            // Skip if there is no processing required.
+            if (guiEvent == null)
+                return;
+
+            // Tick the control manager for input strength.
+            if (GameControlsManager.Instance != null)
+                GameControlsManager.Instance.DoTick(Time.deltaTime);
+
+            // Figure out which keys are being pressed based on the type of event being processed.
+            // ReSharper disable once SwitchStatementMissingSomeCases
+            switch (guiEvent.type)
+            {
+                case EventType.KeyDown:
+                case EventType.MouseDown:
+                    {
+                        if (GameControlsManager.Instance != null)
+                            GameControlsManager.Instance.DoKeyDown(guiEvent.keyCode);
+                        break;
+                    }
+                case EventType.KeyUp:
+                case EventType.MouseUp:
+                    {
+                        // Special hooks for low-level keys such as return, backspace, and generic input for engine application.
+                        // ReSharper disable once SwitchStatementMissingSomeCases
+                        switch (guiEvent.keyCode)
+                        {
+                            case KeyCode.Return:
+                                if (EngineApp.Instance != null)
+                                    EngineApp.InputManager.SendInputBufferAsCommand();
+                                break;
+                            case KeyCode.Backspace:
+                                if (EngineApp.Instance != null)
+                                    EngineApp.InputManager.RemoveLastCharOfInputBuffer();
+                                break;
+                            default:
+                                if (EngineApp.Instance != null)
+                                    EngineApp.InputManager.AddCharToInputBuffer(guiEvent.character);
+                                break;
+                        }
+
+                        if (GameControlsManager.Instance != null)
+                            GameControlsManager.Instance.DoKeyUp(guiEvent.keyCode);
+                        break;
+                    }
+            }
         }
 
         /// <summary>
@@ -54,58 +106,31 @@ namespace Assets.Game
         // ReSharper disable once UnusedMember.Local
         protected override void Awake()
         {
-            Debug.Log("GameScript::Awake()");
+            Debug.Log("----------PROGRAM START----------");
 
-            // Init console with title, no cursor, make CTRL-C act as input.
-            //Console.Title = "WolfCurses Console Application";
-            //Console.WriteLine("Starting...");
-            //Console.CursorVisible = false;
-            //Console.CancelKeyPress += Console_CancelKeyPress;
+            // Create virtual filesystem.
+            VirtualFileSystem.Init();
+
+            // Create keybinding remapper system.
+            GameControlsManager.Init();
+
+            // Hook event.
+            if (GameControlsManager.Instance != null)
+                GameControlsManager.Instance.GameControlsEvent += GameControlsManager_GameControlsEvent;
 
             // Entry point for the entire simulation.
             EngineApp.Init(new ExampleApp());
             //EngineApp.Init(new OregonTrailApp());
 
             // Hook event to know when screen buffer wants to redraw the entire console screen.
-            EngineApp.Instance.SceneGraph.ScreenBufferDirtyEvent += Simulation_ScreenBufferDirtyEvent;
+            //EngineApp.Instance.SceneGraph.ScreenBufferDirtyEvent += Simulation_ScreenBufferDirtyEvent;
+        }
 
-            //// Prevent console session from closing.
-            //while (EngineApp.Instance != null)
-            //{
-            //    // Simulation takes any numbers of pulses to determine seconds elapsed.
-            //    EngineApp.Instance.OnTick(true, false);
-
-            //    // Check if a key is being pressed, without blocking thread.
-            //    if (Console.KeyAvailable)
-            //    {
-            //        // GetModule the key that was pressed, without printing it to console.
-            //        ConsoleKeyInfo key = Console.ReadKey(true);
-
-            //        // If enter is pressed, pass whatever we have to simulation.
-            //        // ReSharper disable once SwitchStatementMissingSomeCases
-            //        switch (key.Key)
-            //        {
-            //            case ConsoleKey.Enter:
-            //                EngineApp.Instance.InputManager.SendInputBufferAsCommand();
-            //                break;
-            //            case ConsoleKey.Backspace:
-            //                EngineApp.Instance.InputManager.RemoveLastCharOfInputBuffer();
-            //                break;
-            //            default:
-            //                EngineApp.Instance.InputManager.AddCharToInputBuffer(key.KeyChar);
-            //                break;
-            //        }
-            //    }
-
-            //    // Do not consume all of the CPU, allow other messages to occur.
-            //    Thread.Sleep(1);
-            //}
-
-            //// Make user press any key to close out the simulation completely, this way they know it closed without error.
-            //Console.Clear();
-            //Console.WriteLine("Goodbye!");
-            //Console.WriteLine("Press ANY KEY to close this window...");
-            //Console.ReadKey();
+        private void GameControlsManager_GameControlsEvent(GameControlsEventData e)
+        {
+            var keyData = e as GameControlsKeyEventData;
+            if (keyData != null && keyData.ControlKey == GameControlKeys.Fire1)
+                Debug.Log("FIRE1 PRESSED!");
         }
 
         /// <summary>
@@ -123,8 +148,30 @@ namespace Assets.Game
         // ReSharper disable once UnusedMember.Local
         private void OnDestroy()
         {
+            Destroy();
+        }
+
+        /// <summary>
+        ///     Cleanup and closedown the engine, this method can be called from multiple places by Unity and cannot know which one
+        ///     will come first.
+        /// </summary>
+        private void Destroy()
+        {
+            // Filesystem.
+            if (VirtualFileSystem.Instance != null)
+            {
+                VirtualFileSystem.Shutdown();
+            }
+
+            // Input manager.
+            if (GameControlsManager.Instance != null)
+            {
+                GameControlsManager.Instance.GameControlsEvent -= GameControlsManager_GameControlsEvent;
+                GameControlsManager.Shutdown();
+            }
+
+            // Tick and window manager.
             EngineApp.Shutdown();
-            Debug.Log("GameScript::OnDestroy()");
         }
 
         /// <summary>
@@ -133,11 +180,7 @@ namespace Assets.Game
         // ReSharper disable once UnusedMember.Local
         private void OnApplicationQuit()
         {
-            // Cleans up simulation
-            EngineApp.Shutdown();
-
-            Debug.Log("GameScript::OnApplicationQuit()");
-            Debug.Log("Goodbye!");
+            Destroy();
         }
 
         /// <summary>

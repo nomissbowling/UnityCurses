@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System;
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Location.Weather;
 
 namespace Assets.OregonTrail.Entity.Location
@@ -28,7 +29,7 @@ namespace Assets.OregonTrail.Entity.Location
         protected Location(string name, Climate climateType)
         {
             // Default warning message for the location is based on fresh water status.
-            _warning = OregonTrailApp.Instance.Random.NextBool() ? LocationWarning.None : LocationWarning.BadWater;
+            _warning = EngineApp.Random.NextBool() ? LocationWarning.None : LocationWarning.BadWater;
 
             // Creates a new system to deal with the management of the weather for this given location.
             weather = new LocationWeather(climateType);

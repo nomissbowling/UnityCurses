@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Assets.Engine;
 using Assets.OregonTrail.Entity;
 using Assets.OregonTrail.Event.Prefab;
 using Assets.OregonTrail.Module.Director;
@@ -26,7 +27,7 @@ namespace Assets.OregonTrail.Event.Wild
         {
             // Ammo used to kill the thief is randomly generated.
             OregonTrailApp.Instance.Vehicle.Inventory[Entities.Ammo].ReduceQuantity(
-                OregonTrailApp.Instance.Random.Next(1, 5));
+                EngineApp.Random.Next(1, 5));
 
             // Change event text depending on if items were destroyed or not.
             return destroyedItems.Count > 0

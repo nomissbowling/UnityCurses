@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Assets.Engine;
 using Assets.Engine.Utility;
 using Assets.Engine.Window;
 using Assets.Engine.Window.Control;
@@ -179,7 +180,7 @@ namespace Assets.OregonTrail.Window.Travel.Trade
             GenerateTrades();
 
             // Generate a random number based on trade count and what our trade will be.
-            tradeIndex = OregonTrailApp.Instance.Random.Next(trades.Count);
+            tradeIndex = EngineApp.Random.Next(trades.Count);
 
             // Check if the player has the item in question the trader wants.
             playerCanTrade = trades.Count > 0 &&
@@ -217,7 +218,7 @@ namespace Assets.OregonTrail.Window.Travel.Trade
             trades = new List<TradeOffer>();
 
             // Figure out how many trades, if any we will have this time the player checks.
-            var totalTrades = OregonTrailApp.Instance.Random.Next(0, OregonTrailApp.Instance.Random.Next(1, 100));
+            var totalTrades = EngineApp.Random.Next(0, EngineApp.Random.Next(1, 100));
 
             // Check if we just stop here.
             if (totalTrades <= 0)

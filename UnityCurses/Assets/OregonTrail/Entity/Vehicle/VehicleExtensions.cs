@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System.Collections.Generic;
+using Assets.Engine;
 using Assets.OregonTrail.Entity.Person;
 
 namespace Assets.OregonTrail.Entity.Vehicle
@@ -25,7 +26,7 @@ namespace Assets.OregonTrail.Entity.Vehicle
             foreach (var person in passengers)
             {
                 // It all comes down to a dice roll if the storm kills you.
-                if (!OregonTrailApp.Instance.Random.NextBool() ||
+                if (!EngineApp.Random.NextBool() ||
                     person.HealthStatus == HealthStatus.Dead)
                     continue;
 

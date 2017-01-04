@@ -2,6 +2,7 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System;
+using Assets.Engine;
 using Assets.OregonTrail.Entity;
 using Assets.OregonTrail.Event;
 using Assets.OregonTrail.Window.RandomEvent;
@@ -57,7 +58,7 @@ namespace Assets.OregonTrail.Module.Director
         public void TriggerEventByType(IEntity sourceEntity, EventCategory eventCategory)
         {
             // Roll the dice here to determine if the event is triggered at all.
-            var diceRoll = OregonTrailApp.Instance.Random.Next(100);
+            var diceRoll = EngineApp.Random.Next(100);
             if (diceRoll > 0)
                 return;
 
@@ -96,7 +97,7 @@ namespace Assets.OregonTrail.Module.Director
         private void ExecuteEvent(IEntity sourceEntity, EventProduct directorEvent)
         {
             // Attach random event game Windows before triggering event since it will listen for it using event delegate.
-            OregonTrailApp.Instance.WindowManager.Add(typeof(RandomEvent));
+            EngineApp.WindowManager.Add(typeof(RandomEvent));
 
             // Fire off event so primary game simulation knows we executed an event with an event.
             if (OnEventTriggered != null)

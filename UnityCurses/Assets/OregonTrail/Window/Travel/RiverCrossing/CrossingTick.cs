@@ -200,7 +200,7 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
             _swayBarText = _marqueeBar.Step();
 
             // Increment the amount we have floated over the river.
-            _riverCrossingOfTotalWidth += game.Random.Next(1, UserData.River.RiverWidth / 4);
+            _riverCrossingOfTotalWidth += EngineApp.Random.Next(1, UserData.River.RiverWidth / 4);
 
             // Check to see if we will finish crossing river before crossing more.
             if (_riverCrossingOfTotalWidth >= UserData.River.RiverWidth)
@@ -233,7 +233,7 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
                 case RiverCrossChoice.Float:
                     if (UserData.River.RiverDepth > 5 && !UserData.River.DisasterHappened &&
                         _riverCrossingOfTotalWidth >= UserData.River.RiverWidth / 2 &&
-                        game.Random.NextBool())
+                        EngineApp.Random.NextBool())
                     {
                         UserData.River.DisasterHappened = true;
                         game.EventDirector.TriggerEvent(game.Vehicle, typeof(VehicleFloods));

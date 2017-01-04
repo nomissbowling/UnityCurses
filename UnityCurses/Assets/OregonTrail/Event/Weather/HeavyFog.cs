@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
+using Assets.Engine;
 using Assets.OregonTrail.Module.Director;
 using Assets.OregonTrail.Window.RandomEvent;
 
@@ -28,7 +29,7 @@ namespace Assets.OregonTrail.Event.Weather
 
             // Reduce the total possible mileage of the vehicle this turn.
             if (vehicle != null)
-                vehicle.ReduceMileage(vehicle.Mileage - 10 - 5 * OregonTrailApp.Instance.Random.Next());
+                vehicle.ReduceMileage(vehicle.Mileage - 10 - 5 * EngineApp.Random.Next());
         }
 
         /// <summary>
