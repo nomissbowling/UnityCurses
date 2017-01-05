@@ -25,15 +25,6 @@ namespace Assets.Engine.Utility
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
         }
 
-        /// <summary>
-        ///     Helper method to suppliment newer .NET framework innovations in older versions.
-        /// </summary>
-        /// <remarks>http://stackoverflow.com/a/6535516</remarks>
-        public static bool IsNullOrWhiteSpace(this string value)
-        {
-            return value == null || string.IsNullOrEmpty(value.Trim());
-        }
-
         /// <summary>Word wraps the given text to fit within the specified width.</summary>
         /// <remarks>http://www.codeproject.com/Articles/51488/Implementing-Word-Wrap-in-C</remarks>
         /// <param name="text">Text to be word wrapped</param>

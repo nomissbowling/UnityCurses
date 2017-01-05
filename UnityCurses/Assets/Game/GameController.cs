@@ -1,6 +1,7 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/07/2016@7:10 PM
 
+using System;
 using Assets.Common;
 using Assets.Engine;
 using Assets.Engine.FileSystem;
@@ -18,59 +19,15 @@ namespace Assets.Game
         // ReSharper disable once UnusedMember.Local
         private void Update()
         {
-            // Grab the current event that's being processed right now by Unity.
-            var guiEvent = Event.current;
-            Debug.Log(guiEvent != null ? string.Format("GameScript::OnGUI::{0}", guiEvent) : "GameScript::OnGUI()");
+            Debug.Log("GameScript::Update()");
 
             // Skip if the engine is not currently initialized.
             if (EngineApp.Instance == null)
                 return;
 
-            // Skip if there is no processing required.
-            if (guiEvent == null)
-                return;
-
             // Tick the control manager for input strength.
             if (GameControlsManager.Instance != null)
                 GameControlsManager.Instance.DoTick(Time.deltaTime);
-
-            // Figure out which keys are being pressed based on the type of event being processed.
-            // ReSharper disable once SwitchStatementMissingSomeCases
-            switch (guiEvent.type)
-            {
-                case EventType.KeyDown:
-                case EventType.MouseDown:
-                    {
-                        if (GameControlsManager.Instance != null)
-                            GameControlsManager.Instance.DoKeyDown(guiEvent.keyCode);
-                        break;
-                    }
-                case EventType.KeyUp:
-                case EventType.MouseUp:
-                    {
-                        // Special hooks for low-level keys such as return, backspace, and generic input for engine application.
-                        // ReSharper disable once SwitchStatementMissingSomeCases
-                        switch (guiEvent.keyCode)
-                        {
-                            case KeyCode.Return:
-                                if (EngineApp.Instance != null)
-                                    EngineApp.InputManager.SendInputBufferAsCommand();
-                                break;
-                            case KeyCode.Backspace:
-                                if (EngineApp.Instance != null)
-                                    EngineApp.InputManager.RemoveLastCharOfInputBuffer();
-                                break;
-                            default:
-                                if (EngineApp.Instance != null)
-                                    EngineApp.InputManager.AddCharToInputBuffer(guiEvent.character);
-                                break;
-                        }
-
-                        if (GameControlsManager.Instance != null)
-                            GameControlsManager.Instance.DoKeyUp(guiEvent.keyCode);
-                        break;
-                    }
-            }
         }
 
         /// <summary>
@@ -128,9 +85,69 @@ namespace Assets.Game
 
         private void GameControlsManager_GameControlsEvent(GameControlsEventData e)
         {
-            var keyData = e as GameControlsKeyEventData;
-            if (keyData != null && keyData.ControlKey == GameControlKeys.Fire1)
-                Debug.Log("FIRE1 PRESSED!");
+            var keyDown = e as GameControlsKeyDownEventData;
+            if (keyDown != null)
+            {
+                switch (keyDown.ControlKey)
+                {
+                    case GameControlKeys.Fire1:
+                        Debug.Log("FIRE1 DOWN!");
+                        break;
+                    case GameControlKeys.Forward:
+                        Debug.Log("FORWARD DOWN!");
+                        break;
+                    case GameControlKeys.Backward:
+                        Debug.Log("BACKWARD DOWN!");
+                        break;
+                    case GameControlKeys.Left:
+                        Debug.Log("LEFT DOWN!");
+                        break;
+                    case GameControlKeys.Right:
+                        Debug.Log("RIGHT DOWN!");
+                        break;
+                    case GameControlKeys.Fire2:
+                        Debug.Log("FIRE2 DOWN!");
+                        break;
+                    case GameControlKeys.Reload:
+                        Debug.Log("RELOAD DOWN!");
+                        break;
+                    case GameControlKeys.Use:
+                        Debug.Log("USE DOWN!");
+                        break;
+                }
+            }
+
+            var keyUp = e as GameControlsKeyUpEventData;
+            if (keyUp != null)
+            {
+                switch (keyUp.ControlKey)
+                {
+                    case GameControlKeys.Fire1:
+                        Debug.Log("FIRE1 UP!");
+                        break;
+                    case GameControlKeys.Forward:
+                        Debug.Log("FORWARD UP!");
+                        break;
+                    case GameControlKeys.Backward:
+                        Debug.Log("BACKWARD UP!");
+                        break;
+                    case GameControlKeys.Left:
+                        Debug.Log("LEFT UP!");
+                        break;
+                    case GameControlKeys.Right:
+                        Debug.Log("RIGHT UP!");
+                        break;
+                    case GameControlKeys.Fire2:
+                        Debug.Log("FIRE2 UP!");
+                        break;
+                    case GameControlKeys.Reload:
+                        Debug.Log("RELOAD UP!");
+                        break;
+                    case GameControlKeys.Use:
+                        Debug.Log("USE UP!");
+                        break;
+                }
+            }
         }
 
         /// <summary>

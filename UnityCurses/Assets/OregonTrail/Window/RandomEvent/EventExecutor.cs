@@ -48,7 +48,7 @@ namespace Assets.OregonTrail.Window.RandomEvent
             var eventText = UserData.DirectorEvent.Render(UserData);
 
             // Complain if the event text is empty.
-            if (string.IsNullOrEmpty(eventText) || eventText.IsNullOrWhiteSpace())
+            if (string.IsNullOrEmpty(eventText))
                 throw new InvalidOperationException(
                     string.Format("Executed random event {0} from director, but it returned no text data!",
                         UserData.DirectorEvent.Name));

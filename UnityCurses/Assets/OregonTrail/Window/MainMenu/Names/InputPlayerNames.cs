@@ -115,7 +115,7 @@ namespace Assets.OregonTrail.Window.MainMenu.Names
         public override void OnInputBufferReturned(string input)
         {
             // If player enters empty name fill out all the slots with random ones.
-            if (string.IsNullOrEmpty(input) || input.IsNullOrWhiteSpace())
+            if (string.IsNullOrEmpty(input))
             {
                 // Only fill out names for slots that are empty.
                 for (var i = 0; i < OregonTrailApp.MAXPLAYERS - UserData.PlayerNameIndex; i++)

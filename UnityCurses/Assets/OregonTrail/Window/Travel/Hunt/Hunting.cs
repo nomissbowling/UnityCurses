@@ -117,7 +117,7 @@ namespace Assets.OregonTrail.Window.Travel.Hunt
         public override void OnInputBufferReturned(string input)
         {
             // Skip if the input is null or empty.
-            if (string.IsNullOrEmpty(input) || input.IsNullOrWhiteSpace())
+            if (string.IsNullOrEmpty(input))
                 return;
 
             // Check if we have anything to shoot at right now.

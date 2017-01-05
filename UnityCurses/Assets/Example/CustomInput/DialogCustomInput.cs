@@ -56,7 +56,7 @@ namespace Assets.Example.CustomInput
         public override void OnInputBufferReturned(string input)
         {
             // Do not allow empty names.
-            if (string.IsNullOrEmpty(input) || input.IsNullOrWhiteSpace())
+            if (string.IsNullOrEmpty(input))
                 return;
 
             // Copy name into user name and show form.

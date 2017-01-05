@@ -241,7 +241,7 @@ namespace Assets.OregonTrail.Window.Travel.RiverCrossing
         public override void OnInputBufferReturned(string input)
         {
             // Skip if the input is null or empty.
-            if (string.IsNullOrEmpty(input) || input.IsNullOrWhiteSpace())
+            if (string.IsNullOrEmpty(input))
                 return;
 
             // Skip if the input does not match any known mapping for river choice.

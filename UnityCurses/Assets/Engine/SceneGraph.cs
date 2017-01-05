@@ -140,7 +140,7 @@ namespace Assets.Engine
             if (EngineApp.WindowManager.FocusedWindow != null)
             {
                 var activeWindowText = EngineApp.WindowManager.FocusedWindow.OnRenderWindow();
-                if (!string.IsNullOrEmpty(activeWindowText) && !activeWindowText.IsNullOrWhiteSpace())
+                if (!string.IsNullOrEmpty(activeWindowText))
                     return activeWindowText;
             }
 

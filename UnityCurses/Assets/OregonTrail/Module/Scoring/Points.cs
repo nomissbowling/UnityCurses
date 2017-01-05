@@ -72,8 +72,7 @@ namespace Assets.OregonTrail.Module.Scoring
         {
             // Check if optional display name is being used.
             var displayName = Resource.Name;
-            if (!string.IsNullOrEmpty(_optionalDisplayName) &&
-                !_optionalDisplayName.IsNullOrWhiteSpace())
+            if (!string.IsNullOrEmpty(_optionalDisplayName))
                 displayName = _optionalDisplayName;
 
             // Check if per amount is default value of one.

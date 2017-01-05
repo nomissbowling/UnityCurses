@@ -321,8 +321,7 @@ namespace Assets.Engine.Window
         public void SendCommand(string input)
         {
             // Only process menu items for game Windows when current state is null, or there are no menu choices to select from.
-            if (_menuCommands != null && Form == null && _menuCommands.Count > 0 && !string.IsNullOrEmpty(input) &&
-                !input.IsNullOrWhiteSpace())
+            if (_menuCommands != null && Form == null && _menuCommands.Count > 0 && !string.IsNullOrEmpty(input))
             {
                 // Attempt to convert the returned line into generic enum.
 #pragma warning disable IDE0018 // Inline variable declaration

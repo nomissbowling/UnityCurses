@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using System.Text;
 using Assets.Engine.Utility;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -15,11 +13,15 @@ namespace Assets.Engine.FileSystem
     /// </summary>
     public class TextBlock
     {
-        private List<Attribute> _attributeList = new List<Attribute>();
-        private ReadOnlyCollection<Attribute> _attributes;
-        private string _name;
-        private List<TextBlock> _textBlockList = new List<TextBlock>();
-        private ReadOnlyCollection<TextBlock> _textBlocks;
+        [JsonProperty] private List<Attribute> _attributeList = new List<Attribute>();
+
+        [JsonIgnore] private ReadOnlyCollection<Attribute> _attributes;
+
+        [JsonProperty] private string _name;
+
+        [JsonProperty] private List<TextBlock> _textBlockList = new List<TextBlock>();
+
+        [JsonIgnore] private ReadOnlyCollection<TextBlock> _textBlocks;
 
         /// <summary>
         ///     It is applied only to creation root blocks. Not for creation of children.
@@ -34,10 +36,9 @@ namespace Assets.Engine.FileSystem
         /// </example>
         /// <seealso cref="M:Assets.Engine.FileSystem.TextBlock.AddChild(System.String,System.String)" />
         /// <seealso cref="M:Assets.Engine.FileSystem.TextBlock.SetAttribute(System.String,System.String)" />
-        public TextBlock()
+        internal TextBlock()
         {
-            _textBlocks = new ReadOnlyCollection<TextBlock>(_textBlockList);
-            _attributes = new ReadOnlyCollection<Attribute>(_attributeList);
+            Create();
         }
 
         /// <summary>Gets the parent block.</summary>
@@ -62,18 +63,30 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets or set block string data.</summary>
+        [JsonIgnore]
         public string Data { get; set; }
 
         /// <summary>Gets the children collection.</summary>
+        [JsonIgnore]
         public IList<TextBlock> Children
         {
             get { return _textBlocks; }
         }
 
         /// <summary>Gets the attributes collection.</summary>
+        [JsonIgnore]
         public IList<Attribute> Attributes
         {
             get { return _attributes; }
+        }
+
+        /// <summary>
+        ///     Internal method that is used when loading from disk and when creating a new textblock in general.
+        /// </summary>
+        internal void Create()
+        {
+            _textBlocks = new ReadOnlyCollection<TextBlock>(_textBlockList);
+            _attributes = new ReadOnlyCollection<Attribute>(_attributeList);
         }
 
         /// <summary>Finds child block by name.</summary>
@@ -245,14 +258,6 @@ namespace Assets.Engine.FileSystem
             _attributeList.Clear();
         }
 
-        private static string A([In] int obj0)
-        {
-            var str = "";
-            for (var index = 0; index < obj0; ++index)
-                str += "\t";
-            return str;
-        }
-
         /// <summary>
         ///     Returns a string containing all data about the block and his children.
         /// </summary>
@@ -284,7 +289,7 @@ namespace Assets.Engine.FileSystem
             {
                 errorString = err.Message;
             }
-            
+
             return jsonBlock;
         }
 
@@ -343,7 +348,10 @@ namespace Assets.Engine.FileSystem
         /// </summary>
         public sealed class Attribute
         {
+            [JsonProperty]
             internal string _name;
+
+            [JsonProperty]
             internal string _value;
 
             internal Attribute()

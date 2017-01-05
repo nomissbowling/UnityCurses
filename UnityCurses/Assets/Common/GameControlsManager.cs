@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Engine;
 using Assets.Engine.FileSystem;
-using Assets.Engine.Utility;
 using UnityEngine;
 
 namespace Assets.Common
@@ -157,6 +157,8 @@ namespace Assets.Common
         /// </summary>
         public GameControlItem[] Items { get; private set; }
 
+        public static bool IsClosing { get; set; }
+
         ///////////////////////////////////////////
 
         public event GameControlsEventDelegate GameControlsEvent;
@@ -193,8 +195,6 @@ namespace Assets.Common
 
             Instance = null;
         }
-
-        public static bool IsClosing { get; set; }
 
         private bool InitInternal()
         {
@@ -257,7 +257,7 @@ namespace Assets.Common
             foreach (var item in Items)
                 if (item.BindedKeyboardMouseValues.Count > 0)
                     foreach (var value in item.BindedKeyboardMouseValues)
-                        if ((value.Type == SystemKeyboardMouseValue.Types.Key) && (value.Key == e))
+                        if (value.Type == SystemKeyboardMouseValue.Types.Key && value.Key == e)
                         {
                             if (GameControlsEvent != null)
                                 GameControlsEvent(new GameControlsKeyDownEventData(item.ControlKey, 1));
@@ -279,7 +279,7 @@ namespace Assets.Common
             foreach (var item in Items)
                 if (item.BindedKeyboardMouseValues.Count > 0)
                     foreach (var value in item.BindedKeyboardMouseValues)
-                        if ((value.Type == SystemKeyboardMouseValue.Types.Key) && (value.Key == e))
+                        if (value.Type == SystemKeyboardMouseValue.Types.Key && value.Key == e)
                         {
                             if (GameControlsEvent != null)
                                 GameControlsEvent(new GameControlsKeyUpEventData(item.ControlKey, 1));
@@ -306,13 +306,15 @@ namespace Assets.Common
             foreach (var item in Items)
                 if (item.BindedKeyboardMouseValues.Count > 0)
                     foreach (var value in item.BindedKeyboardMouseValues)
-                        if ((value.Type == SystemKeyboardMouseValue.Types.MouseScrollDirection) &&
-                            (value.ScrollDirection == scrollDirection))
+                        if (value.Type == SystemKeyboardMouseValue.Types.MouseScrollDirection &&
+                            value.ScrollDirection == scrollDirection)
                         {
                             if (GameControlsEvent != null)
                             {
                                 GameControlsEvent(new GameControlsKeyDownEventData(item.ControlKey, delta));
-                                GameControlsEvent(new GameControlsKeyUpEventData(item.ControlKey));
+
+                                if (GameControlsEvent != null)
+                                    GameControlsEvent(new GameControlsKeyUpEventData(item.ControlKey));
                             }
                             handled = true;
                         }
@@ -321,8 +323,60 @@ namespace Assets.Common
 
         public void DoTick(float delta)
         {
+            // Ticks the event for control manager event ticking in other systems event poll.
             if (GameControlsEvent != null)
                 GameControlsEvent(new GameControlsTickEventData(delta));
+
+            // Skip if the engine app is not active.
+            if (EngineApp.Instance == null)
+                return;
+
+            // Loop through all bindable key items.
+            foreach (var item in Items)
+            {
+                // Skip if there are no values present.
+                if (item.BindedKeyboardMouseValues.Count <= 0)
+                    continue;
+
+                // Loop through every bound key to this given action.
+                foreach (var value in item.BindedKeyboardMouseValues)
+                {
+                    if (value.Type != SystemKeyboardMouseValue.Types.Key)
+                        continue;
+
+                    // Check if the current key match a keyboard value, and that Unity detects it is pressed this frame.
+                    if (Input.GetKeyDown(value.Key))
+                    {
+                        DoKeyDown(value.Key);
+                    }
+                    else if (Input.GetKeyUp(value.Key))
+                    {
+                        // Special hooks for low-level keys such as return, backspace, and generic input for engine application.
+                        // ReSharper disable once SwitchStatementMissingSomeCases
+                        switch (value.Key)
+                        {
+                            case KeyCode.Return:
+
+                                EngineApp.InputManager.SendInputBufferAsCommand();
+                                break;
+                            case KeyCode.Backspace:
+                                if (EngineApp.Instance != null)
+                                    EngineApp.InputManager.RemoveLastCharOfInputBuffer();
+                                break;
+                            default:
+                                if (EngineApp.Instance != null)
+                                {
+                                    char inputChar;
+                                    if (char.TryParse(value.Key.ToString(), out inputChar))
+                                        EngineApp.InputManager.AddCharToInputBuffer(inputChar);
+                                }
+                                break;
+                        }
+
+                        DoKeyUp(value.Key);
+                    }
+                }
+            }
         }
 
         public void DoKeyUpAll()
@@ -351,7 +405,7 @@ namespace Assets.Common
                 return false;
 
             foreach (var value in item.DefaultKeyboardMouseValues)
-                if ((value.Type == SystemKeyboardMouseValue.Types.Key) && (value.Key == key))
+                if (value.Type == SystemKeyboardMouseValue.Types.Key && value.Key == key)
                     return true;
 
             return false;
@@ -364,7 +418,7 @@ namespace Assets.Common
 
             if (item.BindedKeyboardMouseValues.Count > 0)
                 foreach (var value in item.BindedKeyboardMouseValues)
-                    if ((value.Type == SystemKeyboardMouseValue.Types.Key) && (value.Key == key))
+                    if (value.Type == SystemKeyboardMouseValue.Types.Key && value.Key == key)
                         return true;
 
             return IsDefaultControlKey(item, key);
@@ -381,7 +435,7 @@ namespace Assets.Common
             foreach (var item in Items)
                 if (item.BindedKeyboardMouseValues.Count > 0)
                     foreach (var value in item.BindedKeyboardMouseValues)
-                        if ((value.Type == SystemKeyboardMouseValue.Types.Key) && (value.Key == key))
+                        if (value.Type == SystemKeyboardMouseValue.Types.Key && value.Key == key)
                         {
                             control = value;
                             return true;
@@ -396,8 +450,8 @@ namespace Assets.Common
             foreach (var item in Items)
                 if (item.BindedKeyboardMouseValues.Count > 0)
                     foreach (var value in item.BindedKeyboardMouseValues)
-                        if ((value.Type == SystemKeyboardMouseValue.Types.MouseScrollDirection) &&
-                            (value.ScrollDirection == scrollDirection))
+                        if (value.Type == SystemKeyboardMouseValue.Types.MouseScrollDirection &&
+                            value.ScrollDirection == scrollDirection)
                         {
                             control = value;
                             return true;
@@ -448,10 +502,8 @@ namespace Assets.Common
                 {
                     string errorString;
                     var output = block.DumpToString(out errorString);
-                    if (!string.IsNullOrEmpty(errorString) && !errorString.IsNullOrWhiteSpace())
-                    {
+                    if (string.IsNullOrEmpty(errorString))
                         writer.Write(output);
-                    }
                 }
             }
             catch
@@ -473,6 +525,9 @@ namespace Assets.Common
                 return;
             }
 
+            // Forces the internal data structures of the text block to initialize as they was before.
+            customblock.Create();
+
             var controlBloc = customblock.FindChild("Controls");
             if (controlBloc == null)
             {
@@ -488,7 +543,7 @@ namespace Assets.Common
 
                 // keyboard Setting
                 var keybordBlock = currentKeyBlock.FindChild("Keyboard");
-                if ((keybordBlock != null) && (keybordBlock.Children.Count > 0))
+                if (keybordBlock != null && keybordBlock.Children.Count > 0)
                     foreach (var keyBlocklock in keybordBlock.Children)
                     {
                         var keyboardvalue = SystemKeyboardMouseValue.Load(keyBlocklock);

@@ -106,7 +106,7 @@ namespace Assets.OregonTrail.Window.MainMenu.Profession
         public override void OnInputBufferReturned(string input)
         {
             // Skip if the input is null or empty.
-            if (string.IsNullOrEmpty(input) || input.IsNullOrWhiteSpace())
+            if (string.IsNullOrEmpty(input))
                 return;
 
             // Attempt to cast string to enum value, can be characters or integer.
