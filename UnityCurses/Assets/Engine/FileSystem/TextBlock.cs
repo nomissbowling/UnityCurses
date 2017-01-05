@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Assets.Engine.Utility;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Assets.Engine.FileSystem
@@ -11,17 +9,22 @@ namespace Assets.Engine.FileSystem
     ///     The class allows to store the text information in the hierarchical form.
     ///     Supports creation of children and attributes.
     /// </summary>
+    [Serializable]
     public class TextBlock
     {
-        [JsonProperty] private List<Attribute> _attributeList = new List<Attribute>();
+        [SerializeField] private List<Attribute> _attributeList = new List<Attribute>();
 
-        [JsonIgnore] private ReadOnlyCollection<Attribute> _attributes;
+        [NonSerialized] private ReadOnlyCollection<Attribute> _attributes;
 
-        [JsonProperty] private string _name;
+        [NonSerialized] private string _data;
 
-        [JsonProperty] private List<TextBlock> _textBlockList = new List<TextBlock>();
+        [SerializeField] private string _name;
 
-        [JsonIgnore] private ReadOnlyCollection<TextBlock> _textBlocks;
+        [NonSerialized] private TextBlock _parent;
+
+        [SerializeField] private List<TextBlock> _textBlockList = new List<TextBlock>();
+
+        [NonSerialized] private ReadOnlyCollection<TextBlock> _textBlocks;
 
         /// <summary>
         ///     It is applied only to creation root blocks. Not for creation of children.
@@ -42,8 +45,11 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets the parent block.</summary>
-        [JsonIgnore]
-        public TextBlock Parent { get; private set; }
+        public TextBlock Parent
+        {
+            get { return _parent; }
+            private set { _parent = value; }
+        }
 
         /// <summary>Gets or set block name.</summary>
         public string Name
@@ -63,18 +69,19 @@ namespace Assets.Engine.FileSystem
         }
 
         /// <summary>Gets or set block string data.</summary>
-        [JsonIgnore]
-        public string Data { get; set; }
+        public string Data
+        {
+            get { return _data; }
+            set { _data = value; }
+        }
 
         /// <summary>Gets the children collection.</summary>
-        [JsonIgnore]
         public IList<TextBlock> Children
         {
             get { return _textBlocks; }
         }
 
         /// <summary>Gets the attributes collection.</summary>
-        [JsonIgnore]
         public IList<Attribute> Attributes
         {
             get { return _attributes; }
@@ -220,15 +227,15 @@ namespace Assets.Engine.FileSystem
                 var attribute = _attributeList[index];
                 if (attribute.Name == name)
                 {
-                    attribute._value = value;
+                    attribute.Value = value;
                     return;
                 }
             }
 
             _attributeList.Add(new Attribute
             {
-                _name = name,
-                _value = value
+                Name = name,
+                Value = value
             });
         }
 
@@ -237,15 +244,15 @@ namespace Assets.Engine.FileSystem
         public void DeleteAttribute(string name)
         {
             for (var index = 0; index < _attributeList.Count; ++index)
-                if (name == _attributeList[index]._name)
+                if (name == _attributeList[index].Name)
                 {
                     var attribute = _attributeList[index];
 
                     var str1 = string.Empty;
-                    attribute._name = str1;
+                    attribute.Name = str1;
 
                     var str2 = string.Empty;
-                    attribute._value = str2;
+                    attribute.Value = str2;
 
                     _attributeList.RemoveAt(index);
                     break;
@@ -283,7 +290,7 @@ namespace Assets.Engine.FileSystem
 
             try
             {
-                jsonBlock = JSONExtensions.Serialize(this, false);
+                jsonBlock = JsonUtility.ToJson(this, true);
             }
             catch (Exception err)
             {
@@ -333,7 +340,7 @@ namespace Assets.Engine.FileSystem
 
             try
             {
-                return JSONExtensions.Deserialize<TextBlock>(str, false);
+                return JsonUtility.FromJson<TextBlock>(str);
             }
             catch (Exception err)
             {
@@ -346,28 +353,15 @@ namespace Assets.Engine.FileSystem
         /// <summary>
         ///     Defines <see cref="T:Assets.Engine.FileSystem.TextBlock" /> attribute.
         /// </summary>
+        [Serializable]
         public sealed class Attribute
         {
-            [JsonProperty]
-            internal string _name;
+            [SerializeField] internal string Name;
 
-            [JsonProperty]
-            internal string _value;
+            [SerializeField] internal string Value;
 
             internal Attribute()
             {
-            }
-
-            /// <summary>Gets the attribute name.</summary>
-            public string Name
-            {
-                get { return _name; }
-            }
-
-            /// <summary>Gets the attribute value.</summary>
-            public string Value
-            {
-                get { return _value; }
             }
 
             /// <summary>
@@ -376,7 +370,7 @@ namespace Assets.Engine.FileSystem
             /// <returns>A string that represents the current attribute.</returns>
             public override string ToString()
             {
-                return string.Format("Name: \"{0}\", Value \"{1}\"", _name, _value);
+                return string.Format("Name: \"{0}\", Value \"{1}\"", Name, Value);
             }
         }
     }
