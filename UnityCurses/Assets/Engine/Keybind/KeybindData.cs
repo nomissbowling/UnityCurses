@@ -7,19 +7,19 @@ namespace Assets.Engine.Keybind
     [Serializable]
     public sealed class KeybindData
     {
-        [SerializeField] private DictionaryOfStringAndKeybindItem _data = new DictionaryOfStringAndKeybindItem();
+        [SerializeField] public DictionaryOfStringAndKeybindItem Data = new DictionaryOfStringAndKeybindItem();
 
         public KeybindItem AddChild(string key)
         {
-            if (!_data.ContainsKey(key))
-                _data.Add(key, new KeybindItem());
+            if (!Data.ContainsKey(key))
+                Data.Add(key, new KeybindItem());
 
-            return _data[key];
+            return Data[key];
         }
 
         public KeybindItem FindChild(string key)
         {
-            return _data.ContainsKey(key) ? _data[key] : null;
+            return Data.ContainsKey(key) ? Data[key] : null;
         }
     }
 }

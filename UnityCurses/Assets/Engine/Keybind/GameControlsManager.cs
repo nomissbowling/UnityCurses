@@ -4,7 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Assets.Engine.FileSystem;
+using Assets.Engine.Utility;
 using UnityEngine;
 
 namespace Assets.Engine.Keybind
@@ -503,11 +505,8 @@ namespace Assets.Engine.Keybind
                 if (!string.IsNullOrEmpty(directoryName) && !Directory.Exists(directoryName))
                     Directory.CreateDirectory(directoryName);
 
-                using (var writer = new StreamWriter(fileName))
-                {
-                    var output = JsonUtility.ToJson(block, true);
-                    writer.Write(output);
-                }
+                var output = Serializer.SerializeObject(block);
+                File.WriteAllText(_keybindsPath, output);
             }
             catch
             {
@@ -517,7 +516,7 @@ namespace Assets.Engine.Keybind
 
         public void LoadCustomConfig()
         {
-            // Load the text from disk which should be JSON keybind data.
+            // Load the text from disk which should be keybind data.
             var customFilename = VirtualFileSystem.GetRealPathByVirtual(_keybindsPath);
             var customblock = string.Empty;
             if (File.Exists(customFilename))
@@ -526,14 +525,16 @@ namespace Assets.Engine.Keybind
             // Only print out error if one exists, FileNotFound is ignored error.
             if (string.IsNullOrEmpty(customblock))
             {
-                Debug.Log("No custom keyboard and mouse binds found, skipping file load...");
+                Debug.Log("GameControlsManager: No keybinds configuration file found, resetting to defaults...");
+                ResetKeyMouseSettings();
                 return;
             }
 
-            // Parse the JSON we loaded back into keybinding data object.
-            var controlBloc = JsonUtility.FromJson<KeybindData>(customblock);
+            // Parse the data we loaded back into keybinding object.
+            var controlBloc = Serializer.DeserializeObject(customblock) as KeybindData;
             if (controlBloc == null)
             {
+                Debug.LogError("GameControlsManager: Failed to deserialize keybind data, resetting to defaults...");
                 ResetKeyMouseSettings();
                 return;
             }

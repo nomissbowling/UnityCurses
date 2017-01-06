@@ -14,26 +14,18 @@ namespace Assets.Engine.Keybind
         /// <summary>
         ///     Reference to all of the binds for a particular key in the keybind data master table.
         /// </summary>
-        [SerializeField] private DictionaryOfStringAndString _binds = new DictionaryOfStringAndString();
-
-        /// <summary>
-        ///     Reference to all of the binds for a particular key in the keybind data master table.
-        /// </summary>
-        public DictionaryOfStringAndString Binds
-        {
-            get { return _binds; }
-        }
+        [SerializeField] public DictionaryOfStringAndString Binds = new DictionaryOfStringAndString();
 
         public void SetAttribute(string key, string value)
         {
             // Add the key if it does not exist.
-            if (!_binds.ContainsKey(key))
-                _binds.Add(key, value);
+            if (!Binds.ContainsKey(key))
+                Binds.Add(key, value);
         }
 
         public string GetAttribute(string key)
         {
-            return _binds.ContainsKey(key) ? _binds[key] : string.Empty;
+            return Binds.ContainsKey(key) ? Binds[key] : string.Empty;
         }
     }
 }
