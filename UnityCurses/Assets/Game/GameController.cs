@@ -2,9 +2,10 @@
 // Timestamp 01/07/2016@7:10 PM
 
 using System;
-using Assets.Common;
 using Assets.Engine;
 using Assets.Engine.FileSystem;
+using Assets.Engine.Keybind;
+using Assets.Engine.Utility.Singleton;
 using Assets.Example;
 using UnityEngine;
 

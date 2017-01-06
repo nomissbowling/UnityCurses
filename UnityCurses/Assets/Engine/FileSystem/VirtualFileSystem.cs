@@ -7,7 +7,7 @@ namespace Assets.Engine.FileSystem
     /// <summary>
     ///     Keeps track of file locations on users disk across whatever platforms Unity supports using the persistent data
     ///     path.
-    /// </summary>
+    /// </summary>]
     public sealed class VirtualFileSystem
     {
         internal static readonly object FileLock = new object();
