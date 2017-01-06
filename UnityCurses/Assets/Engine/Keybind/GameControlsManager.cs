@@ -506,7 +506,7 @@ namespace Assets.Engine.Keybind
                     Directory.CreateDirectory(directoryName);
 
                 var output = Serializer.SerializeObject(block);
-                File.WriteAllText(_keybindsPath, output);
+                File.WriteAllText(fileName, output);
             }
             catch
             {
@@ -540,6 +540,7 @@ namespace Assets.Engine.Keybind
             }
 
             // Loop through all bindable keys in the game.
+            int loadedBinds = 0;
             foreach (var item in Items)
             {
                 var currentKeyBlock = controlBloc.FindChild(item.ControlKey.ToString());
@@ -562,7 +563,11 @@ namespace Assets.Engine.Keybind
 
                 value.Parent = item;
                 item.BindedKeyboardMouseValues.Add(value);
+                loadedBinds++;
             }
+
+            // Print information about how many binds we loaded.
+            Debug.Log("GameControlsManager: Loaded " + loadedBinds + "/" + Items.Length + " keybinds from file.");
         }
 
         public class SystemControlValue

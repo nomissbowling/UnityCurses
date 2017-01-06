@@ -1,5 +1,5 @@
 ﻿using System;
-using Assets.Engine.Utility.Dictionary;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Engine.Keybind
@@ -14,7 +14,7 @@ namespace Assets.Engine.Keybind
         /// <summary>
         ///     Reference to all of the binds for a particular key in the keybind data master table.
         /// </summary>
-        [SerializeField] public DictionaryOfStringAndString Binds = new DictionaryOfStringAndString();
+        [SerializeField] public Dictionary<string, string> Binds = new Dictionary<string, string>();
 
         public void SetAttribute(string key, string value)
         {

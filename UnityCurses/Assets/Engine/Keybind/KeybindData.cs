@@ -1,5 +1,5 @@
 ﻿using System;
-using Assets.Engine.Utility.Dictionary;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Engine.Keybind
@@ -7,7 +7,7 @@ namespace Assets.Engine.Keybind
     [Serializable]
     public sealed class KeybindData
     {
-        [SerializeField] public DictionaryOfStringAndKeybindItem Data = new DictionaryOfStringAndKeybindItem();
+        [SerializeField] public Dictionary<string, KeybindItem> Data = new Dictionary<string, KeybindItem>();
 
         public KeybindItem AddChild(string key)
         {
