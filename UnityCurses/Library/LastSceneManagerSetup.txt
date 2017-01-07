@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Maxwolf/Game/Scenes/Program.unity
+- path: Assets/Maxwolf/Game/Scenes/ConsoleApplication.unity
   isLoaded: 1
   isActive: 1

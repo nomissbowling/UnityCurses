@@ -4,15 +4,32 @@
 using Assets.Maxwolf.Engine;
 using Assets.Maxwolf.Engine.FileSystem;
 using Assets.Maxwolf.Example;
+using Assets.Maxwolf.OregonTrail;
 using Assets.Maxwolf.ProjectCommon;
 using Assets.Maxwolf.ProjectCommon.Utility.Singleton;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Maxwolf.Game
 {
     [Prefab("GameController")]
     public sealed class GameController : UnitySingleton<GameController>
     {
+        /// <summary>
+        ///     Reference to the text that is going to be shown on the text component.
+        /// </summary>
+        private static string _screenBuffer;
+
+        /// <summary>
+        ///     Reference to scene UI text input field. Assigned from editor.
+        /// </summary>
+        public InputField GameInput;
+
+        /// <summary>
+        ///     Reference to scene UI output text field. Assigned from editor.
+        /// </summary>
+        public Text GameOutput;
+
         /// <summary>
         ///     Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
@@ -21,13 +38,42 @@ namespace Assets.Maxwolf.Game
         {
             Debug.Log("GameScript::Update()");
 
-            // Skip if the engine is not currently initialized.
-            if (EngineApp.Instance == null)
-                return;
+            // Ticks the underlying simulation.
+            if (EngineApp.Instance != null)
+                EngineApp.Instance.OnTick(true, false);
 
             // Tick the control manager for input strength.
             if (GameControlsManager.Instance != null)
                 GameControlsManager.Instance.DoTick(Time.deltaTime);
+
+            // Special hooks for low-level keys such as return, backspace, and generic input for engine application.
+            // ReSharper disable once SwitchStatementMissingSomeCases
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                EngineApp.InputManager.SendInputBufferAsCommand();
+
+                // Clear out input field.
+                if (GameInput != null)
+                    GameInput.text = string.Empty;
+            }
+            else if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                if (EngineApp.Instance != null)
+                    EngineApp.InputManager.RemoveLastCharOfInputBuffer();
+            }
+            else if (Input.anyKeyDown && EngineApp.Instance != null)
+            {
+                char inputChar;
+                if (char.TryParse(Input.inputString, out inputChar))
+                {
+                    EngineApp.InputManager.AddCharToInputBuffer(inputChar);
+                    GameInput.text = EngineApp.InputManager.InputBuffer;
+                }
+            }
+
+            // Check if game output is different, if so then set it to that.
+            if (GameOutput != null)
+                GameOutput.text = _screenBuffer;
         }
 
         /// <summary>
@@ -65,6 +111,14 @@ namespace Assets.Maxwolf.Game
         {
             Debug.Log("----------PROGRAM START----------");
 
+            // Clear out controls.
+            if (GameOutput != null)
+                GameOutput.text = string.Empty;
+
+            // Set game input to match input buffer.
+            if (GameInput != null)
+                GameInput.onValueChanged.AddListener(delegate { MatchInputBufferToInputField(); });
+
             // Create virtual filesystem.
             VirtualFileSystem.Init();
 
@@ -76,83 +130,30 @@ namespace Assets.Maxwolf.Game
                 GameControlsManager.Instance.GameControlsEvent += GameControlsManager_GameControlsEvent;
 
             // Entry point for the entire simulation.
-            EngineApp.Init(new ExampleApp());
-            //EngineApp.Init(new OregonTrailApp());
+            //EngineApp.Init(new ExampleApp());
+            EngineApp.Init(new OregonTrailApp());
 
             // Hook event to know when screen buffer wants to redraw the entire console screen.
-            //EngineApp.Instance.SceneGraph.ScreenBufferDirtyEvent += Simulation_ScreenBufferDirtyEvent;
+            EngineApp.SceneGraph.ScreenBufferDirtyEvent += Simulation_ScreenBufferDirtyEvent;
+        }
+
+        private void MatchInputBufferToInputField()
+        {
+            if (EngineApp.InputManager.InputBuffer != GameInput.text)
+            {
+                GameInput.text = EngineApp.InputManager.InputBuffer;
+            }
         }
 
         private void GameControlsManager_GameControlsEvent(GameControlsEventData e)
         {
             var keyDown = e as GameControlsKeyDownEventData;
             if (keyDown != null)
-                switch (keyDown.ControlKey)
-                {
-                    case GameControlKeys.Fire1:
-                        Debug.Log("FIRE1 DOWN!");
-                        break;
-                    case GameControlKeys.Forward:
-                        Debug.Log("FORWARD DOWN!");
-                        break;
-                    case GameControlKeys.Backward:
-                        Debug.Log("BACKWARD DOWN!");
-                        break;
-                    case GameControlKeys.Left:
-                        Debug.Log("LEFT DOWN!");
-                        break;
-                    case GameControlKeys.Right:
-                        Debug.Log("RIGHT DOWN!");
-                        break;
-                    case GameControlKeys.Fire2:
-                        Debug.Log("FIRE2 DOWN!");
-                        break;
-                    case GameControlKeys.Reload:
-                        Debug.Log("RELOAD DOWN!");
-                        break;
-                    case GameControlKeys.Use:
-                        Debug.Log("USE DOWN!");
-                        break;
-                }
+                Debug.Log(keyDown.ControlKey.ToString().ToUpperInvariant() + "_DOWN");
 
             var keyUp = e as GameControlsKeyUpEventData;
             if (keyUp != null)
-                switch (keyUp.ControlKey)
-                {
-                    case GameControlKeys.Fire1:
-                        Debug.Log("FIRE1 UP!");
-                        break;
-                    case GameControlKeys.Forward:
-                        Debug.Log("FORWARD UP!");
-                        break;
-                    case GameControlKeys.Backward:
-                        Debug.Log("BACKWARD UP!");
-                        break;
-                    case GameControlKeys.Left:
-                        Debug.Log("LEFT UP!");
-                        break;
-                    case GameControlKeys.Right:
-                        Debug.Log("RIGHT UP!");
-                        break;
-                    case GameControlKeys.Fire2:
-                        Debug.Log("FIRE2 UP!");
-                        break;
-                    case GameControlKeys.Reload:
-                        Debug.Log("RELOAD UP!");
-                        break;
-                    case GameControlKeys.Use:
-                        Debug.Log("USE UP!");
-                        break;
-                }
-        }
-
-        /// <summary>
-        ///     OnGUI is called for rendering and handling GUI events.
-        /// </summary>
-        // ReSharper disable once UnusedMember.Local
-        private void OnGUI()
-        {
-            Debug.Log("GameScript::OnGUI()");
+                Debug.Log(keyUp.ControlKey.ToString().ToUpperInvariant() + "_UP");
         }
 
         /// <summary>
@@ -216,20 +217,8 @@ namespace Assets.Maxwolf.Game
         /// <param name="tuiContent">The text user interface content.</param>
         private static void Simulation_ScreenBufferDirtyEvent(string tuiContent)
         {
-            //string[] tuiContentSplit = tuiContent.Split(new string[] {Environment.NewLine}, StringSplitOptions.None);
-
-            //for (int index = 0; index < Console.WindowHeight - 1; index++)
-            //{
-            //    Console.CursorLeft = 0;
-            //    Console.SetCursorPosition(0, index);
-
-            //    string emptyStringData = new string(' ', Console.WindowWidth);
-
-            //    if (tuiContentSplit.Length > index)
-            //        emptyStringData = tuiContentSplit[index].PadRight(Console.WindowWidth);
-
-            //    Console.Write(emptyStringData);
-            //}
+            // Update static text we will be using on the game object reference.
+            _screenBuffer = tuiContent;
         }
     }
 }

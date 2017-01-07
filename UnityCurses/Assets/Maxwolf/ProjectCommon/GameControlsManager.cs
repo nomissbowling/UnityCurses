@@ -350,28 +350,6 @@ namespace Assets.Maxwolf.ProjectCommon
                     }
                     else if (Input.GetKeyUp(value.Key))
                     {
-                        // Special hooks for low-level keys such as return, backspace, and generic input for engine application.
-                        // ReSharper disable once SwitchStatementMissingSomeCases
-                        switch (value.Key)
-                        {
-                            case KeyCode.Return:
-
-                                EngineApp.InputManager.SendInputBufferAsCommand();
-                                break;
-                            case KeyCode.Backspace:
-                                if (EngineApp.Instance != null)
-                                    EngineApp.InputManager.RemoveLastCharOfInputBuffer();
-                                break;
-                            default:
-                                if (EngineApp.Instance != null)
-                                {
-                                    char inputChar;
-                                    if (char.TryParse(value.Key.ToString(), out inputChar))
-                                        EngineApp.InputManager.AddCharToInputBuffer(inputChar);
-                                }
-                                break;
-                        }
-
                         DoKeyUp(value.Key);
                     }
                 }
