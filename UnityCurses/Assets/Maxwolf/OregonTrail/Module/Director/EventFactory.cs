@@ -83,9 +83,10 @@ namespace Assets.Maxwolf.OregonTrail.Module.Director
             if (directorEventKeyValuePair.Value.IsAbstract)
                 return null;
 
-            // Init the event product, but don't call any constructor.
+            // Create the event product, but don't call any constructor.
             var eventInstance =
-                TypeExtensions.New<EventProduct>.Instance();
+                TypeExtensions.New<EventProduct>.GetUninitializedObject(directorEventKeyValuePair.Value) as
+                    EventProduct;
 
             // If the event instance is null then complain.
             if (eventInstance == null)
@@ -108,7 +109,7 @@ namespace Assets.Maxwolf.OregonTrail.Module.Director
             var groupedEventList = new List<Type>();
             foreach (var type in EventReference)
                 if (type.Key.Category.Equals(eventCategory) &&
-                    type.Key.ExecutionType == EventExecution.RandomOrManual)
+                    (type.Key.ExecutionType == EventExecution.RandomOrManual))
                     groupedEventList.Add(type.Value);
 
             // Check to make sure there is at least one type of event of this type.
@@ -118,7 +119,7 @@ namespace Assets.Maxwolf.OregonTrail.Module.Director
             // Roll the dice against the event reference ceiling count to see which one we use.
             var diceRoll = EngineApp.Random.Next(groupedEventList.Count);
 
-            // Init the event we decided to execute from these types of event types.
+            // Create the event we decided to execute from these types of event types.
             var randomEvent = CreateInstance(groupedEventList[diceRoll]);
 
             // Clear the temporary list we made to get by category and return create event instance.

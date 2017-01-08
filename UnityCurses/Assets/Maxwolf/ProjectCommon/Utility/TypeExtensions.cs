@@ -3,7 +3,9 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.Serialization;
+using Assets.Maxwolf.OregonTrail.Module.Director;
 
 namespace Assets.Maxwolf.ProjectCommon.Utility
 {
@@ -40,6 +42,8 @@ namespace Assets.Maxwolf.ProjectCommon.Utility
             /// </summary>
             public static readonly Func<T> Instance = Creator();
 
+            private static Func<Type, object> getUninitializedObject;
+
             /// <summary>
             ///     The creator.
             /// </summary>
@@ -57,6 +61,52 @@ namespace Assets.Maxwolf.ProjectCommon.Utility
 
                 return () => (T) FormatterServices.GetUninitializedObject(t);
             }
+
+            /// <summary>Creates a new instance of the specified type, bypassing the constructor.</summary>
+            /// <param name="type">The type to create</param>
+            /// <returns>The new instance</returns>
+            /// <exception cref="NotSupportedException">If the platform does not support constructor-skipping</exception>
+            /// <remarks>
+            ///     Inspired by DCS:
+            ///     https://github.com/dotnet/corefx/blob/c02d33b18398199f6acc17d375dab154e9a1df66/src/System.Private.DataContractSerialization/src/System/Runtime/Serialization/XmlFormatReaderGenerator.cs#L854-L894
+            /// </remarks>
+            public static object GetUninitializedObject(Type type)
+            {
+                //var obj = TryGetUninitializedObjectWithFormatterServices(type);
+                return Activator.CreateInstance(type);
+            }
+
+            ///// <summary>Manually calls the private method which Microsoft has not marked as public yet.</summary>
+            ///// <remarks> https://github.com/mgravell/protobuf-net/blob/master/protobuf-net/BclHelpers.cs#L35 </remarks>
+            //internal static object TryGetUninitializedObjectWithFormatterServices(Type type)
+            //{
+            //    if (getUninitializedObject != null)
+            //        return getUninitializedObject(type);
+
+            //    try
+            //    {
+            //        var formatterServiceType = typeof(string).Assembly.GetType("System.Runtime.Serialization.FormatterServices");
+            //        if (formatterServiceType != null)
+            //        {
+            //            var method = formatterServiceType.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+            //            if (method != null)
+            //            {
+            //                //getUninitializedObject = (Func<Type, object>)method.CreateDelegate(typeof(Func<Type, object>));
+            //                //Delegate.CreateDelegate(method, )
+            //                var thing = Activator.CreateInstance(type);
+
+            //            }
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        /* best efforts only */
+            //    }
+
+            //    if (getUninitializedObject == null)
+            //        getUninitializedObject = x => null;
+            //    return getUninitializedObject(type);
+            //}
         }
     }
 }
