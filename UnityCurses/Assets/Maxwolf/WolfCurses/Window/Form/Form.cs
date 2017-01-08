@@ -4,31 +4,19 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
 
 namespace Assets.Maxwolf.WolfCurses.Window.Form
 {
     /// <summary>Forms are attached to windows.</summary>
     /// <typeparam name="TData">UserData type.</typeparam>
-    public abstract class Form<TData> :
-        Comparer<Form<TData>>,
+    public abstract class Form<TData> : ScriptableObject,
         IComparable<Form<TData>>,
         IEquatable<Form<TData>>,
         IEqualityComparer<Form<TData>>,
         IForm
         where TData : WindowData, new()
     {
-        private readonly IWindow _parentWindow;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Form{TData}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        protected Form(IWindow window)
-        {
-            _parentWindow = window;
-        }
-
         /// <summary>
         ///     Intended to be overridden in abstract class by generics to provide method to return object that contains all the
         ///     data for parent game Windows.
@@ -41,10 +29,7 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form
         /// <summary>
         ///     Current parent game Windows which this state is binded to and is doing work on behalf of.
         /// </summary>
-        protected IWindow ParentWindow
-        {
-            get { return _parentWindow; }
-        }
+        protected IWindow ParentWindow { get; private set; }
 
         /// <summary>Compares the current object with another object of the same type.</summary>
         /// <returns>
@@ -211,6 +196,11 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form
             // Nothing to see here, move along...
         }
 
+        public virtual void OnFormPreCreate(IWindow window)
+        {
+            ParentWindow = window;
+        }
+
         /// <summary>Creates and adds the specified type of state to currently active game Windows.</summary>
         /// <param name="stateType">The state Type.</param>
         public void SetForm(Type stateType)
@@ -252,7 +242,7 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public override int Compare(Form<TData> x, Form<TData> y)
+        public int Compare(Form<TData> x, Form<TData> y)
         {
             var result = string.Compare(x.GetType().Name, y.GetType().Name, StringComparison.Ordinal);
             return result;

@@ -10,7 +10,6 @@ using Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing.Ferry;
 using Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing.Help;
 using Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing.Indian;
 using Assets.Maxwolf.ProjectCommon.Utility;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing
@@ -52,15 +51,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing
         ///     Keeps track of the total number of river options that have been configured to display for this crossing.
         /// </summary>
         private int _riverOptionsCount;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RiverCross" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public RiverCross(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired after the state has been completely attached to the simulation letting the state know it can browse the user

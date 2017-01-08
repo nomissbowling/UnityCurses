@@ -5,7 +5,6 @@ using System;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Vehicle;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Dialog;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Command
@@ -22,15 +21,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Command
         ///     String builder for the changing pace text.
         /// </summary>
         private StringBuilder _pace;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangePace" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public ChangePace(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired after the state has been completely attached to the simulation letting the state know it can browse the user

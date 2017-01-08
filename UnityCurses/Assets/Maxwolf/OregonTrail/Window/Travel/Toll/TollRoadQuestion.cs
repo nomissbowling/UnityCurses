@@ -6,7 +6,6 @@ using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity;
 using Assets.Maxwolf.OregonTrail.Entity.Location.Point;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Dialog;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -26,15 +25,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Toll
         ///     Figures out of the vehicle has enough cash to use the toll road, this is generally used as a check for the dialog.
         /// </summary>
         private bool canAffordToll;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InputForm{T}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public TollRoadQuestion(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.

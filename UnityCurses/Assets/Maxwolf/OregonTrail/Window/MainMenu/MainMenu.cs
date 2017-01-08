@@ -28,14 +28,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu
             string.Format("What are the first names of the{0}three other members in your party?", Environment.NewLine);
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Window{TCommands,TData}" /> class.
-        /// </summary>
-        /// <param name="simUnit">Core simulation which is controlling the form factory.</param>
-        public MainMenu(EngineApp simUnit) : base(simUnit)
-        {
-        }
-
-        /// <summary>
         ///     Called after the Windows has been added to list of modes and made active.
         /// </summary>
         public override void OnWindowPostCreate()

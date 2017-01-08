@@ -5,7 +5,6 @@ using System;
 using System.Text;
 using Assets.Maxwolf.Example.MainMenu;
 using Assets.Maxwolf.WolfCurses;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -21,15 +20,6 @@ namespace Assets.Maxwolf.Example.Question
         ///     Holds all the text so we only need to render it once.
         /// </summary>
         private StringBuilder dialogYesNo = new StringBuilder();
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InputForm{T}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public QuestionDialog(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Defines what type of dialog this will act like depending on this enumeration value. Up to implementation to define

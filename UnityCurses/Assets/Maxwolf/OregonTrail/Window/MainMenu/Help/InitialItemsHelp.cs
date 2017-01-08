@@ -17,13 +17,10 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Help
     [ParentWindow(typeof(MainMenu))]
     public sealed class InitialItemsHelp : InputForm<NewGameInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InitialItemsHelp" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public InitialItemsHelp(IWindow window) : base(window)
+        public override void OnFormPreCreate(IWindow window)
         {
+            base.OnFormPreCreate(window);
+
             // Pass the game data to the simulation for each new game Windows state.
             OregonTrailApp.Instance.SetStartInfo(UserData);
         }

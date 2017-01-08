@@ -22,13 +22,10 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Hunt.Help
         /// </summary>
         private StringBuilder huntHelp;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InputForm{T}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public HuntingPrompt(IWindow window) : base(window)
+        public override void OnFormPreCreate(IWindow window)
         {
+            base.OnFormPreCreate(window);
+
             huntHelp = new StringBuilder();
         }
 

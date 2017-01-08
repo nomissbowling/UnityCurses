@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Module.Scoring;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Control;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
@@ -17,15 +16,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Options
     [ParentWindow(typeof(MainMenu))]
     public sealed class OriginalTopTen : InputForm<NewGameInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="OriginalTopTen" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public OriginalTopTen(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Fired when dialog prompt is attached to active game Windows and would like to have a string returned.
         /// </summary>

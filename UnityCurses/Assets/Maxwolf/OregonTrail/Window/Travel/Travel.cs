@@ -24,14 +24,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel
     public sealed class Travel : Window<TravelCommands, TravelInfo>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Window{TCommands,TData}" /> class.
-        /// </summary>
-        /// <param name="simUnit">Core simulation which is controlling the form factory.</param>
-        public Travel(EngineApp simUnit) : base(simUnit)
-        {
-        }
-
-        /// <summary>
         ///     Determines if the simulation should continue to check if the game has ended.
         /// </summary>
         private bool GameOver { get; set; }

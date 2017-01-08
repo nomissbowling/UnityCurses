@@ -17,14 +17,6 @@ namespace Assets.Maxwolf.Example.MainMenu
     public sealed class ExampleWindow : Window<ExampleCommands, ExampleWindowInfo>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Window{TCommands,TData}" /> class.
-        /// </summary>
-        /// <param name="simUnit">Core simulation which is controlling the form factory.</param>
-        public ExampleWindow(EngineApp simUnit) : base(simUnit)
-        {
-        }
-
-        /// <summary>
         ///     Called after the Windows has been added to list of modes and made active.
         /// </summary>
         public override void OnWindowPostCreate()

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Maxwolf.Engine;
+using UnityEngine;
 
 namespace Assets.Maxwolf.WolfCurses.Window
 {
@@ -63,8 +64,13 @@ namespace Assets.Maxwolf.WolfCurses.Window
                 return null;
 
             // Init the game Windows, it will have single parameter for user data.
-            var gameModeInstance = Activator.CreateInstance(modeType, _simUnit);
-            return gameModeInstance as IWindow;
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var gameModeInstance = ScriptableObject.CreateInstance(modeType) as IWindow;
+            if (gameModeInstance == null)
+                return null;
+
+            gameModeInstance.OnWindowPreCreate(_simUnit);
+            return gameModeInstance;
         }
 
         /// <summary>

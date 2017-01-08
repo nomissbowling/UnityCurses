@@ -33,6 +33,13 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form
         WindowData UserData { get; }
 
         /// <summary>
+        ///     Used by Unity scriptable object instance creator on forms so they can be created without the use of a
+        ///     parametereless constructor.
+        /// </summary>
+        /// <param name="activeMode"></param>
+        void OnFormPreCreate(IWindow activeMode);
+
+        /// <summary>
         ///     Returns a text only representation of the current game Windows state. Could be a statement, information, question
         ///     waiting input, etc.
         /// </summary>

@@ -23,22 +23,19 @@ namespace Assets.Maxwolf.OregonTrail.Window.Graveyard
         private StringBuilder _confirmPrompt;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EpitaphConfirm" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public EpitaphConfirm(IWindow window) : base(window)
-        {
-            _confirmPrompt = new StringBuilder();
-        }
-
-        /// <summary>
         ///     Defines what type of dialog this will act like depending on this enumeration value. Up to implementation to define
         ///     desired behavior.
         /// </summary>
         protected override DialogType DialogType
         {
             get { return DialogType.YesNo; }
+        }
+
+        public override void OnFormPreCreate(IWindow window)
+        {
+            base.OnFormPreCreate(window);
+
+            _confirmPrompt = new StringBuilder();
         }
 
         /// <summary>

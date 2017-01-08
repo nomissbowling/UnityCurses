@@ -3,7 +3,6 @@
 
 using System;
 using System.Text;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -18,15 +17,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Dialog
     [ParentWindow(typeof(Travel))]
     public sealed class UnableToContinue : InputForm<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="UnableToContinue" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public UnableToContinue(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
         /// </summary>

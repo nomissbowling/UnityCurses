@@ -6,7 +6,6 @@ using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity;
 using Assets.Maxwolf.OregonTrail.Entity.Vehicle;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Rest;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -20,15 +19,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing.Ferry
     [ParentWindow(typeof(Travel))]
     public sealed class UseFerryConfirm : InputForm<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="UseFerryConfirm" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public UseFerryConfirm(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Defines what type of dialog this will act like depending on this enumeration value. Up to implementation to define
         ///     desired behavior.

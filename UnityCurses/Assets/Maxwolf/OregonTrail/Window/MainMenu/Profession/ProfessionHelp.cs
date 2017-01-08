@@ -3,7 +3,6 @@
 
 using System;
 using System.Text;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -16,12 +15,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Profession
     [ParentWindow(typeof(MainMenu))]
     public sealed class ProfessionHelp : InputForm<NewGameInfo>
     {
-        /// <summary>Initializes a new instance of the <see cref="ProfessionHelp" /> class.</summary>
-        /// <param name="window">The window.</param>
-        public ProfessionHelp(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Fired when dialog prompt is attached to active game Windows and would like to have a string returned.
         /// </summary>

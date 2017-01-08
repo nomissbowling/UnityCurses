@@ -24,16 +24,6 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form.Input
         private bool _seenPrompt;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="InputForm{T}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        protected InputForm(IWindow window) : base(window)
-        {
-            _prompt = new StringBuilder();
-        }
-
-        /// <summary>
         ///     Defines what type of dialog this will act like depending on this enumeration value. Up to implementation to define
         ///     desired behavior.
         /// </summary>
@@ -61,6 +51,13 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form.Input
                         return false;
                 }
             }
+        }
+
+        public override void OnFormPreCreate(IWindow window)
+        {
+            base.OnFormPreCreate(window);
+
+            _prompt = new StringBuilder();
         }
 
         /// <summary>

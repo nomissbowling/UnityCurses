@@ -51,25 +51,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing
         private string _swayBarText;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CrossingTick" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public CrossingTick(IWindow window) : base(window)
-        {
-            // Init the string builder for holding all our text about river crossing as it happens.
-            _crossingPrompt = new StringBuilder();
-
-            // Animated sway bar.
-            _marqueeBar = new MarqueeBar();
-            _swayBarText = _marqueeBar.Step();
-
-            // Sets the crossing percentage to zero.
-            _riverCrossingOfTotalWidth = 0;
-            _finishedCrossingRiver = false;
-        }
-
-        /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
         /// </summary>
         /// <remarks>Default is FALSE. Setting to TRUE allows characters and input buffer to be read when submitted.</remarks>
@@ -86,6 +67,22 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing
         public override bool AllowInput
         {
             get { return _finishedCrossingRiver; }
+        }
+
+        public override void OnFormPreCreate(IWindow window)
+        {
+            base.OnFormPreCreate(window);
+
+            // Init the string builder for holding all our text about river crossing as it happens.
+            _crossingPrompt = new StringBuilder();
+
+            // Animated sway bar.
+            _marqueeBar = new MarqueeBar();
+            _swayBarText = _marqueeBar.Step();
+
+            // Sets the crossing percentage to zero.
+            _riverCrossingOfTotalWidth = 0;
+            _finishedCrossingRiver = false;
         }
 
         /// <summary>

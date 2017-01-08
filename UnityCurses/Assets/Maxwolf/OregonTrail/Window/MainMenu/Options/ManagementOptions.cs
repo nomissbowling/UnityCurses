@@ -2,10 +2,10 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System;
-using System.Reflection;
 using System.Text;
 using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
+using UnityEngine;
 
 namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Options
 {
@@ -21,13 +21,10 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Options
         /// </summary>
         private StringBuilder _optionsPrompt;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ManagementOptions" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public ManagementOptions(IWindow window) : base(window)
+        public override void OnFormPreCreate(IWindow window)
         {
+            base.OnFormPreCreate(window);
+
             _optionsPrompt = new StringBuilder();
         }
 
@@ -41,7 +38,7 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Options
 
             _optionsPrompt.AppendLine(string.Format("{0}The Oregon Trail", Environment.NewLine));
             _optionsPrompt.AppendLine(
-                string.Format("Version: {0}{1}", Assembly.GetEntryAssembly().GetName().Version, Environment.NewLine));
+                string.Format("Version: {0}{1}", Application.version, Environment.NewLine));
             _optionsPrompt.AppendLine(string.Format("Management Options{0}", Environment.NewLine));
             _optionsPrompt.AppendLine("You may:");
             _optionsPrompt.AppendLine("1. See the original Top Ten list");

@@ -32,22 +32,18 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Rest
         private StringBuilder _restMessage;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Resting" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public Resting(IWindow window) : base(window)
-        {
-            _restMessage = new StringBuilder();
-        }
-
-        /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
         /// </summary>
         /// <remarks>Default is FALSE. Setting to TRUE allows characters and input buffer to be read when submitted.</remarks>
         public override bool InputFillsBuffer
         {
             get { return false; }
+        }
+
+        public override void OnFormPreCreate(IWindow window)
+        {
+            base.OnFormPreCreate(window);
+            _restMessage = new StringBuilder();
         }
 
         /// <summary>

@@ -20,13 +20,10 @@ namespace Assets.Maxwolf.Example.CustomInput
         /// </summary>
         private StringBuilder _inputNamesHelp;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Form{TData}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public DialogCustomInput(IWindow window) : base(window)
+        public override void OnFormPreCreate(IWindow window)
         {
+            base.OnFormPreCreate(window);
+
             _inputNamesHelp = new StringBuilder();
         }
 

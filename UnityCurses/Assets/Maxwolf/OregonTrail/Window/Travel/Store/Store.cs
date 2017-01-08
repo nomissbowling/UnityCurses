@@ -11,7 +11,6 @@ using Assets.Maxwolf.OregonTrail.Entity.Location;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Dialog;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Store.Help;
 using Assets.Maxwolf.ProjectCommon.Utility;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Store
@@ -26,15 +25,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Store
         ///     String builder that will hold all the generated data about store inventory and selections for player to make.
         /// </summary>
         private StringBuilder _storePrompt;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Store" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public Store(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired after the state has been completely attached to the simulation letting the state know it can browse the user

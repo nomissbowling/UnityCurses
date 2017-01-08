@@ -23,16 +23,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.RandomEvent
         private StringBuilder _skipMessage;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EventSkipDay" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public EventSkipDay(IWindow window) : base(window)
-        {
-            _skipMessage = new StringBuilder();
-        }
-
-        /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
         /// </summary>
         /// <remarks>Default is FALSE. Setting to TRUE allows characters and input buffer to be read when submitted.</remarks>
@@ -48,6 +38,13 @@ namespace Assets.Maxwolf.OregonTrail.Window.RandomEvent
         public override bool AllowInput
         {
             get { return UserData.DaysToSkip <= 0; }
+        }
+
+        public override void OnFormPreCreate(IWindow window)
+        {
+            base.OnFormPreCreate(window);
+
+            _skipMessage = new StringBuilder();
         }
 
         /// <summary>

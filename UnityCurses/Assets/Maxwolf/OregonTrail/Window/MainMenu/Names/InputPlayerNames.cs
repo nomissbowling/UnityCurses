@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Assets.Maxwolf.Engine;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Names
@@ -22,15 +21,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Names
         ///     entered for continuity sake.
         /// </summary>
         private StringBuilder _inputNamesHelp;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InputPlayerNames" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public InputPlayerNames(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired after the state has been completely attached to the simulation letting the state know it can browse the user

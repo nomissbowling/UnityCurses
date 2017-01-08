@@ -3,7 +3,6 @@
 
 using System;
 using System.Text;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -17,15 +16,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing.Help
     [ParentWindow(typeof(Travel))]
     public sealed class RiverCrossHelp : InputForm<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RiverCrossHelp" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public RiverCrossHelp(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Fired when dialog prompt is attached to active game Windows and would like to have a string returned.
         /// </summary>

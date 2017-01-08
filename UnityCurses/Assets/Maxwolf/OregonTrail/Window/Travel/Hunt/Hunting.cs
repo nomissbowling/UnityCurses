@@ -3,7 +3,6 @@
 
 using System;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Hunt.Help;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Hunt
@@ -16,15 +15,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Hunt
     [ParentWindow(typeof(Travel))]
     public sealed class Hunting : Form<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Hunting" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public Hunting(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
         /// </summary>

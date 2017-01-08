@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -20,15 +19,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.RiverCrossing.Indian
     [ParentWindow(typeof(Travel))]
     public sealed class IndianGuidePrompt : InputForm<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="IndianGuidePrompt" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public IndianGuidePrompt(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Changes up the behavior of the input dialog based on if the player has enough clothes to trade the Indian guide.
         /// </summary>

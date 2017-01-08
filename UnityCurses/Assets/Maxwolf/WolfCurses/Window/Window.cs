@@ -10,6 +10,7 @@ using Assets.Maxwolf.Engine;
 using Assets.Maxwolf.ProjectCommon.Utility;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Menu;
+using UnityEngine;
 
 namespace Assets.Maxwolf.WolfCurses.Window
 {
@@ -21,7 +22,7 @@ namespace Assets.Maxwolf.WolfCurses.Window
     /// <typeparam name="TCommands">Enumeration of all the available commands this window supports.</typeparam>
     /// <typeparam name="TData">Window data class that will be used for this window.</typeparam>
     public abstract class Window<TCommands, TData> :
-        Comparer<IWindow>,
+        ScriptableObject,
         IComparable<Window<TCommands, TData>>,
         IEquatable<Window<TCommands, TData>>,
         IEqualityComparer<Window<TCommands, TData>>,
@@ -29,10 +30,6 @@ namespace Assets.Maxwolf.WolfCurses.Window
         where TCommands : struct, IComparable, IFormattable, IConvertible
         where TData : WindowData, new()
     {
-        private readonly bool _showCommandNamesInMenu;
-
-        private readonly TData _userData;
-
         /// <summary>
         ///     Reference for mappings to go from enumeration value to action.
         /// </summary>
@@ -65,39 +62,6 @@ namespace Assets.Maxwolf.WolfCurses.Window
         private StringBuilder _menuPrompt;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Window{TCommands,TData}" /> class.
-        /// </summary>
-        /// <param name="simUnit">Core simulation which is controlling the form factory.</param>
-        protected Window(EngineApp simUnit)
-        {
-            // Copy over reference for simulation core.
-
-            // Reference for our text user interface data so we can build it up in pieces.
-            _menuPrompt = new StringBuilder();
-
-            // Init the user data object casted to correct type from generics while still adhering to common base class.
-            _userData = TypeExtensions.New<TData>.Instance();
-
-            // Determines if the menu system should show raw input names in the menu rendering or just number selections by enum value.
-            _showCommandNamesInMenu = EngineApp.SHOW_COMMANDS;
-
-            // Complain the generics implemented is not of an enum type.
-            if (!typeof(TCommands).IsEnum)
-                throw new InvalidCastException("TCommands must be an enumerated type!");
-
-            // Init empty list of menu choices.
-            _menuCommands = new List<IMenuChoice<TCommands>>();
-
-            // Dictionary of mappings for the choices and their associated values and actions.
-            _menuMappings = new Dictionary<string, TCommands>();
-            _menuActions = new Dictionary<TCommands, Action>();
-
-            // Menu header and footer is empty strings by default.
-            _menuHeader = string.Empty;
-            _menuFooter = string.Empty;
-        }
-
-        /// <summary>
         ///     Current game Windows state that is being ticked when this Windows is ticked by the underlying simulation.
         /// </summary>
         private IForm Form { get; set; }
@@ -126,19 +90,13 @@ namespace Assets.Maxwolf.WolfCurses.Window
         ///     Determines if the input names for the particular action should be printed out alongside the number the user can
         ///     press to control that particular enum.
         /// </summary>
-        private bool ShowCommandNamesInMenu
-        {
-            get { return _showCommandNamesInMenu; }
-        }
+        private bool ShowCommandNamesInMenu { get; set; }
 
         /// <summary>
         ///     Intended to be overridden in abstract class by generics to provide method to return object that contains all the
         ///     data for parent game Windows.
         /// </summary>
-        protected TData UserData
-        {
-            get { return _userData; }
-        }
+        protected TData UserData { get; private set; }
 
         /// <summary>
         ///     Because of how generics work in C# we need to have the ability to override a method in implementing classes to get
@@ -397,7 +355,7 @@ namespace Assets.Maxwolf.WolfCurses.Window
         /// <param name="y">The y.</param>
         /// <returns>The <see cref="int" />.</returns>
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public override int Compare(IWindow x, IWindow y)
+        public int Compare(IWindow x, IWindow y)
         {
             // ReSharper disable once PossibleNullReferenceException
             var result = string.Compare(x.GetType().Name, y.GetType().Name, StringComparison.Ordinal);
@@ -456,6 +414,38 @@ namespace Assets.Maxwolf.WolfCurses.Window
         {
             if (Form != null)
                 Form.OnTick(systemTick, skipDay);
+        }
+
+        /// <summary>
+        ///     Called by the window factory when it uses the internal Unity scriptable object create instance functionality to
+        ///     create instance of the class at runtime.
+        /// </summary>
+        /// <param name="simUnit">Current instance of the engine application which is powering the simulation.</param>
+        public void OnWindowPreCreate(EngineApp simUnit)
+        {
+            // Reference for our text user interface data so we can build it up in pieces.
+            _menuPrompt = new StringBuilder();
+
+            // Init the user data object casted to correct type from generics while still adhering to common base class.
+            UserData = ScriptableObject.CreateInstance<TData>();
+
+            // Determines if the menu system should show raw input names in the menu rendering or just number selections by enum value.
+            ShowCommandNamesInMenu = EngineApp.SHOW_COMMANDS;
+
+            // Complain the generics implemented is not of an enum type.
+            if (!typeof(TCommands).IsEnum)
+                throw new InvalidCastException("TCommands must be an enumerated type!");
+
+            // Init empty list of menu choices.
+            _menuCommands = new List<IMenuChoice<TCommands>>();
+
+            // Dictionary of mappings for the choices and their associated values and actions.
+            _menuMappings = new Dictionary<string, TCommands>();
+            _menuActions = new Dictionary<TCommands, Action>();
+
+            // Menu header and footer is empty strings by default.
+            _menuHeader = string.Empty;
+            _menuFooter = string.Empty;
         }
 
         /// <summary>

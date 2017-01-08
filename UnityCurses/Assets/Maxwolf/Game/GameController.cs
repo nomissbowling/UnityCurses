@@ -3,7 +3,6 @@
 
 using Assets.Maxwolf.Engine;
 using Assets.Maxwolf.Engine.FileSystem;
-using Assets.Maxwolf.Example;
 using Assets.Maxwolf.OregonTrail;
 using Assets.Maxwolf.ProjectCommon;
 using Assets.Maxwolf.ProjectCommon.Utility.Singleton;
@@ -21,11 +20,6 @@ namespace Assets.Maxwolf.Game
         private static string _screenBuffer;
 
         /// <summary>
-        ///     Reference to scene UI text input field. Assigned from editor.
-        /// </summary>
-        public InputField GameInput;
-
-        /// <summary>
         ///     Reference to scene UI output text field. Assigned from editor.
         /// </summary>
         public Text GameOutput;
@@ -36,7 +30,7 @@ namespace Assets.Maxwolf.Game
         // ReSharper disable once UnusedMember.Local
         private void Update()
         {
-            Debug.Log("GameScript::Update()");
+            //Debug.Log("GameScript::Update()");
 
             // Ticks the underlying simulation.
             if (EngineApp.Instance != null)
@@ -51,10 +45,6 @@ namespace Assets.Maxwolf.Game
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 EngineApp.InputManager.SendInputBufferAsCommand();
-
-                // Clear out input field.
-                if (GameInput != null)
-                    GameInput.text = string.Empty;
             }
             else if (Input.GetKeyDown(KeyCode.Backspace))
             {
@@ -65,10 +55,7 @@ namespace Assets.Maxwolf.Game
             {
                 char inputChar;
                 if (char.TryParse(Input.inputString, out inputChar))
-                {
                     EngineApp.InputManager.AddCharToInputBuffer(inputChar);
-                    GameInput.text = EngineApp.InputManager.InputBuffer;
-                }
             }
 
             // Check if game output is different, if so then set it to that.
@@ -115,10 +102,6 @@ namespace Assets.Maxwolf.Game
             if (GameOutput != null)
                 GameOutput.text = string.Empty;
 
-            // Set game input to match input buffer.
-            if (GameInput != null)
-                GameInput.onValueChanged.AddListener(delegate { MatchInputBufferToInputField(); });
-
             // Create virtual filesystem.
             VirtualFileSystem.Init();
 
@@ -135,14 +118,6 @@ namespace Assets.Maxwolf.Game
 
             // Hook event to know when screen buffer wants to redraw the entire console screen.
             EngineApp.SceneGraph.ScreenBufferDirtyEvent += Simulation_ScreenBufferDirtyEvent;
-        }
-
-        private void MatchInputBufferToInputField()
-        {
-            if (EngineApp.InputManager.InputBuffer != GameInput.text)
-            {
-                GameInput.text = EngineApp.InputManager.InputBuffer;
-            }
         }
 
         private void GameControlsManager_GameControlsEvent(GameControlsEventData e)

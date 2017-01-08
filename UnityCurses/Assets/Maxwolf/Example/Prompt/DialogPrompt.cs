@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Assets.Maxwolf.Example.MainMenu;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -20,15 +19,6 @@ namespace Assets.Maxwolf.Example.Prompt
         ///     Holds all the text so we only need to render it once.
         /// </summary>
         private StringBuilder dialogPrompt = new StringBuilder();
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InputForm{T}" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public DialogPrompt(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired when dialog prompt is attached to active game Windows and would like to have a string returned.

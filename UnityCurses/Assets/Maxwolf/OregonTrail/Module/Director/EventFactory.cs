@@ -7,6 +7,7 @@ using System.Linq;
 using Assets.Maxwolf.Engine;
 using Assets.Maxwolf.OregonTrail.Event;
 using Assets.Maxwolf.ProjectCommon.Utility;
+using UnityEngine;
 
 namespace Assets.Maxwolf.OregonTrail.Module.Director
 {
@@ -84,9 +85,7 @@ namespace Assets.Maxwolf.OregonTrail.Module.Director
                 return null;
 
             // Create the event product, but don't call any constructor.
-            var eventInstance =
-                TypeExtensions.New<EventProduct>.GetUninitializedObject(directorEventKeyValuePair.Value) as
-                    EventProduct;
+            var eventInstance = ScriptableObject.CreateInstance(directorEventKeyValuePair.Value) as EventProduct;
 
             // If the event instance is null then complain.
             if (eventInstance == null)
@@ -109,7 +108,7 @@ namespace Assets.Maxwolf.OregonTrail.Module.Director
             var groupedEventList = new List<Type>();
             foreach (var type in EventReference)
                 if (type.Key.Category.Equals(eventCategory) &&
-                    (type.Key.ExecutionType == EventExecution.RandomOrManual))
+                    type.Key.ExecutionType == EventExecution.RandomOrManual)
                     groupedEventList.Add(type.Value);
 
             // Check to make sure there is at least one type of event of this type.

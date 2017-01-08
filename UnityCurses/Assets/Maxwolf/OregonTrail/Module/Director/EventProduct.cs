@@ -2,13 +2,14 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using Assets.Maxwolf.OregonTrail.Window.RandomEvent;
+using UnityEngine;
 
 namespace Assets.Maxwolf.OregonTrail.Module.Director
 {
     /// <summary>
     ///     Represents an event that can be triggered by the event director when vehicle is traveling along the trail.
     /// </summary>
-    public abstract class EventProduct
+    public abstract class EventProduct : ScriptableObject
     {
         /// <summary>
         ///     Grabs the current name of the event as it should be known by the simulation. Generally this is the friendly class

@@ -345,13 +345,9 @@ namespace Assets.Maxwolf.ProjectCommon
 
                     // Check if the current key match a keyboard value, and that Unity detects it is pressed this frame.
                     if (Input.GetKeyDown(value.Key))
-                    {
                         DoKeyDown(value.Key);
-                    }
                     else if (Input.GetKeyUp(value.Key))
-                    {
                         DoKeyUp(value.Key);
-                    }
                 }
             }
         }

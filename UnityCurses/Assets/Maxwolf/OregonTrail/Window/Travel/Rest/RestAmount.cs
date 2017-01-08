@@ -2,7 +2,6 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using System;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Rest
@@ -15,15 +14,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Rest
     [ParentWindow(typeof(Travel))]
     public sealed class RestAmount : Form<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RestAmount" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public RestAmount(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Returns a text only representation of the current game Windows state. Could be a statement, information, question
         ///     waiting input, etc.

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Window.MainMenu.Names;
 using Assets.Maxwolf.ProjectCommon.Utility;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Profession
@@ -24,15 +23,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Profession
         ///     References the string for the profession selection so it is only constructed once.
         /// </summary>
         private StringBuilder _professionChooser;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ProfessionSelector" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public ProfessionSelector(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
@@ -113,8 +103,7 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Profession
 #pragma warning disable IDE0018 // Inline variable declaration
             Entity.Person.Profession professionChoice;
 #pragma warning restore IDE0018 // Inline variable declaration
-            if (!EnumExtensions.TryParse(input, out professionChoice))
-                return;
+            EnumExtensions.TryParse(input, out professionChoice);
 
             // Once a profession is selected, we need to confirm that is what the user wanted.
             switch (professionChoice)

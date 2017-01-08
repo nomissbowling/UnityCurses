@@ -2,7 +2,6 @@
 // Timestamp 01/03/2016@1:50 AM
 
 using Assets.Maxwolf.Engine;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.GameOver
@@ -16,15 +15,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.GameOver
     [ParentWindow(typeof(GameOver))]
     public sealed class GameFail : Form<GameOverInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="GameFail" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public GameFail(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
         /// </summary>

@@ -3,7 +3,6 @@
 
 using System;
 using System.Text;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -15,12 +14,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Start_Month
     [ParentWindow(typeof(MainMenu))]
     public sealed class StartMonthHelp : InputForm<NewGameInfo>
     {
-        /// <summary>Initializes a new instance of the <see cref="StartMonthHelp" /> class.</summary>
-        /// <param name="window">The window.</param>
-        public StartMonthHelp(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Fired when dialog prompt is attached to active game Windows and would like to have a string returned.
         /// </summary>

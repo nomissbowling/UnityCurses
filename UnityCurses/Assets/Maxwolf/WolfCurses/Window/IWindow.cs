@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Assets.Maxwolf.Engine;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.WolfCurses.Window
@@ -97,5 +98,12 @@ namespace Assets.Maxwolf.WolfCurses.Window
         ///     the active Windows anymore one last time.
         /// </summary>
         void OnWindowAdded();
+
+        /// <summary>
+        ///     Called by the window factory when it uses the internal Unity scriptable object create instance functionality to
+        ///     create instance of the class at runtime.
+        /// </summary>
+        /// <param name="simUnit">Current instance of the engine application which is powering the simulation.</param>
+        void OnWindowPreCreate(EngineApp simUnit);
     }
 }

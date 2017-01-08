@@ -6,7 +6,6 @@ using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Location;
 using Assets.Maxwolf.OregonTrail.Entity.Vehicle;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Dialog;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Control;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
@@ -35,15 +34,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Command
         ///     Holds the text related to animated sway bar, each tick of simulation steps it.
         /// </summary>
         private string _swayBarText;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ContinueOnTrail" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public ContinueOnTrail(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.

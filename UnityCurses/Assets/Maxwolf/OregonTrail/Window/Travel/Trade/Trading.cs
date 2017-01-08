@@ -46,16 +46,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Trade
         private List<TradeOffer> trades;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Trading" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public Trading(IWindow window) : base(window)
-        {
-            supplyPrompt = new StringBuilder();
-        }
-
-        /// <summary>
         ///     Builds up representation of supplies once in constructor and then reference when asked for render.
         /// </summary>
         /// <returns>Formatted text table that shows vehicle current supplies.</returns>
@@ -136,6 +126,12 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Trade
 
                 return DialogType.Prompt;
             }
+        }
+
+        public override void OnFormPreCreate(IWindow window)
+        {
+            base.OnFormPreCreate(window);
+            supplyPrompt = new StringBuilder();
         }
 
         /// <summary>

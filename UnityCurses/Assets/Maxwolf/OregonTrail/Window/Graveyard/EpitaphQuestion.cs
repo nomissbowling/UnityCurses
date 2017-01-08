@@ -3,7 +3,6 @@
 
 using System;
 using System.Text;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -16,15 +15,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Graveyard
     [ParentWindow(typeof(Graveyard))]
     public sealed class EpitaphQuestion : InputForm<TombstoneInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="EpitaphQuestion" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public EpitaphQuestion(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Defines what type of dialog this will act like depending on this enumeration value. Up to implementation to define
         ///     desired behavior.

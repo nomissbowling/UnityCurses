@@ -5,7 +5,6 @@ using System;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Person;
 using Assets.Maxwolf.ProjectCommon.Utility;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Command
@@ -22,15 +21,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Command
         ///     Builds up the ration information and selection text.
         /// </summary>
         private StringBuilder _ration;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ChangeRations" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public ChangeRations(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired after the state has been completely attached to the simulation letting the state know it can browse the user

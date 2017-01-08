@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Maxwolf.ProjectCommon.Utility;
+using UnityEngine;
 
 namespace Assets.Maxwolf.WolfCurses.Window.Form
 {
@@ -57,10 +58,13 @@ namespace Assets.Maxwolf.WolfCurses.Window.Form
                 return null;
 
             // Init the state, it will have constructor with one parameter.
-            var stateInstance = Activator.CreateInstance(stateType, activeMode);
+            var stateInstance = ScriptableObject.CreateInstance(stateType) as IForm;
+            if (stateInstance == null)
+                return null;
 
             // Pass the created state back to caller.
-            return stateInstance as IForm;
+            stateInstance.OnFormPreCreate(activeMode);
+            return stateInstance;
         }
 
         /// <summary>

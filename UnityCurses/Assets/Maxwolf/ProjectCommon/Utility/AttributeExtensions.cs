@@ -42,7 +42,6 @@ namespace Assets.Maxwolf.ProjectCommon.Utility
         /// <summary>Find the fields in an enum that have a specific attribute with a specific value.</summary>
         /// <param name="source">The source.</param>
         /// <param name="inherit">The inherit.</param>
-        /// <returns>The <see cref="IEnumerable" />.</returns>
         public static IEnumerable<T> GetAttributes<T>(this ICustomAttributeProvider source, bool inherit)
             where T : Attribute
         {

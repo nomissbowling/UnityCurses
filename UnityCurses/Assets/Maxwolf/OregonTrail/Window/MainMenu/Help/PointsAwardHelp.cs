@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Item;
 using Assets.Maxwolf.OregonTrail.Module.Scoring;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Control;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
@@ -20,15 +19,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Help
     [ParentWindow(typeof(MainMenu))]
     public sealed class PointsAwardHelp : InputForm<NewGameInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PointsAwardHelp" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public PointsAwardHelp(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Reference to points that will be given for entities of given matching types in this list.
         /// </summary>

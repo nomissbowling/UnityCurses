@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Assets.Maxwolf.WolfCurses;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Store.Help
@@ -30,16 +29,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Store.Help
         ///     Determines which panel of information we have shown to the user, pressing return will cycle through them.
         /// </summary>
         private int adviceCount;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="StoreWelcome" /> class.
-        ///     Offers up some free information about what items are important to the player and what they mean for the during the
-        ///     course of the simulation.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public StoreWelcome(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.

@@ -33,13 +33,9 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Dialog
         /// </summary>
         private Dictionary<int, Location> _skipChoices;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="LocationFork" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public LocationFork(IWindow window) : base(window)
+        public override void OnFormPreCreate(IWindow window)
         {
+            base.OnFormPreCreate(window);
             _forkPrompt = new StringBuilder();
         }
 

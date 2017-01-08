@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Person;
 using Assets.Maxwolf.ProjectCommon.Utility;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Control;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
@@ -19,15 +18,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Help
     [ParentWindow(typeof(MainMenu))]
     public sealed class PointsDistributionHelp : InputForm<NewGameInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PointsDistributionHelp" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public PointsDistributionHelp(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Fired when dialog prompt is attached to active game Windows and would like to have a string returned.
         /// </summary>

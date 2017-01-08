@@ -20,13 +20,10 @@ namespace Assets.Maxwolf.OregonTrail.Window.GameOver
         /// </summary>
         private StringBuilder _gameOver;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="GameWin" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public GameWin(IWindow window) : base(window)
+        public override void OnFormPreCreate(IWindow window)
         {
+            base.OnFormPreCreate(window);
+
             _gameOver = new StringBuilder();
         }
 

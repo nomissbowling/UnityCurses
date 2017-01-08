@@ -1,7 +1,6 @@
 ﻿// Created by Ron 'Maxwolf' McDowell (ron.mcdowell@gmail.com) 
 // Timestamp 01/03/2016@1:50 AM
 
-using Assets.Maxwolf.Engine;
 using Assets.Maxwolf.WolfCurses.Window;
 
 namespace Assets.Maxwolf.OregonTrail.Window.GameOver
@@ -13,14 +12,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.GameOver
     /// </summary>
     public sealed class GameOver : Window<GameOverCommands, GameOverInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Window{TCommands,TData}" /> class.
-        /// </summary>
-        /// <param name="simUnit">Core simulation which is controlling the form factory.</param>
-        public GameOver(EngineApp simUnit) : base(simUnit)
-        {
-        }
-
         /// <summary>
         ///     Called after the window has been added to list of modes and made active.
         /// </summary>

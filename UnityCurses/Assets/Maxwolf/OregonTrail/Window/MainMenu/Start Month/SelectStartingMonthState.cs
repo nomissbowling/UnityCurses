@@ -8,7 +8,6 @@ using System.Text;
 using Assets.Maxwolf.OregonTrail.Module.Time;
 using Assets.Maxwolf.OregonTrail.Window.MainMenu.Help;
 using Assets.Maxwolf.ProjectCommon.Utility;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Start_Month
@@ -25,15 +24,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Start_Month
         ///     state is active.
         /// </summary>
         private StringBuilder _startMonthQuestion;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SelectStartingMonthState" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public SelectStartingMonthState(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Determines if user input is currently allowed to be typed and filled into the input buffer.
@@ -106,8 +96,7 @@ namespace Assets.Maxwolf.OregonTrail.Window.MainMenu.Start_Month
 #pragma warning disable IDE0018 // Inline variable declaration
             StartingMonth startMonth;
 #pragma warning restore IDE0018 // Inline variable declaration
-            if (!EnumExtensions.TryParse(input, out startMonth))
-                return;
+            EnumExtensions.TryParse(input, out startMonth);
 
             // Depending on what was selected we will set starting month to correct one in full listing, or show advice to player.
             switch (startMonth)

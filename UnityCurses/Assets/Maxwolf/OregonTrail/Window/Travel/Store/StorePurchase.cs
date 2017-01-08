@@ -6,7 +6,6 @@ using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Item;
 using Assets.Maxwolf.OregonTrail.Entity.Location;
 using Assets.Maxwolf.OregonTrail.Window.Travel.Store.Help;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 
 namespace Assets.Maxwolf.OregonTrail.Window.Travel.Store
@@ -35,15 +34,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Store
         ///     the money they have.
         /// </summary>
         private int _purchaseLimit;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="StorePurchase" /> class.
-        ///     Attaches a state that will allow the player to purchase a certain number of a particular SimItem.
-        /// </summary>
-        /// <param name="window">Current game Windows that requested this.</param>
-        public StorePurchase(IWindow window) : base(window)
-        {
-        }
 
         /// <summary>
         ///     Fired after the state has been completely attached to the simulation letting the state know it can browse the user

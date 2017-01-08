@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Assets.Maxwolf.OregonTrail.Entity.Vehicle;
-using Assets.Maxwolf.WolfCurses.Window;
 using Assets.Maxwolf.WolfCurses.Window.Form;
 using Assets.Maxwolf.WolfCurses.Window.Form.Input;
 
@@ -19,15 +18,6 @@ namespace Assets.Maxwolf.OregonTrail.Window.Travel.Dialog
     [ParentWindow(typeof(Travel))]
     public sealed class LocationArrive : InputForm<TravelInfo>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="LocationArrive" /> class.
-        ///     This constructor will be used by the other one
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public LocationArrive(IWindow window) : base(window)
-        {
-        }
-
         /// <summary>
         ///     Defines what type of dialog this will act like depending on this enumeration value. Up to implementation to define
         ///     desired behavior.
